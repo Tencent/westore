@@ -39,8 +39,8 @@ complexObj.c[0].d = 100;
 var User = function (name, age) {
     this.name = name;
     this.age = age;
-    //watch User's instance
-    observe(this, function (name, value, oldValue) {
+    //只监听name
+    observe(this,["name"] function (name, value, oldValue) {
         console.log(name + "__" + value + "__" + oldValue);//name__wangwu__lisi 
     });
 }
