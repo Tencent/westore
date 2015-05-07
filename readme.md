@@ -21,8 +21,8 @@ var arr = [1, 2, 3];
 observe(arr, function (name, value, old) {
     console.log(name + "__" + value+"__"+old);
 });
-arr.push(4);//array__push 
-arr[3] = 5;//3__5
+arr.push(4);//array__push_4 
+arr[3] = 5;//3__5_4
 ```
 
 ### 复杂对象
