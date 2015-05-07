@@ -38,7 +38,7 @@
                     target[item] = function () {
                         var result = Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
                         for (var cprop in this) {
-                            if (this.hasOwnProperty(cprop) && cprop != "_super" && !observe.isFunction(this[cprop])) {
+                            if (this.hasOwnProperty(cprop)  && !observe.isFunction(this[cprop])) {
                                 self.watch(this, cprop);
                             }
                         }
@@ -74,7 +74,7 @@
                         this.mock(currentValue);
                     }
                     for (var cprop in currentValue) {
-                        if (currentValue.hasOwnProperty(cprop) && cprop != "_super") {
+                        if (currentValue.hasOwnProperty(cprop)) {
                             this.watch(currentValue, cprop);
                         }
                     }
