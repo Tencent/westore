@@ -1,19 +1,12 @@
-﻿/* observejs 
- * By dnt http://kmdjs.github.io/
+﻿/* observejs --- By dnt http://kmdjs.github.io/
  * Github: https://github.com/kmdjs/observejs
  * MIT Licensed.
  */
 ;(function (win) {
-
     var observe = function (target, arr,callback) {
-
-
         var _observe = function (target, arr, callback) {
-
             for (var prop in target) {
-              
                 if (target.hasOwnProperty(prop)) {
-                  
                     if (callback) {
                         if (observe.isArray(arr) && observe.isInArray(arr, prop)) {
                             this.watch(target, prop);
@@ -53,7 +46,6 @@
                 if (prop.substr(0, 2) == "__") return;
                 var self = this;
                 if (observe.isFunction(target[prop])) return;
-
                 var currentValue = target["__" + prop] = target[prop];
                 Object.defineProperty(target, prop, {
                     get: function () {
@@ -81,15 +73,10 @@
                 }
             }
         }
-
         return new _observe(target, arr, callback)
-       
     }
-
     observe.methods = ["concat", "every", "filter", "forEach", "indexOf", "join", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "unshift", "valueOf"]
-
     observe.triggerStr = ["concat", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"].join(",")
- 
     observe.isArray = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
     }
@@ -109,5 +96,4 @@
     if (typeof module != 'undefined' && module.exports && this.module !== module) { module.exports = observe }
     else if (typeof define === 'function' && define.amd) { define(observe) }
     else { win.observe = observe };
-
 })(Function('return this')());
