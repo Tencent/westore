@@ -5,6 +5,9 @@
 ;(function (win) {
     var observe = function (target, arr,callback) {
         var _observe = function (target, arr, callback) {
+            if (observe.isArray(target)) {
+                this.mock(target);
+            }
             for (var prop in target) {
                 if (target.hasOwnProperty(prop)) {
                     if (callback) {
@@ -17,7 +20,7 @@
                         this.watch(target, prop);
                     }
                 }
-            }
+            }         
             this.target = target;
             this.propertyChangedHandler = callback ? callback : arr;
         }
@@ -43,24 +46,20 @@
                 });
             },
             "watch": function (target, prop) {
-                if (prop.substr(0, 2) == "__") return;
+                if (!target.$observeProps) target.$observeProps = {};
+                if (prop === "$observeProps") return;
                 var self = this;
                 if (observe.isFunction(target[prop])) return;
-                var currentValue = target["__" + prop] = target[prop];
+                var currentValue = target.$observeProps[prop] = target[prop];
                 Object.defineProperty(target, prop, {
                     get: function () {
-                        return this["__" + prop];
+                        return this.$observeProps[prop];
                     },
                     set: function (value) {
-                        self.onPropertyChanged(prop, value, this["__" + prop]);
-                        this["__" + prop] = value;
-                       
+                        self.onPropertyChanged(prop, value, this.$observeProps[prop]);
+                        this.$observeProps[prop] = value;                      
                     }
                 });
-
-                if (observe.isArray(target)) {
-                    this.mock(target);
-                }
                 if (typeof currentValue == "object") {
                     if (observe.isArray(currentValue)) {
                         this.mock(currentValue);
@@ -75,6 +74,7 @@
         }
         return new _observe(target, arr, callback)
     }
+
     observe.methods = ["concat", "every", "filter", "forEach", "indexOf", "join", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "unshift", "valueOf"]
     observe.triggerStr = ["concat", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"].join(",")
     observe.isArray = function (obj) {
