@@ -7,7 +7,6 @@
 ### 对象字面量
 ```javascript
 var obj = { a: 1 };
-//watch obj
 observe(obj, function (name, value , old) {
     console.log(name + "__" + value + "__" + old);
 });
@@ -17,7 +16,6 @@ obj.a = 2; //a__2__1
 ### 数组
 ```javascript
 var arr = [1, 2, 3];
-//watch obj
 observe(arr, function (name, value, old) {
     console.log(name + "__" + value+"__"+old);
 });
@@ -28,7 +26,6 @@ arr[3] = 5;//3__5__4
 ### 复杂对象
 ```javascript
 var complexObj = { a: 1, b: 2, c: [{ d: [4] }] };
-//watch complexObj
 observe(complexObj, function (name, value ,old) {
     console.log(name + "__" + value + "__" + old);    
 });
