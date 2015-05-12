@@ -8,10 +8,10 @@
 ```javascript
 var obj = { a: 1 };
 //watch obj
-observe(obj, function (name, value) {
-    console.log(name + "__" + value);//a__2 
+observe(obj, function (name, value , old) {
+    console.log(name + "__" + value + "__" + old);
 });
-obj.a = 2;
+obj.a = 2; //a__2__1 
 ```
 
 ### 数组
@@ -21,18 +21,18 @@ var arr = [1, 2, 3];
 observe(arr, function (name, value, old) {
     console.log(name + "__" + value+"__"+old);
 });
-arr.push(4);//array__push_4 
-arr[3] = 5;//3__5_4
+arr.push(4);//array__push__4 
+arr[3] = 5;//3__5__4
 ```
 
 ### 复杂对象
 ```javascript
 var complexObj = { a: 1, b: 2, c: [{ d: [4] }] };
 //watch complexObj
-observe(complexObj, function (name, value) {
-    console.log(name + "__" + value);    //d__100 
+observe(complexObj, function (name, value ,old) {
+    console.log(name + "__" + value + "__" + old);    
 });
-complexObj.c[0].d = 100;
+complexObj.c[0].d = 100;//d__100__4 
 ```
 ### 普通对象
 ```javascript
@@ -41,11 +41,12 @@ var User = function (name, age) {
     this.age = age;
     //只监听name
     observe(this,["name"] function (name, value, oldValue) {
-        console.log(name + "__" + value + "__" + oldValue);//name__wangwu__lisi 
+        console.log(name + "__" + value + "__" + oldValue);
     });
 }
 var user = new User("lisi", 25);
-user.name = "wangwu";
+user.name = "wangwu";//name__wangwu__lisi 
+user.age= 20; //什么都输出，因为没有监听age
 ```
 
 
