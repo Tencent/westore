@@ -56,8 +56,9 @@
                         return this.$observeProps[prop];
                     },
                     set: function (value) {
-                        self.onPropertyChanged(prop, value, this.$observeProps[prop]);
-                        this.$observeProps[prop] = value;                      
+                        var old = this.$observeProps[prop];
+                        this.$observeProps[prop] = value;
+                        self.onPropertyChanged(prop, value, old);                   
                     }
                 });
                 if (typeof currentValue == "object") {
@@ -74,7 +75,6 @@
         }
         return new _observe(target, arr, callback)
     }
-
     observe.methods = ["concat", "every", "filter", "forEach", "indexOf", "join", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "unshift", "valueOf"]
     observe.triggerStr = ["concat", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"].join(",")
     observe.isArray = function (obj) {
