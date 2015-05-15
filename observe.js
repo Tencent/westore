@@ -92,6 +92,23 @@
     observe.isFunction = function (obj) {
         return Object.prototype.toString.call(obj) == '[object Function]';
     }
+    observe.twoWay = function (objA, aProp, objB, bProp) {
+        if (typeof objA[aProp] === "object" && typeof objB[bProp] === "object") {
+            observe(objA, aProp, function (name, value) {
+                objB[bProp] = this[aProp];
+            })
+            observe(objB, bProp, function (name, value) {
+                objA[aProp] = this[bProp];
+            })
+        } else {
+            observe(objA, aProp, function (name, value) {
+                objB[bProp] = value;
+            })
+            observe(objB, bProp, function (name, value) {
+                objA[aProp] = value;
+            })
+        }
+    }
      
     if (typeof module != 'undefined' && module.exports && this.module !== module) { module.exports = observe }
     else if (typeof define === 'function' && define.amd) { define(observe) }
