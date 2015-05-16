@@ -22,9 +22,10 @@
         observe(arr, function (name, value, old) {
             console.log(name + "__" + value + "__" + old);
         });
-        arr.push(4);//array__push_4 
-        arr[3] = 5;//3__5_4
-
+        arr.push(4);//array__push__4 
+        arr[3] = 5;//3__5__4
+		arr.size(2);//array__size__2
+		
         var complexObj = { a: 1, b: 2, c: [{ d: [4] }] };
         //watch complexObj
         observe(complexObj, function (name, value,old) {

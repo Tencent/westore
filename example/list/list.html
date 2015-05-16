@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <link href="bootstrap.min.css" rel="stylesheet" />
+   
+   <script src="observe.js"></script>
+   <script>
+       var List = function (option) {
+           this.option = option;
+           this.data = option.data;
+           this.parent = document.querySelector(this.option.renderTo);
+           this.tpl =
+               '<div class="list-group" style="  text-align: center;width:<%=typeof width === "number"?width+"px":width%>;" >'
+               + '            <% for ( var i = 0, len = data.length; i < len; i++) { %>'
+               + '<%     var item = data[i]; %>'
+               + '<a class="list-group-item <%=item.active ? "active" : ""%> <%=item.disabled ? "disabled" : ""%>" href="<%=item.href%>" target="<%=item.target?item.target:""%>"><%=item.text%><\/a>'
+               + '<% } %>'
+               + '<\/div>';
+           this.render();
+           //list.render建议使用debounce来控制执行频率提高性能,或者和react一样在下次执行requestAnimFrame的时候更新
+           observe(this, "option", this.render)
+       }
+       List.prototype = {
+           render: function () {
+               if (this.node) this.parent.removeChild(this.node);
+               this.parent.innerHTML += this._tpl(this.tpl, this.option);
+               var nodes = this.parent.querySelectorAll(".list-group"), index = nodes.length - 1;
+               this.node = nodes[index];
+           },
+           _tpl: function (str, data) {
+               var tmpl = 'var __p=[];' + 'with(obj||{}){__p.push(\'' +
+                   str.replace(/\\/g, '\\\\')
+                       .replace(/'/g, '\\\'')
+                       .replace(/<%=([\s\S]+?)%>/g, function (match, code) {
+                           return '\',' + code.replace(/\\'/, '\'') + ',\'';
+                       })
+                   .replace(/<%([\s\S]+?)%>/g, function (match, code) {
+                       return '\');' + code.replace(/\\'/, '\'')
+                           .replace(/[\r\n\t]/g, ' ') + '__p.push(\'';
+                   })
+                   .replace(/\r/g, '\\r')
+                       .replace(/\n/g, '\\n')
+                       .replace(/\t/g, '\\t') +
+                       '\');}return __p.join("");',
+
+                       func = new Function('obj', tmpl);
+
+               return data ? func(data) : func;
+           },
+		   clear:function(){
+				//this.data.
+		   }
+       }
+
+       var list = new List({
+           data: [
+               { text: "天下太贰", disabled: true, active: true },
+               { text: "魔兽争霸", href: "##", target: "_blank" },
+               { text: "魔兽世界" },
+               { text: "坦克世界" },
+               { text: "超级玛丽", disabled: true }
+           ],
+           width: 150,
+           renderTo: "body"
+       })
+       list.data[0].text = "hahaha";
+       list.data.push({ text: "aaaa" });
+       list.data.splice(2, 1);
+       list.data[0].disabled = false;
+
+
+
+    </script>
+</body>
+</html>
