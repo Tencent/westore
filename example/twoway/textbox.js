@@ -5,7 +5,6 @@
 }
 Textbox.prototype = {
     render: function () {
-        if (this.checkChange()) {
             if (this.node) this.parent.removeChild(this.node);
             this.parent.innerHTML += ' <input type="text" class="form-control" value="' + this.text + '"/>';
             this.node = this.parent.lastChild;
@@ -14,11 +13,14 @@ Textbox.prototype = {
                 this.__textboxInstace._preText = this.__textboxInstace.text = this.value;
                 delete this.__inputContorlInstace;
             }
-        }
     },
-    checkChange: function () {
-        if (this._preText === this.text) return false;
-        this._preText = this.text;
-        return true;
+    update: function () {
+        this.node.value = this.text;
+    },
+    tick: function () {
+        if (this._preText !== this.text) {
+            this._preText = this.text;
+            this.update();
+        }
     }
 }

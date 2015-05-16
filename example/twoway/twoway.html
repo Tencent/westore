@@ -19,7 +19,7 @@
         observe.twoWay(textbox, "text", user, "name");
         (function loop() {
             requestAnimFrame(loop);
-            textbox.render();
+            textbox.tick();
             document.getElementById("username").innerHTML = user.name;
         })();
     </script>
