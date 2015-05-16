@@ -25,8 +25,11 @@
             this.propertyChangedHandler = callback ? callback : arr;
         }
         _observe.prototype = {
-            "onPropertyChanged": function (prop, value,oldValue) {
+            "onPropertyChanged": function (prop, value,oldValue,target) {
                 value!== oldValue && this.propertyChangedHandler && this.propertyChangedHandler.call(this.target, prop, value, oldValue);
+				if(typeof value === "object"){
+					this.watch(target,prop);
+				}
             },
             "mock": function (target) {
                 var self = this;
@@ -58,7 +61,7 @@
                     set: function (value) {
                         var old = this.$observeProps[prop];
                         this.$observeProps[prop] = value;
-                        self.onPropertyChanged(prop, value, old);                   
+                        self.onPropertyChanged(prop, value, old, this);                   
                     }
                 });
                 if (typeof currentValue == "object") {

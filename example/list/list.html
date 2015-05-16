@@ -51,7 +51,19 @@
                return data ? func(data) : func;
            },
 		   clear:function(){
-				//this.data.
+				this.data.size(0);
+		   },
+		   remove:function(index){
+				this.data.splice(index,1);
+		   },
+		   add:function(item){
+				list.data.push(item);
+		   },
+		   edit:function(index,item){
+				list.data[index]=item;
+		   },
+		   disable:function(index){
+				list.data[index].disabled = true;
 		   }
        }
 
@@ -66,12 +78,13 @@
            width: 150,
            renderTo: "body"
        })
-       list.data[0].text = "hahaha";
-       list.data.push({ text: "aaaa" });
-       list.data.splice(2, 1);
-       list.data[0].disabled = false;
-
-
+       list.edit(1,{text:"haha"})
+       list.add({ text: "aaaa" });
+       list.remove(2, 1);
+       list.disable(2);
+	   list.remove(1);
+	   
+list.data[1].text="aaa"
 
     </script>
 </body>

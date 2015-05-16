@@ -32,7 +32,12 @@
             console.log(name + "__" + value + "__" + old);   
         });
         complexObj.c[0].d = 100; //d__100_4 
-
+		complexObj.b={a:2};//b__[object Object]__2
+		complexObj.b.a=3;//a__3__2
+		complexObj.c[0]={ccc:1};//0__[object Object]__[object Object]
+		complexObj.c[0].ccc=333;//ccc__333__1
+		  
+		// complexObj.c[1]={fff:2};
         var User = function (name, age) {
             this.name = name;
             this.age = age;

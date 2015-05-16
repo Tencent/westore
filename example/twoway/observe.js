@@ -2,8 +2,8 @@
  * Github: https://github.com/kmdjs/observejs
  * MIT Licensed.
  */
-; (function (win) {
-    var observe = function (target, arr, callback) {
+;(function (win) {
+    var observe = function (target, arr,callback) {
         var _observe = function (target, arr, callback) {
             if (observe.isArray(target)) {
                 this.mock(target);
@@ -15,18 +15,21 @@
                             this.watch(target, prop);
                         } else if (observe.isString(arr) && prop == arr) {
                             this.watch(target, prop);
-                        }
-                    } else {
+                        }                       
+                    } else{
                         this.watch(target, prop);
                     }
                 }
-            }
+            }         
             this.target = target;
             this.propertyChangedHandler = callback ? callback : arr;
         }
         _observe.prototype = {
-            "onPropertyChanged": function (prop, value, oldValue) {
-                value !== oldValue && this.propertyChangedHandler && this.propertyChangedHandler.call(this.target, prop, value, oldValue);
+            "onPropertyChanged": function (prop, value,oldValue,target) {
+                value!== oldValue && this.propertyChangedHandler && this.propertyChangedHandler.call(this.target, prop, value, oldValue);
+				if(typeof value === "object"){
+					this.watch(target,prop);
+				}
             },
             "mock": function (target) {
                 var self = this;
@@ -34,7 +37,7 @@
                     target[item] = function () {
                         var result = Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
                         for (var cprop in this) {
-                            if (this.hasOwnProperty(cprop) && !observe.isFunction(this[cprop])) {
+                            if (this.hasOwnProperty(cprop)  && !observe.isFunction(this[cprop])) {
                                 self.watch(this, cprop);
                             }
                         }
@@ -58,7 +61,7 @@
                     set: function (value) {
                         var old = this.$observeProps[prop];
                         this.$observeProps[prop] = value;
-                        self.onPropertyChanged(prop, value, old);
+                        self.onPropertyChanged(prop, value, old, this);                   
                     }
                 });
                 if (typeof currentValue == "object") {
@@ -75,8 +78,8 @@
         }
         return new _observe(target, arr, callback)
     }
-    observe.methods = ["concat", "every", "filter", "forEach", "indexOf", "join", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "unshift", "valueOf"]
-    observe.triggerStr = ["concat", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"].join(",")
+    observe.methods = ["concat", "every", "filter", "forEach", "indexOf", "join", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "unshift", "toLocaleString","toString","size"]
+    observe.triggerStr = ["concat", "pop", "push", "reverse", "shift", "sort", "splice", "unshift","size"].join(",")
     observe.isArray = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
     }
@@ -92,7 +95,6 @@
     observe.isFunction = function (obj) {
         return Object.prototype.toString.call(obj) == '[object Function]';
     }
-
     observe.twoWay = function (objA, aProp, objB, bProp) {
         if (typeof objA[aProp] === "object" && typeof objB[bProp] === "object") {
             observe(objA, aProp, function (name, value) {
@@ -110,7 +112,11 @@
             })
         }
     }
-
+    
+	Array.prototype.size=function(length){
+		this.length = length;
+	}
+	
     if (typeof module != 'undefined' && module.exports && this.module !== module) { module.exports = observe }
     else if (typeof define === 'function' && define.amd) { define(observe) }
     else { win.observe = observe };
