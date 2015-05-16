@@ -5,30 +5,46 @@
 ;(function (win) {
     var observe = function (target, arr,callback) {
         var _observe = function (target, arr, callback) {
+			if(!target.$observer)target.$observer=this;
+			var $observer=target.$observer;
+			var eventPropArr=[];
             if (observe.isArray(target)) {
-                this.mock(target);
+                $observer.mock(target);
             }
             for (var prop in target) {
                 if (target.hasOwnProperty(prop)) {
                     if (callback) {
                         if (observe.isArray(arr) && observe.isInArray(arr, prop)) {
-                            this.watch(target, prop);
+							eventPropArr.push(prop);
+                            $observer.watch(target, prop);
                         } else if (observe.isString(arr) && prop == arr) {
-                            this.watch(target, prop);
+							eventPropArr.push(prop);
+                            $observer.watch(target, prop);
                         }                       
                     } else{
-                        this.watch(target, prop);
+						eventPropArr.push(prop);
+                        $observer.watch(target, prop);
                     }
                 }
             }         
-            this.target = target;
-            this.propertyChangedHandler = callback ? callback : arr;
+            $observer.target = target;
+			if(!$observer.propertyChangedHandler)$observer.propertyChangedHandler=[];
+			var propChanged=callback ? callback : arr;
+            $observer.propertyChangedHandler.push({all:!callback,propChanged:propChanged,eventPropArr:eventPropArr});
         }
         _observe.prototype = {
-            "onPropertyChanged": function (prop, value,oldValue,target) {
-                value!== oldValue && this.propertyChangedHandler && this.propertyChangedHandler.call(this.target, prop, value, oldValue);
+            "onPropertyChanged": function (prop, value,oldValue,target,path) {
+                if(value!== oldValue && this.propertyChangedHandler){
+					var rootName=observe._getRootName(prop,path);
+					for(var i=0,len=this.propertyChangedHandler.length;i<len;i++){
+						var handler=this.propertyChangedHandler[i];
+						if(observe.isInArray(handler.eventPropArr,rootName)||rootName==="Array"){
+							handler.propChanged.call(this.target, prop, value, oldValue, path);
+						}	
+					}			
+				}
 				if(typeof value === "object"){
-					this.watch(target,prop);
+					this.watch(target,prop, target.$observeProps.$observerPath);
 				}
             },
             "mock": function (target) {
@@ -38,21 +54,27 @@
                         var result = Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
                         for (var cprop in this) {
                             if (this.hasOwnProperty(cprop)  && !observe.isFunction(this[cprop])) {
-                                self.watch(this, cprop);
+                                self.watch(this, cprop, this.$observeProps.$observerPath);
                             }
                         }
                         if (new RegExp("\\b" + item + "\\b").test(observe.triggerStr)) {
-                            self.onPropertyChanged("array", item, arguments[0]);
+							//todo
+                            self.onPropertyChanged("Array", item, arguments[0],this, this.$observeProps.$observerPath);
                         }
                         return result;
                     };
                 });
             },
-            "watch": function (target, prop) {
-                if (!target.$observeProps) target.$observeProps = {};
-                if (prop === "$observeProps") return;
-                var self = this;
-                if (observe.isFunction(target[prop])) return;
+            "watch": function (target, prop, path) {             
+                if (prop === "$observeProps"||prop === "$observer") return;
+				if (observe.isFunction(target[prop])) return;
+				if (!target.$observeProps) target.$observeProps = {};
+				if(path !== undefined){
+					target.$observeProps.$observerPath = path;
+				}else{
+					target.$observeProps.$observerPath = "#";
+				}
+                var self = this;              
                 var currentValue = target.$observeProps[prop] = target[prop];
                 Object.defineProperty(target, prop, {
                     get: function () {
@@ -61,7 +83,7 @@
                     set: function (value) {
                         var old = this.$observeProps[prop];
                         this.$observeProps[prop] = value;
-                        self.onPropertyChanged(prop, value, old, this);                   
+                        self.onPropertyChanged(prop, value, old, this, target.$observeProps.$observerPath);                   
                     }
                 });
                 if (typeof currentValue == "object") {
@@ -70,7 +92,7 @@
                     }
                     for (var cprop in currentValue) {
                         if (currentValue.hasOwnProperty(cprop)) {
-                            this.watch(currentValue, cprop);
+                            this.watch(currentValue, cprop, target.$observeProps.$observerPath+"-"+prop);
                         }
                     }
                 }
@@ -112,8 +134,25 @@
             })
         }
     }
+	observe._getRootName=function(prop,path){
+		if(path==="#"){
+			return prop;
+		}
+		return path.split("-")[1];
+	}
     
-	Array.prototype.size=function(length){
+	observe.add = function(obj , prop , value) {
+		obj[prop] = value;		
+		var $observer=obj.$observer;
+		$observer.watch(obj,prop);
+		for(var i=0,len=$observer.propertyChangedHandler.length;i<len;i++){
+			var handler=$observer.propertyChangedHandler[i];
+			if(handler.all){
+				handler.eventPropArr.push(prop);
+			}
+		}	
+	}
+	Array.prototype.size = function (length) {
 		this.length = length;
 	}
 	
