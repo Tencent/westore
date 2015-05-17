@@ -38,13 +38,13 @@
 				this.data.splice(index,1);
 		   },
 		   add:function(item){
-				list.data.push(item);
+				this.data.push(item);
 		   },
 		   edit:function(index,item){
-				list.data[index]=item;
+				this.data[index]=item;
 		   },
 		   disable:function(index){
-				list.data[index].disabled = true;
+				this.data[index].disabled = true;
 		   },
 		   _tpl: function (str, data) {
 		       var tmpl = 'var __p=[];' + 'with(obj||{}){__p.push(\'' +
