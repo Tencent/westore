@@ -38,7 +38,7 @@
 					var rootName=observe._getRootName(prop,path);
 					for(var i=0,len=this.propertyChangedHandler.length;i<len;i++){
 						var handler=this.propertyChangedHandler[i];
-						if(observe.isInArray(handler.eventPropArr,rootName)||rootName==="Array"){
+						if(handler.all||observe.isInArray(handler.eventPropArr,rootName)||rootName.indexOf("Array-")===0){
 							handler.propChanged.call(this.target, prop, value, oldValue, path);
 						}	
 					}			
@@ -51,15 +51,16 @@
                 var self = this;
                 observe.methods.forEach(function (item) {
                     target[item] = function () {
+						var old =  Array.prototype.slice.call(this,0);
                         var result = Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
-                        for (var cprop in this) {
-                            if (this.hasOwnProperty(cprop)  && !observe.isFunction(this[cprop])) {
-                                self.watch(this, cprop, this.$observeProps.$observerPath);
-                            }
-                        }
                         if (new RegExp("\\b" + item + "\\b").test(observe.triggerStr)) {
+							for (var cprop in this) {
+								if (this.hasOwnProperty(cprop)  && !observe.isFunction(this[cprop])) {
+									self.watch(this, cprop, this.$observeProps.$observerPath);
+								}
+							}
 							//todo
-                            self.onPropertyChanged("Array", item, arguments[0],this, this.$observeProps.$observerPath);
+                            self.onPropertyChanged("Array-"+item, this, old,this, this.$observeProps.$observerPath);
                         }
                         return result;
                     };
@@ -145,12 +146,6 @@
 		obj[prop] = value;		
 		var $observer=obj.$observer;
 		$observer.watch(obj,prop);
-		for(var i=0,len=$observer.propertyChangedHandler.length;i<len;i++){
-			var handler=$observer.propertyChangedHandler[i];
-			if(handler.all){
-				handler.eventPropArr.push(prop);
-			}
-		}	
 	}
 	Array.prototype.size = function (length) {
 		this.length = length;

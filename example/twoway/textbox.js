@@ -24,3 +24,4 @@ Textbox.prototype = {
         }
     }
 }
+//类型校验
