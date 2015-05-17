@@ -29,8 +29,7 @@
            render: function () {
                if (this.node) this.parent.removeChild(this.node);
                this.parent.innerHTML += this._tpl(this.tpl, this.option);
-               var nodes = this.parent.querySelectorAll(".list-group"), index = nodes.length - 1;
-               this.node = nodes[index];
+               this.node = this.parent.lastChild;
            },
 		   clear:function(){
 				this.data.size(0);
