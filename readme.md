@@ -2,7 +2,7 @@
 
 用于观察任意对象的任意变化的类库，以轻巧、实用、强大而闻名。
 
-ps:源代码未压缩版仅仅只有几十行代码:)
+ps:源代码未压缩版仅仅只有158行代码:)
 
 ##3分钟精通observe.js
 
@@ -21,7 +21,7 @@ var arr = [1, 2, 3];
 observe(arr, function (name, value, old) {
     console.log(name + "__" + value+"__"+old);
 });
-arr.push(4);//array__push__4 
+arr.push(4);//Array-push__[1,2,3,4]__[1,2,3] 
 arr[3] = 5;//3__5__4
 ```
 
