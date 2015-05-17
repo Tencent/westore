@@ -23,7 +23,7 @@
                + '<\/div>';
            this.render();
            //list.render建议使用debounce来控制执行频率提高性能,或者和react一样在下次执行requestAnimFrame的时候更新
-           observe(this, "option", this.render)
+           observe(this, "option", this._debounce(this.render, 200));
        }
        List.prototype = {
            render: function () {
@@ -32,8 +32,23 @@
                var nodes = this.parent.querySelectorAll(".list-group"), index = nodes.length - 1;
                this.node = nodes[index];
            },
-           _tpl: function (str, data) {
-               var tmpl = 'var __p=[];' + 'with(obj||{}){__p.push(\'' +
+		   clear:function(){
+				this.data.size(0);
+		   },
+		   remove:function(index){
+				this.data.splice(index,1);
+		   },
+		   add:function(item){
+				list.data.push(item);
+		   },
+		   edit:function(index,item){
+				list.data[index]=item;
+		   },
+		   disable:function(index){
+				list.data[index].disabled = true;
+		   },
+		   _tpl: function (str, data) {
+		       var tmpl = 'var __p=[];' + 'with(obj||{}){__p.push(\'' +
                    str.replace(/\\/g, '\\\\')
                        .replace(/'/g, '\\\'')
                        .replace(/<%=([\s\S]+?)%>/g, function (match, code) {
@@ -50,23 +65,22 @@
 
                        func = new Function('obj', tmpl);
 
-               return data ? func(data) : func;
-           },
-		   clear:function(){
-				this.data.size(0);
+		       return data ? func(data) : func;
 		   },
-		   remove:function(index){
-				this.data.splice(index,1);
+		   _debounce: function (func, wait, immediate) {
+		       var timeout;
+		       return function () {
+		           var context = this, args = arguments;
+		           var later = function () {
+		               timeout = null;
+		               if (!immediate) func.apply(context, args);
+		           };
+		           var callNow = immediate && !timeout;
+		           clearTimeout(timeout);
+		           timeout = setTimeout(later, wait);
+		           if (callNow) func.apply(context, args);
+		       };
 		   },
-		   add:function(item){
-				list.data.push(item);
-		   },
-		   edit:function(index,item){
-				list.data[index]=item;
-		   },
-		   disable:function(index){
-				list.data[index].disabled = true;
-		   }
        }
 
        var list = new List({
@@ -86,7 +100,7 @@
        list.disable(2);
 	   list.remove(1);
 	   
-list.data[1].text="aaa"
+list.data[0].text="aaaaaaa"
 
     </script>
 </body>

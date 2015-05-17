@@ -43,7 +43,7 @@
 						}	
 					}			
 				}
-				if(typeof value === "object"){
+                if (prop.indexOf("Array-") !== 0 && typeof value === "object") {
 					this.watch(target,prop, target.$observeProps.$observerPath);
 				}
             },
