@@ -1,18 +1,26 @@
-﻿var Textbox = function (text, renderTo) {
+﻿var Textbox = function (text, type, renderTo) {
     this.parent = document.querySelector(renderTo);
     this.text = text;
+    this.type = type;
     this.render();
 }
 Textbox.prototype = {
     render: function () {
-            if (this.node) this.parent.removeChild(this.node);
-            this.parent.innerHTML += ' <input type="text" class="form-control" value="' + this.text + '"/>';
-            this.node = this.parent.lastChild;
-            this.node.__textboxInstace = this;
-            this.node.onkeyup= function () {
-                this.__textboxInstace._preText = this.__textboxInstace.text = this.value;
-                delete this.__inputContorlInstace;
+        if (this.node) this.parent.removeChild(this.node);
+
+        this.parent.innerHTML += ' <input type="text" class="form-control" value="' + this.text + '"/>';
+        this.node = this.parent.lastChild;
+        this.node.__textboxInstace = this;
+        this.node.onkeyup = function () {
+            var is = this.__textboxInstace;
+            if (is[is.type](this.value)) {
+                is._preText = is.text = this.value;
+                delete is;
+            } else {
+                alert("类型不匹配");
             }
+
+        }
     },
     update: function () {
         this.node.value = this.text;
@@ -22,6 +30,8 @@ Textbox.prototype = {
             this._preText = this.text;
             this.update();
         }
+    },
+    number: function (n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
     }
 }
-//类型校验

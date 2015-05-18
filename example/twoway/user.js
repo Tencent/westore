@@ -1,3 +1,3 @@
-﻿var User = function (name) {
-    this.name = name;
+﻿var User = function (age) {
+    this.age = age;
 }
