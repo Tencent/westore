@@ -28,10 +28,11 @@ arr[3] = 5;//3__5__4
 ### 复杂对象
 ```javascript
 var complexObj = { a: 1, b: 2, c: [{ d: [4] }] };
-observe(complexObj, function (name, value ,old) {
-    console.log(name + "__" + value + "__" + old);    
+observe(complexObj, function (name, value , old, path) {
+    console.log(name + "__" + value + "__" + old);   //d__100__4 
+	console.log(path)	                             //#-c-0
 });
-complexObj.c[0].d = 100;//d__100__4 
+complexObj.c[0].d = 100;
 ```
 ### 普通对象
 ```javascript
