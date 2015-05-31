@@ -58,6 +58,19 @@
         var user = new User("lisi", 25);
         user.name = "wangwu";//name__wangwu__lisi__#
         user.age = 100;
+
+        var emptyArr = [];
+        observe(emptyArr, function (name, value, old, path) {
+            console.log(name + "__" + value + "__" + old + "__" + path);
+        });
+        emptyArr.push(11);
+
+        var emptyArr2 = {items:[]};
+        observe(emptyArr2, function (name, value, old, path) {
+            console.log(name + "__" + value + "__" + old + "__" + path);
+        });
+
+        emptyArr2.items.push("cccc")
     </script>
 </body>
 </html>

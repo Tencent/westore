@@ -8,8 +8,13 @@
 			if(!target.$observer)target.$observer=this;
 			var $observer=target.$observer;
 			var eventPropArr=[];
-            if (observe.isArray(target)) {
-                $observer.mock(target);
+			if (observe.isArray(target)) {
+			    if (target.length === 0) {
+			        target.$observeProps = {};
+			        target.$observeProps.$observerPath = "#";
+			    }
+			     $observer.mock(target);
+			   
             }
             for (var prop in target) {
                 if (target.hasOwnProperty(prop)) {
@@ -30,7 +35,7 @@
             $observer.target = target;
 			if(!$observer.propertyChangedHandler)$observer.propertyChangedHandler=[];
 			var propChanged=callback ? callback : arr;
-            $observer.propertyChangedHandler.push({all:!callback,propChanged:propChanged,eventPropArr:eventPropArr});
+			$observer.propertyChangedHandler.push({ all: !callback, propChanged: propChanged, eventPropArr: eventPropArr });	
         }
         _observe.prototype = {
             "onPropertyChanged": function (prop, value,oldValue,target,path) {
@@ -90,6 +95,14 @@
                 if (typeof currentValue == "object") {
                     if (observe.isArray(currentValue)) {
                         this.mock(currentValue);
+                        if (currentValue.length === 0) {
+                            if (!currentValue.$observeProps) currentValue.$observeProps = {};
+                            if (path !== undefined) {
+                                currentValue.$observeProps.$observerPath = path;
+                            } else {
+                                currentValue.$observeProps.$observerPath = "#";
+                            }
+                        }
                     }
                     for (var cprop in currentValue) {
                         if (currentValue.hasOwnProperty(cprop)) {
