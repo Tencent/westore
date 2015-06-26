@@ -7,24 +7,15 @@
     <a href="https://github.com/kmdjs/observejs" target="_blank" style="position: absolute; right: 0; top: 0;">
         <img src="http://alloyteam.github.io/AlloyRenderingEngine/asset/img/github.png" alt="" />
     </a>
-    <div id="ageLb"></div>   
-    <div id="ageTbx"></div>
-    <script src="label.js"></script>
-    <script src="observe.js"></script>
-    <script src="textbox.js"></script>
-    <script src="user.js"></script>
-    <script src="raf.js"></script>
+    <script src="../../observe.js"></script>
+ 
     <script>
-        var user = new User(18);
-        var textbox = new Textbox(user.age,"number", "#ageTbx");
-        var label = new Label(user.age, "#ageLb");
-        observe.twoWay(textbox, "text", user, "age");
-        observe.twoWay(label, "text", user, "age");
-        (function loop() {
-            requestAnimFrame(loop);
-            textbox.tick();
-            label.tick();
-        })();
+        var a = { a: 1 }, b = { b: 2 };
+        observe.twoWay(a, "a", b, "b");
+        a.a = 100;
+        console.log(b.b === 100) //true
+        b.b = 200;
+        console.log(a.a === 200) //true
     </script>
 </body>
 </html>
