@@ -4,6 +4,8 @@
 
 ps:源代码未压缩版仅仅只有158行代码:)
 
+你可以移步 [这里](http://alloyteam.github.io/Nuclear/) 感受observe.js在框架里不可替代的作用。
+
 ##3分钟精通observe.js
 
 ### 对象字面量
