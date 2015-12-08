@@ -42,7 +42,7 @@ var User = function (name, age) {
     this.name = name;
     this.age = age;
     //只监听name
-    observe(this,["name"] function (name, value, oldValue) {
+    observe(this, ["name"], function (name, value, oldValue) {
         console.log(name + "__" + value + "__" + oldValue);
     });
 }
