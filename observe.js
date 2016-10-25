@@ -141,11 +141,22 @@
         return path.split("-")[1];
     }
 
-    observe.add = function (obj, prop, value) {
-        obj[prop] = value;
+    observe.add = function (obj, prop) {
         var $observer = obj.$observer;
         $observer.watch(obj, prop);
     }
+    
+    observe.addAndSet = function(obj, prop,value,exec) { 
+        if(!exec){
+            obj[prop] = value; 
+        }
+        var $observer = obj.$observer; 
+        $observer.watch(obj, prop); 
+        if(exec){
+           obj[prop] = value;
+        }
+    }
+    
     Array.prototype.size = function (length) {
         this.length = length;
     }
