@@ -146,7 +146,7 @@
         $observer.watch(obj, prop);
     }
     
-    observe.addAndSet = function(obj, prop,value,exec) { 
+    observe.set = function(obj, prop,value,exec) { 
         if(!exec){
             obj[prop] = value; 
         }
