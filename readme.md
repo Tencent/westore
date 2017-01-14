@@ -4,8 +4,6 @@
 
 ps:源代码未压缩版仅仅只有158行代码:)
 
-你可以移步 [Nuclear](http://alloyteam.github.io/Nuclear/) 感受observe.js在框架里不可替代的作用。
-
 ##3分钟精通observe.js
 
 ### 对象字面量
@@ -53,4 +51,3 @@ user.age= 20; //什么都输出，因为没有监听age
 
 
 This content is released under the (http://opensource.org/licenses/MIT) MIT License.
-
