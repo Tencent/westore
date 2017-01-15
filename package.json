@@ -27,9 +27,12 @@
   },
   "homepage": "https://github.com/kmdjs/oba#readme",
   "devDependencies": {
+    "browserify": "^13.3.0",
     "jasmine-core": "^2.5.2",
     "karma": "^1.4.0",
+    "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
-    "karma-jasmine": "^1.1.0"
+    "karma-jasmine": "^1.1.0",
+    "watchify": "^3.8.0"
   }
 }
