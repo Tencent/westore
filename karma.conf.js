@@ -75,7 +75,30 @@ var cfg  = {
 };
 
 if (process.env.TRAVIS) {
-  cfg.browsers = ['Chrome_travis_ci'];
+  cfg.customLaunchers = {
+    Chrome_travis_ci: {
+      base: 'Chrome',
+      flags: ['--no-sandbox']
+    },
+    'PhantomJS_custom': {
+      base: 'PhantomJS',
+      options: {
+        windowName: 'my-window',
+        settings: {
+          webSecurityEnabled: false
+        },
+      },
+      flags: ['--load-images=false'],
+      debug: true
+    }
+  };
+  cfg.browsers = [
+    "Chrome_travis_ci",
+    "Firefox",
+    //"IE",
+    //"Opera",
+    "PhantomJS_custom"
+  ];
 }
 
 module.exports = function(config) {
