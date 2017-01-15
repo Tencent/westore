@@ -4,7 +4,7 @@
   "description": "observe any object's any change",
   "main": "oba.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,11 @@
   "bugs": {
     "url": "https://github.com/kmdjs/oba/issues"
   },
-  "homepage": "https://github.com/kmdjs/oba#readme"
+  "homepage": "https://github.com/kmdjs/oba#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0"
+  }
 }
