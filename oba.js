@@ -1,5 +1,6 @@
-/* obajs --- By dnt http://kmdjs.github.io/
- * Github: https://github.com/kmdjs/obajs
+/* obajs 0.1.1
+ * By dntzhang
+ * Github: https://github.com/kmdjs/oba
  * MIT Licensed.
  */
 ; (function (win) {

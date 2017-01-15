@@ -1,6 +1,6 @@
 {
   "name": "obajs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "observe any object's any change",
   "main": "oba.js",
   "scripts": {
