@@ -1,5 +1,7 @@
 ##observe.js
 
+[![Build Status](https://secure.travis-ci.org/kmdjs/oba.png?branch=master)](https://travis-ci.org/kmdjs/oba)
+
 用于观察任意对象的任意变化的类库，以轻巧、实用、强大而闻名。
 
 ps:源代码未压缩版仅仅只有158行代码:)
