@@ -16,9 +16,10 @@ describe("A suite is just a function", function() {
 describe("A suite is just a function", function() {
     var obj = { a: 1 ,c:33};
     //watch obj
-    var count = 0;
+    var count = 0,result ="";
     oba(obj, function (name, value,old,path) {
-        //console.log(name + "__" + value + "__" + old+"__"+path);
+
+        result = name + "__" + value + "__" + old+"__"+path;
         count++;
     });
     oba(obj,"c", function (name, value,old,path) {
@@ -29,7 +30,8 @@ describe("A suite is just a function", function() {
 
 
     it("and so is a spec", function() {
-
+        expect(result).toBe("c__2__33__#");
         expect(count).toBe(2);
     });
 });
+
