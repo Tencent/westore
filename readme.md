@@ -1,4 +1,4 @@
-##observe.js
+##oba.js
 
 [![Build Status](https://secure.travis-ci.org/kmdjs/oba.png?branch=master)](https://travis-ci.org/kmdjs/oba)
 
