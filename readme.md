@@ -1,6 +1,6 @@
 ##oba.js
 
-[![Build Status](https://secure.travis-ci.org/kmdjs/oba.png?branch=master)](https://travis-ci.org/kmdjs/oba)
+[![Build Status](https://secure.travis-ci.org/dntzhang/oba.png?branch=master)](https://travis-ci.org/dntzhang/oba)
 
 用于观察任意对象的任意变化的类库，以轻巧、实用、强大而闻名。
 
