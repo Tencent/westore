@@ -1,4 +1,4 @@
-##oba.js
+## oba.js
 
 [![Build Status](https://secure.travis-ci.org/dntzhang/oba.png?branch=master)](https://travis-ci.org/dntzhang/oba)
 
