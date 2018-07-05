@@ -12,7 +12,7 @@ ps:源代码未压缩版仅仅只有158行代码:)
 npm install obajs
 ```
 
-##3分钟精通observe.js
+## 3分钟精通observe.js
 
 ### 对象字面量
 ```javascript
