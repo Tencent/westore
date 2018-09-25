@@ -14,12 +14,13 @@ create({
    * 组件的初始数据
    */
   data: {
-
+    a: { b: 123 }
   },
 
   ready: function () {
     setTimeout(() => {
       this.store.data.motto = 'Hello Store'
+      this.store.data.a.b = 1234
       this.update()
     }, 2000)
   },

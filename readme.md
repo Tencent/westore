@@ -27,7 +27,7 @@
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
 - [原理](#原理)
   - [JSON Diff](#json-diff)
-  - [Store Update 链](#store-update-链)
+  - [Update](#update)
 - [License](#license)
 
 ## API
@@ -56,6 +56,8 @@ export default {
   }
 }
 ```
+
+你不需要在页面和组件上再声明 data 属性。如果申明了也没关系，会被 Object.assign 覆盖到 store.data 上。后续只需修改 this.store.data 便可。
 
 ### 创建页面
 
@@ -354,7 +356,7 @@ this.setData({
 
 上面是官方截取的内容。使用 webstore 的 this.update 本质是先 diff，再执行一连串的 setData，所以可以保证传递的数据每次维持在最小。既然可以使得传递数据最小，所以第一点和第三点虽有违反但可以商榷。
 
-### Store Update 
+### Update 
 
 这里区分在页面中的 update 和 组件中的 update。页面中的 update 在 onLoad 事件中进行实例收集。
 
@@ -370,7 +372,7 @@ option.onLoad = function () {
 Page(option)
 ```
 
-组件中的 update 在 ready 事件中进行挂载和链接:
+组件中的 update 在 ready 事件中进行行实例收集:
 
 ```js
 const ready = store.ready

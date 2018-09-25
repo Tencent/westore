@@ -4,6 +4,9 @@ let originData = null
 
 export default function create(store, option) {
     if (arguments.length === 2) {
+        if (option.data && Object.keys(option.data).length > 0) {
+            Object.assign(store.data, option.data)
+        }
         if (!originData) {
             originData = JSON.parse(JSON.stringify(store.data))
             store.instances = {}
@@ -23,7 +26,8 @@ export default function create(store, option) {
         const ready = store.ready
         store.ready = function () {
             this.page = getCurrentPages()[getCurrentPages().length - 1]
-            this.store = this.page.store;
+            this.store = this.page.store
+            Object.assign(this.store.data, store.data)
             this.setData.call(this, this.store.data)
             rewriteUpdate(this)
             this.store.instances[this.page.route].push(this)
@@ -33,11 +37,11 @@ export default function create(store, option) {
     }
 }
 
-function rewriteUpdate(ctx){
+function rewriteUpdate(ctx) {
     ctx.update = () => {
-        const diffResult = diff(ctx.store.data, originData)  
+        const diffResult = diff(ctx.store.data, originData)
         //优化数据和组件关联定向更新
-        for(let key in ctx.store.instances){
+        for (let key in ctx.store.instances) {
             ctx.store.instances[key].forEach(ins => {
                 ins.setData.call(ins, diffResult)
             })

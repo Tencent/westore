@@ -39,7 +39,6 @@ create(store, {
     }
 
     setTimeout(() => {
-      //怎么更新子组件？
       this.store.data.motto = 'Hello Store222'
       this.update()
 
