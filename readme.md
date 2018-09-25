@@ -193,7 +193,7 @@ console.log(getApp().globalData.store.data)
 
 不排除小程序被做大得可能，接触的最大的小程序有 60+ 的页面，所以怎么管理？这里给出了两个最佳实践方案。
 
-* 第一种方案，拆分 store 的 date 为不同模块，如:
+* 第一种方案，拆分 store 的 data 为不同模块，如:
 
 ```js
 export default {
