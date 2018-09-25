@@ -175,15 +175,11 @@ this.update()
 
 ### 跨页面同步数据
 
-在 A页面改完 store，要更新 B 页面。 只需在 B页面 onShow 中执行 update 便可：
+使用 westore 你不用关系跨页数据同步，你只需要专注 this.store.data 便可，修改完在任意页面调用 update 便可：
 
 ```js
-onShow: function(){
-  this.update()
-}
+this.update()
 ```
-
-其实如果 B 页面的 update 链 A 页面 update 链中，连上面的代码都不需要写，自动后台就同步更新了。什么是 update 链可以看下面的原理部分。
 
 ### 调试
 
