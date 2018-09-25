@@ -11,6 +11,8 @@
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
 * this.update 比原生 setData 的性能更优，更加智能
 
+[→立即下载使用](https://codeload.github.com/dntzhang/westore/zip/master)
+
 ---
 
 - [API](#api)
