@@ -171,7 +171,7 @@ this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
 
 ### 跨页面同步数据
 
-使用 westore 你不用关系跨页数据同步，你只需要专注 this.store.data 便可，修改完会自动跨页同步数据。
+使用 westore 你不用关心跨页数据同步，你只需要专注 this.store.data 便可，修改完会自动跨页同步数据。
 
 ### 调试
 
