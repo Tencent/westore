@@ -46,6 +46,7 @@ function rewriteUpdate(ctx) {
                 ins.setData.call(ins, diffResult)
             })
         }
+        ctx.store.onChange && ctx.store.onChange(diffResult)
         for (let key in diffResult) {
             updateOriginData(originData, key, diffResult[key])
         }
