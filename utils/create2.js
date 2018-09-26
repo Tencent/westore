@@ -5,17 +5,27 @@
 import JSONProxy from './proxy'
 
 let currentStore = null
-let preKv = ''
+let currentData = null
+let timeout = null
 const noop = function () { }
 
+let patchs = {}
 const handler = function (patch) {
-    const mpPatch = {}
-    const key = fixPath(patch.path)
-    mpPatch[key] = patch.value ? patch.value : null
-    //fix arr splice?
-    if (preKv !== key + '-' + patch.value) {
-        preKv = key + '-' + patch.value
-        update(mpPatch)
+    clearTimeout(timeout)
+    if (patch.op === 'remove') {//fix arr splice 
+        const kv = getArrayPatch(patch.path)
+        patchs[kv.k] = kv.v
+        timeout = setTimeout(function(){
+            update(patchs)
+            patchs = {}
+        })   
+    } else {
+        const key = fixPath(patch.path)
+        patchs[key] = patch.value
+        timeout = setTimeout(function(){
+            update(patchs)
+            patchs = {}
+        })   
     }
 }
 
@@ -31,6 +41,7 @@ export default function create(store, option) {
         getApp().globalData.store = store
         currentStore = store
         option.data = store.data
+        currentData = store.data
         const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
         option.onLoad = function () {
@@ -67,6 +78,38 @@ function update(kv) {
             ins.setData.call(ins, kv)
         })
     }
+}
+
+function getArrayPatch(path) {
+    //const ap = {}
+    const arr = path.replace('/', '').split('/')
+    let current = currentData[arr[0]]
+    for (let i = 1, len = arr.length; i < len - 1; i++) {
+        current = current[arr[i]]
+    }
+    //ap[] = current
+    return {k:fixArrPath(path),v:current}
+}
+
+function fixArrPath(path) {
+    let mpPath = ''
+    const arr = path.replace('/', '').split('/')
+    const len = arr.length
+    arr.forEach((item, index) => {
+        if (index < len - 1) {
+            if (index) {
+                if (isNaN(parseInt(item))) {
+                    mpPath += '.' + item
+
+                } else {
+                    mpPath += '[' + item + ']'
+                }
+            } else {
+                mpPath += item
+            }
+        }
+    })
+    return mpPath
 }
 
 function fixPath(path) {
