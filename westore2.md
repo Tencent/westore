@@ -17,7 +17,9 @@
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
 - [原理](#原理)
-  - [JSON Diff](#json-diff)
+  - [Hello Proxy](#hello-proxy)
+  - [Proxy+Diff](#proxy+diff)
+  - [Proxy Path](#proxy-path)
   - [Update](#update)
 - [License](#license)
 
@@ -279,6 +281,40 @@ export default {
 
 * 小程序 store 和 dom 不在同一个环境，先在 js 环境进行 json diff，然后使用 diff 结果通过 setData 通讯
 * web 里使用 omi 的话 store 和 dom 在同一环境，setState 直接驱动的 vdom diff 然后把 diff 结果作用在真是 dom 上
+
+###
+
+```js
+const handler = {
+    get: function (target, key, receiver) {
+        try {
+            if (typeof target[key] === 'function') return Reflect.get(target, key, receiver)
+            return new Proxy(target[key], handler)
+        } catch (err) {
+            return Reflect.get(target, key, receiver)
+        }
+    },
+    set: function (target, key, value, receiver) {
+        Reflect.set(target, key, value, receiver)
+        update()
+        return true
+    },
+    deleteProperty: function (target, key) {
+        Reflect.deleteProperty(target, key)
+        update()
+        return true
+    }
+}
+
+function update() {
+    //diff 吗？
+    for (let key in currentStore.instances) {
+        currentStore.instances[key].forEach(ins => {
+            ins.setData.call(ins, currentData)
+        })
+    }
+}
+```
 
 ### JSON Diff
 

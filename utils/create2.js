@@ -1,30 +1,22 @@
 /*
-westore 2.0 待完善优化
+    westore 2.0 
 */
 
-const handler = {
-    get: function (target, key, receiver) {
-        try {
-            if (typeof target[key] === 'function') return Reflect.get(target, key, receiver)
-            return new Proxy(target[key], handler)
-        } catch (err) {
-            return Reflect.get(target, key, receiver)
-        }
-    },
-    set: function (target, key, value, receiver) {
-        Reflect.set(target, key, value, receiver)
-        update(key, value)
-        return true
-    },
-    deleteProperty: function () {
-
-    }
-}
+import JSONProxy from './proxy'
 
 let currentStore = null
-let currentData = null
+let preKv = ''
+const noop = function () { }
 
-const noop = function(){ }
+const handler = function (patch) {
+    const mpPatch = {}
+    const key = fixPath(patch.path)
+    mpPatch[key] = patch.value
+    if (preKv !== key + '-' + patch.value) {
+        preKv = key + '-' + patch.value
+        update(mpPatch)
+    }
+}
 
 export default function create(store, option) {
     if (arguments.length === 2) {
@@ -36,18 +28,15 @@ export default function create(store, option) {
         }
 
         getApp().globalData.store = store
-        currentData = store.data
         currentStore = store
-        const p = new Proxy(store.data, handler)
-
         option.data = store.data
-
+        const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
         option.onLoad = function () {
             //兼容1.0不报错
             this.update = noop
             this.store = store
-            this.store.data = p
+            this.store.data = jp.observe(true, handler)
             store.instances[this.route] = []
             store.instances[this.route].push(this)
             onLoad && onLoad.call(this)
@@ -70,12 +59,29 @@ export default function create(store, option) {
     }
 }
 
-
-function update() {
-    //diff 吗？
+function update(kv) {
+    //合并path?
     for (let key in currentStore.instances) {
         currentStore.instances[key].forEach(ins => {
-            ins.setData.call(ins, currentData)
+            ins.setData.call(ins, kv)
         })
     }
+}
+
+function fixPath(path) {
+    let mpPath = ''
+    const arr = path.replace('/', '').split('/')
+    arr.forEach((item, index) => {
+        if (index) {
+            if (isNaN(parseInt(item))) {
+                mpPath += '.' + item
+
+            } else {
+                mpPath += '[' + item + ']'
+            }
+        } else {
+            mpPath += item
+        }
+    })
+    return mpPath
 }
