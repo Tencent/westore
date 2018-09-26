@@ -11,6 +11,14 @@
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
 * this.update 比原生 setData 的性能更优，更加智能
 
+没使用 westore 的时候经常可以看到这样的代码:
+
+![not-westore](./asset/not-westore.png)
+
+使用完 westore 之后:
+
+![westore](./asset/westore.png)
+
 [→立即下载使用](https://codeload.github.com/dntzhang/westore/zip/master)
 
 ---
