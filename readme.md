@@ -11,7 +11,7 @@
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
 * this.update 比原生 setData 的性能更优，更加智能
 
-没使用 westore 的时候经常可以看到这样的代码:
+使用 this.data 可以获取内部数据和属性值，但不要直接修改它们，应使用 setData 修改，所以没使用 westore 的时候经常可以看到这样的代码:
 
 ![not-westore](./asset/not-westore.png)
 
