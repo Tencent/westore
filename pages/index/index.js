@@ -11,7 +11,7 @@ create(store, {
     })
   },
 
-  onShow(){
+  onShow() {
     this.update()
   },
 
@@ -40,10 +40,17 @@ create(store, {
 
     setTimeout(() => {
       this.store.data.motto = 'Hello Store222'
+      this.store.data.b.arr.push({ name: 'ccc' })
       this.update()
 
     }, 4000)
 
+    setTimeout(() => {
+
+      this.store.data.b.arr.splice(1, 1)
+      this.update()
+
+    }, 6000)
   },
 
   getUserInfo: function (e) {

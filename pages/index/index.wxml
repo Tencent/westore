@@ -11,6 +11,8 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-
+  <view wx:for="{{b.arr}}" wx:for-item="item">
+    <text class="log-item">{{index + 1}}. {{item.name}}</text>
+  </view>
   <hello></hello>
 </view>

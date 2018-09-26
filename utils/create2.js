@@ -11,7 +11,8 @@ const noop = function () { }
 const handler = function (patch) {
     const mpPatch = {}
     const key = fixPath(patch.path)
-    mpPatch[key] = patch.value
+    mpPatch[key] = patch.value ? patch.value : null
+    //fix arr splice?
     if (preKv !== key + '-' + patch.value) {
         preKv = key + '-' + patch.value
         update(mpPatch)

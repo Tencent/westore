@@ -4,7 +4,8 @@ export default {
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    logs: []
+    logs: [],
+    b: { arr: [{ name: 'abc' }] }
   },
   logMotto: function () {
     console.log(this.data.motto)
