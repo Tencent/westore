@@ -72,7 +72,6 @@ export default function create(store, option) {
 }
 
 function update(kv) {
-    //合并path?
     for (let key in currentStore.instances) {
         currentStore.instances[key].forEach(ins => {
             ins.setData.call(ins, kv)
@@ -81,13 +80,11 @@ function update(kv) {
 }
 
 function getArrayPatch(path) {
-    //const ap = {}
     const arr = path.replace('/', '').split('/')
     let current = currentData[arr[0]]
     for (let i = 1, len = arr.length; i < len - 1; i++) {
         current = current[arr[i]]
     }
-    //ap[] = current
     return {k:fixArrPath(path),v:current}
 }
 
