@@ -179,7 +179,7 @@ this.update()
 
 ### 跨页面同步数据
 
-使用 westore 你不用关系跨页数据同步，你只需要专注 this.store.data 便可，修改完在任意地方调用 update 便可：
+使用 westore 你不用关心跨页数据同步，你只需要专注 this.store.data 便可，修改完在任意地方调用 update 便可：
 
 ```js
 this.update()
