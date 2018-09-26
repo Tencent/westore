@@ -381,7 +381,7 @@ Page(option)
 const ready = store.ready
 store.ready = function () {
     this.page = getCurrentPages()[getCurrentPages().length - 1]
-    this.store = this.page.store;
+    this.store = this.page.store
     this.setData.call(this, this.store.data)
     rewriteUpdate(this)
     this.store.instances[this.page.route].push(this)
@@ -407,6 +407,8 @@ function rewriteUpdate(ctx){
     }
 }
 ```
+
+westore 会收集所有页面和组件的实例，在开发者执行 this.update 的时候遍历所有实例进行 setData。
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
