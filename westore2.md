@@ -1,17 +1,6 @@
-# Westore 1.0 正式发布 - 一个框架就够
+# Westore 2.0 
 
 > 世界上最小却强大的小程序框架 - [100多行代码](https://github.com/dntzhang/westore/blob/master/utils/create.js)搞定全局状态管理和跨页通讯
-
-众所周知，小程序通过页面或组件各自的 setData 再加上各种父子、祖孙、姐弟、嫂子与堂兄等等组件间的通讯会把程序搞成一团浆糊，如果再加上跨页面之间的组件通讯，会让程序非常难维护和调试。虽然市面上出现了许多技术栈编译转小程序的技术，但是我觉没有戳中小程序的痛点。小程序不管从组件化、开发、调试、发布、灰度、回滚、上报、统计、监控和最近的云能力都非常完善，小程序的工程化简直就是前端的典范。而开发者工具也在持续更新，可以想象的未来，组件布局的话未必需要写代码了。所以最大的痛点只剩下状态管理和跨页通讯。
-
-受 [Omi 框架](https://github.com/Tencent/omi) 的启发，且专门为小程序开发的 [JSON Diff 库](https://github.com/dntzhang/westore/blob/master/utils/diff.js)，所以有了 westore 全局状态管理和跨页通讯框架让一切尽在掌握中，且受高性能 JSON Diff 库的利好，长列表滚动加载显示变得轻松可驾驭。总结下来有如下特性和优势:
-
-* 和 Omi 同样简洁的 Store API
-* 超小的代码尺寸(包括 json diff 共100多行)
-* 尊重且顺从小程序的设计(其他转译库相当于反其道行)
-* this.update 比原生 setData 的性能更优，更加智能
-
-[→立即下载使用](https://codeload.github.com/dntzhang/westore/zip/master)
 
 ---
 
@@ -23,7 +12,7 @@
   - [更新页面](#更新页面)
   - [创建组件](#创建组件)
   - [更新组件](#更新组件)
-  - [setData 和 update 对比](#setdata-和-update-对比)
+  - [与 setData 对比](#与-setdata-对比)
   - [跨页面同步数据](#跨页面同步数据)
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
@@ -34,11 +23,12 @@
 
 ## API
 
-Westore API 只有三个, 大道至简:
+Westore 2.0 API 只有二个, 大道至简:
 
 * create(store, option) 创建页面
 * create(option)        创建组件
-* this.update()   更新页面或组件
+
+和 1.0 相比，API 没有变化，只是更改完 store.data 之后不再需要调用 this.update.
 
 ## 使用指南
 
@@ -75,12 +65,12 @@ create(store, {
     if (app.globalData.userInfo) {
       this.store.data.userInfo = app.globalData.userInfo
       this.store.data.hasUserInfo = true
-      this.update()
+      //this.update()
     } else if (this.data.canIUse) {
       app.userInfoReadyCallback = res => {
         this.store.data.userInfo = res.userInfo
         this.store.data.hasUserInfo = true
-        this.update()
+        //this.update()
       }
     } else {
       wx.getUserInfo({
@@ -88,7 +78,7 @@ create(store, {
           app.globalData.userInfo = res.userInfo
           this.store.data.userInfo = res.userInfo
           this.store.data.hasUserInfo = true
-          this.update()
+          //this.update()
         }
       })
     }
@@ -125,7 +115,7 @@ create(store, {
 
 ```js
 this.store.data.any_prop_you_want_to_change = 'any_thing_you_want_change_to'
-this.update()
+//this.update()
 ```
 
 ### 创建组件
@@ -151,7 +141,7 @@ create({
 
 ```js
 this.store.data.any_prop_you_want_to_change = 'any_thing_you_want_change_to'
-this.update()
+//this.update()
 ```
 
 ### setData 和 update 对比
@@ -172,18 +162,14 @@ this.setData({
 this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
   return util.formatTime(new Date(log))
 })
-this.update()
+//this.update()
 ```
 
-看似一条语句变成了两条语句，但是 this.update 调用的 setData 是 diff 后的，所以传递的数据更少。
+方法调用直接变成赋值操作，编程体验来讲 assignment > method call。
 
 ### 跨页面同步数据
 
-使用 westore 你不用关系跨页数据同步，你只需要专注 this.store.data 便可，修改完在任意地方调用 update 便可：
-
-```js
-this.update()
-```
+使用 westore 你不用关系跨页数据同步，你只需要专注 this.store.data 便可，修改完会自动跨页同步数据。
 
 ### 调试
 
@@ -291,9 +277,8 @@ export default {
 
 都是数据驱动视图，但本质不同，原因:
 
-* 小程序 store 和 dom 不在同一个环境，先在 js 环境进行 json diff，然后使用 diff 结果通过 setData 通讯告诉 webview
-* Web 里使用 omi 的话 store 和 dom 在同一环境，setState 直接驱动的 vdom diff 然后把 diff 结果作用在真是 dom 上
-* Native 里使用 omi 的话，omi 通过 jsbridge 向 客户端发送的是 dom 指令而非 数据
+* 小程序 store 和 dom 不在同一个环境，先在 js 环境进行 json diff，然后使用 diff 结果通过 setData 通讯
+* web 里使用 omi 的话 store 和 dom 在同一环境，setState 直接驱动的 vdom diff 然后把 diff 结果作用在真是 dom 上
 
 ### JSON Diff
 
