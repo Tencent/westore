@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "list": "plugin://myPlugin/list"
+  }
+}

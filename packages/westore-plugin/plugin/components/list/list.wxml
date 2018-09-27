@@ -1,0 +1,3 @@
+<view wx:for="{{list}}" wx:key="name">
+  <view>{{item.name}}:{{item.price}}</view>
+</view>
