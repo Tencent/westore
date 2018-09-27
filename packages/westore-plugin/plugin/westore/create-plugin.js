@@ -1,26 +1,38 @@
 import diff from './diff'
 
+let originData = null
+let globalStore = null
 
-export default function create(option) {
+export default function create(store, option) {
+    let opt = store
+    if (option) {
+        opt = option
+        originData = JSON.parse(JSON.stringify(store.data))
+        globalStore = store
+        globalStore.instances = []
+    }
 
-    const attached = option.attached
-    option.attached = function () {
-        this.store = Object.assign({ data: {} }, option.data)
-        this.__originData = JSON.parse(JSON.stringify(option.data))
+    const attached = opt.attached
+    opt.attached = function () {
+        this.store = globalStore
+        this.store.data = Object.assign(globalStore.data, opt.data)
         this.setData.call(this, this.store.data)
+        globalStore.instances.push(this)
         rewriteUpdate(this)
         attached && attached.call(this)
     }
-    Component(option)
+    Component(opt)
 }
 
 function rewriteUpdate(ctx) {
     ctx.update = () => {
-        const diffResult = diff(ctx.store.data, ctx.__originData)
-        ctx.setData(diffResult)
+        const diffResult = diff(ctx.store.data, originData)
+        globalStore.instances.forEach(ins => {
+            ins.setData.call(ins, diffResult)
+        })
         ctx.store.onChange && ctx.store.onChange(diffResult)
         for (let key in diffResult) {
-            updateOriginData(ctx.__originData, key, diffResult[key])
+            updateOriginData(originData, key, diffResult[key])
         }
     }
 }

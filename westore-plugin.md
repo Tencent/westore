@@ -33,8 +33,10 @@
 
 ```js
 import create from '../../westore/create-plugin'
+import store from '../../store'
 
-create({
+//最外层容器节点需要传入 store，其他组件不传 store
+create(store, {
   properties:{
     authKey:{
       type: String,
@@ -82,7 +84,7 @@ create({
 
 ## 特别强调
 
-每个插件的 store 都是局部的，不是全局的。this.store 只属于插件自己!
+插件内所有组件公用的 store 和插件外小程序的 store 是相互隔离的。 
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)

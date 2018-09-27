@@ -1,6 +1,7 @@
 import create from '../../westore/create-plugin'
+import store from '../../store'
 
-create({
+create(store, {
   properties:{
     authKey:{
       type: String,
@@ -10,7 +11,6 @@ create({
       }
     }
   },
-  data: { list: [] },
   attached: function () {
     //获取插件上声明传递过来的属性
     console.log(this.properties.authKey)
@@ -19,6 +19,7 @@ create({
       this.triggerEvent('listChange', detail)
     }
     // 可以在这里发起网络请求获取插件的数据
+    console.log(this.store)
     this.store.data.list = [{
       name: '电视',
       price: 1000
