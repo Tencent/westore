@@ -43,9 +43,9 @@ create({
   },
   data: { list: [] },
   attached: function () {
-    //或者组件上声明传递过来的属性
+    // 可以得到插件上声明传递过来的属性值
     console.log(this.properties.authKey)
-    //监听所有变化
+    // 监听所有变化
     this.store.onChange = (detail) => {
       this.triggerEvent('listChange', detail)
     }
