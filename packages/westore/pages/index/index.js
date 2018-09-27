@@ -17,9 +17,10 @@ create(store, {
 
   onLoad: function () {
     if (app.globalData.userInfo) {
-      this.store.data.userInfo = app.globalData.userInfo
-      this.store.data.hasUserInfo = true
-      this.update()
+      this.update({
+        userInfo:app.globalData.userInfo,
+        hasUserInfo:true
+      })
     } else if (this.data.canIUse) {
 
       app.userInfoReadyCallback = res => {
@@ -39,9 +40,12 @@ create(store, {
     }
 
     setTimeout(() => {
-      this.store.data.motto = 'Hello Store222'
-      this.store.data.b.arr.push({ name: 'ccc' })
-      this.update()
+      // this.store.data.motto = 'Hello Store222'
+      // this.store.data.b.arr.push({ name: 'ccc' })
+      this.update({
+        motto:'Hello Store222',
+        [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
+      })
 
     }, 4000)
 
