@@ -14,12 +14,12 @@ export default function create(store, option) {
         getApp().globalData.store = store
         option.data = store.data
         const onLoad = option.onLoad
-        option.onLoad = function () {
+        option.onLoad = function (e) {
             this.store = store
             rewriteUpdate(this)
             store.instances[this.route] = []
             store.instances[this.route].push(this)
-            onLoad && onLoad.call(this)
+            onLoad && onLoad.call(this, e)
         }
         Page(option)
     } else {
