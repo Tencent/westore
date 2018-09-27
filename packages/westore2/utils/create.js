@@ -15,17 +15,17 @@ const handler = function (patch) {
     if (patch.op === 'remove') {//fix arr splice 
         const kv = getArrayPatch(patch.path)
         patchs[kv.k] = kv.v
-        timeout = setTimeout(function(){
+        timeout = setTimeout(function () {
             update(patchs)
             patchs = {}
-        })   
+        })
     } else {
         const key = fixPath(patch.path)
         patchs[key] = patch.value
-        timeout = setTimeout(function(){
+        timeout = setTimeout(function () {
             update(patchs)
             patchs = {}
-        })   
+        })
     }
 }
 
@@ -44,14 +44,14 @@ export default function create(store, option) {
         currentData = store.data
         const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
-        option.onLoad = function () {
+        option.onLoad = function (e) {
             //兼容1.0不报错
             this.update = noop
             this.store = store
             this.store.data = jp.observe(true, handler)
             store.instances[this.route] = []
             store.instances[this.route].push(this)
-            onLoad && onLoad.call(this)
+            onLoad && onLoad.call(this, e)
         }
         Page(option)
     } else {
@@ -85,7 +85,7 @@ function getArrayPatch(path) {
     for (let i = 1, len = arr.length; i < len - 1; i++) {
         current = current[arr[i]]
     }
-    return {k:fixArrPath(path),v:current}
+    return { k: fixArrPath(path), v: current }
 }
 
 function fixArrPath(path) {
