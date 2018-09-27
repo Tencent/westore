@@ -25,7 +25,7 @@
 
 ![westore](./asset/westore.png)
 
-可以看到，westore 不仅支持直接赋值，而且 this.update 兼容了 this.setData 的语法，但性能由于 this.setData，再举个例子：
+可以看到，westore 不仅支持直接赋值，而且 this.update 兼容了 this.setData 的语法，但性能大大优于 this.setData，再举个例子：
 
 ``` js
 this.store.data.motto = 'Hello Store222'
