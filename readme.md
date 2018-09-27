@@ -19,8 +19,6 @@
 
 ![westore](./asset/westore.png)
 
-[→立即下载使用](https://codeload.github.com/dntzhang/westore/zip/master)
-
 ---
 
 - [API](#api)
