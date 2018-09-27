@@ -1,5 +1,5 @@
 /*
-    westore 2.0 
+    westore 2.0
 */
 
 import JSONProxy from './proxy'
@@ -7,25 +7,25 @@ import JSONProxy from './proxy'
 let currentStore = null
 let currentData = null
 let timeout = null
-const noop = function () { }
+const noop = function () {}
 
 let patchs = {}
 const handler = function (patch) {
     clearTimeout(timeout)
-    if (patch.op === 'remove') {//fix arr splice 
+    if (patch.op === 'remove') { //fix arr splice
         const kv = getArrayPatch(patch.path)
         patchs[kv.k] = kv.v
-        timeout = setTimeout(function(){
+        timeout = setTimeout(function () {
             update(patchs)
             patchs = {}
-        })   
+        })
     } else {
         const key = fixPath(patch.path)
         patchs[key] = patch.value
-        timeout = setTimeout(function(){
+        timeout = setTimeout(function () {
             update(patchs)
             patchs = {}
-        })   
+        })
     }
 }
 
@@ -44,14 +44,16 @@ export default function create(store, option) {
         currentData = store.data
         const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
-        option.onLoad = function () {
+        option.onLoad = function (e) {
             //兼容1.0不报错
             this.update = noop
             this.store = store
             this.store.data = jp.observe(true, handler)
             store.instances[this.route] = []
-            store.instances[this.route].push(this)
-            onLoad && onLoad.call(this)
+            store
+                .instances[this.route]
+                .push(this)
+            onLoad && onLoad.call(this, e)
         }
         Page(option)
     } else {
@@ -62,9 +64,14 @@ export default function create(store, option) {
             this.page = getCurrentPages()[getCurrentPages().length - 1]
             this.store = this.page.store
             Object.assign(this.store.data, store.data)
-            this.setData.call(this, this.store.data)
+            this
+                .setData
+                .call(this, this.store.data)
 
-            this.store.instances[this.page.route].push(this)
+            this
+                .store
+                .instances[this.page.route]
+                .push(this)
             ready && ready.call(this)
         }
         Component(store)
@@ -73,24 +80,32 @@ export default function create(store, option) {
 
 function update(kv) {
     for (let key in currentStore.instances) {
-        currentStore.instances[key].forEach(ins => {
-            ins.setData.call(ins, kv)
-        })
+        currentStore
+            .instances[key]
+            .forEach(ins => {
+                ins
+                    .setData
+                    .call(ins, kv)
+            })
     }
 }
 
 function getArrayPatch(path) {
-    const arr = path.replace('/', '').split('/')
+    const arr = path
+        .replace('/', '')
+        .split('/')
     let current = currentData[arr[0]]
     for (let i = 1, len = arr.length; i < len - 1; i++) {
         current = current[arr[i]]
     }
-    return {k:fixArrPath(path),v:current}
+    return {k: fixArrPath(path), v: current}
 }
 
 function fixArrPath(path) {
     let mpPath = ''
-    const arr = path.replace('/', '').split('/')
+    const arr = path
+        .replace('/', '')
+        .split('/')
     const len = arr.length
     arr.forEach((item, index) => {
         if (index < len - 1) {
@@ -111,7 +126,9 @@ function fixArrPath(path) {
 
 function fixPath(path) {
     let mpPath = ''
-    const arr = path.replace('/', '').split('/')
+    const arr = path
+        .replace('/', '')
+        .split('/')
     arr.forEach((item, index) => {
         if (index) {
             if (isNaN(parseInt(item))) {
