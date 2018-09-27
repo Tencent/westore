@@ -37,7 +37,7 @@
   - [跨页面同步数据](#跨页面同步数据)
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
-  - 局部 Store 开发 Plugin 
+  - [局部 Store 开发 Plugin](./westore-plugin.md) 
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
