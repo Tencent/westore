@@ -66,7 +66,7 @@ create({
 })
 ```
 
-在你得小程序中使用组件：
+在你的小程序中使用组件：
 
 ```js
 <list auth-key="{{authKey}}" bind:listChange="onListChange" />
@@ -78,7 +78,7 @@ create({
 * 通过 store.onChange 收集 data 的所有变更
 * 通过 triggerEvent 来抛事件给使用插件外部的小程序
 
-很方便简洁！赶快试试 [Westore插件开发模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin) 吧！
+这么方便简洁还不赶紧试试 [Westore插件开发模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin) ！
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
