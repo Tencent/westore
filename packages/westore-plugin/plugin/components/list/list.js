@@ -12,6 +12,7 @@ create({
   },
   data: { list: [] },
   attached: function () {
+    //获取插件上声明传递过来的属性
     console.log(this.properties.authKey)
     //监听所有变化
     this.store.onChange = (detail) => {
