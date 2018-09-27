@@ -54,5 +54,3 @@ function updateByPath(origin, path, value) {
         }
     }
 }
-
-create.store = globalStore
