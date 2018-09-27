@@ -66,6 +66,11 @@ create(store, {
     }]
 
     this.update()
+
+    //同样也直接和兼容 setData 语法
+    this.update(
+        { 'list[2].price': 100000 }
+    )
   }
 })
 ```

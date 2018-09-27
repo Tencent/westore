@@ -2,11 +2,11 @@ import create from '../../westore/create-plugin'
 import store from '../../store'
 
 create(store, {
-  properties:{
-    authKey:{
+  properties: {
+    authKey: {
       type: String,
       value: '',
-      observer(newValue, oldValue){
+      observer(newValue, oldValue) {
 
       }
     }
@@ -50,8 +50,10 @@ create(store, {
     }, 3000)
 
     setTimeout(() => {
-      this.store.data.list[2].price = 100000
-      this.update()
+      //this.store.data.list[2].price = 100000
+      this.update(
+        { 'list[2].price': 100000 }
+      )
     }, 4000)
   }
 })

@@ -25,19 +25,24 @@ export default function create(store, option) {
 }
 
 function rewriteUpdate(ctx) {
-    ctx.update = () => {
+    ctx.update = (patch) => {
+        if (patch) {
+            for (let key in patch) {
+                updateByPath(ctx.store.data, key, patch[key])
+            }
+        }
         const diffResult = diff(ctx.store.data, originData)
         globalStore.instances.forEach(ins => {
             ins.setData.call(ins, diffResult)
         })
         ctx.store.onChange && ctx.store.onChange(diffResult)
         for (let key in diffResult) {
-            updateOriginData(originData, key, diffResult[key])
+            updateByPath(originData, key, diffResult[key])
         }
     }
 }
 
-function updateOriginData(origin, path, value) {
+function updateByPath(origin, path, value) {
     const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
     if (arr[arr.length - 1] == '') arr.pop()
     let current = origin
