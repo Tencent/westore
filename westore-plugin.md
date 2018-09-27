@@ -25,11 +25,11 @@
 * [插件开发者文档](https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/development.html)
 * [插件使用者文档](https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/using.html)
 
-## 自定义组件
+## 插件开发
 
-插件可以是纯 js 接口(自建npm的味道)，自定义组件或页面的封装，这里主要叙述一下用得最频繁的自定义组件的开发。
+插件可以是纯 js 接口(自建npm的味道)，自定义组件或页面的封装。
 
-先看开发组件体验：
+创建插件:
 
 ```js
 import create from '../../westore/create-plugin'
