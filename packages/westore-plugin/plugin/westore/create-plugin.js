@@ -49,3 +49,5 @@ function updateOriginData(origin, path, value) {
         }
     }
 }
+
+create.store = globalStore
