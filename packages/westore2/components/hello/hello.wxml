@@ -1,0 +1,9 @@
+<view>
+    <text>I am Hello Component!</text>
+</view>
+<view>
+    <text>[{{motto}}] from global store</text>
+</view>
+<view>
+    <text>{{a.b}}</text>
+</view>
