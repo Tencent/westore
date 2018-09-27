@@ -80,5 +80,9 @@ create({
 
 这么方便简洁还不赶紧试试 [Westore插件开发模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin) ！
 
+## 特别强调
+
+每个插件的 store 都是局部的，不是全局的。this.store 只属于插件自己!
+
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
