@@ -10,6 +10,7 @@ export default function create(store, option) {
         originData = JSON.parse(JSON.stringify(store.data))
         globalStore = store
         globalStore.instances = []
+        create.store = globalStore
     }
 
     const attached = opt.attached
