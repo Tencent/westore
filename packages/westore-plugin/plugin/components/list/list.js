@@ -1,11 +1,21 @@
 import create from '../../westore/create-plugin'
 
 create({
+  properties:{
+    authKey:{
+      type: String,
+      value: '',
+      observer(newValue, oldValue){
+
+      }
+    }
+  },
   data: { list: [] },
   attached: function () {
+    console.log(this.properties.authKey)
     //监听所有变化
-    this.store.onChange = function (info) {
-      console.log(info)
+    this.store.onChange = (detail) => {
+      this.triggerEvent('listChange', detail)
     }
     // 可以在这里发起网络请求获取插件的数据
     this.store.data.list = [{

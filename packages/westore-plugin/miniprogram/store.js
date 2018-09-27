@@ -1,13 +1,8 @@
 export default {
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    logs: [],
-    b: { arr: [{ name: 'abc' }] }
+    authKey: 'Hello Westore'
   },
-  logMotto: function () {
-    console.log(this.data.motto)
+  logAuthKey: function () {
+    console.log(this.data.authKey)
   }
 }

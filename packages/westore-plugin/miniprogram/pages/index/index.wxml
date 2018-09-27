@@ -1,1 +1,1 @@
-<list />
+<list auth-key="{{authKey}}" bind:listChange="onListChange" />
