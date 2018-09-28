@@ -1,6 +1,7 @@
 import diff from './diff'
 
 let originData = null
+let globalStore = null
 
 export default function create(store, option) {
     if (arguments.length === 2) {
@@ -9,7 +10,9 @@ export default function create(store, option) {
         }
         if (!originData) {
             originData = JSON.parse(JSON.stringify(store.data))
+            globalStore = store
             store.instances = {}
+            store.update = update
         }
         getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
@@ -37,33 +40,35 @@ export default function create(store, option) {
     }
 }
 
-function rewriteUpdate(ctx) {
-    ctx.update = (patch) => {
-        let needDiff = false
-        let diffResult = patch
-        if (patch) {
-            for (let key in patch) {
-                updateByPath(ctx.store.data, key, patch[key])
-                if (typeof patch[key] === 'object') {
-                    needDiff = true
-                }
+function update(patch) {
+    let needDiff = false
+    let diffResult = patch
+    if (patch) {
+        for (let key in patch) {
+            updateByPath(globalStore.data, key, patch[key])
+            if (typeof patch[key] === 'object') {
+                needDiff = true
             }
-        } else {
-            needDiff = true
         }
-        if (needDiff) {
-            diffResult = diff(ctx.store.data, originData)
-        }
-        for (let key in ctx.store.instances) {
-            ctx.store.instances[key].forEach(ins => {
-                ins.setData.call(ins, diffResult)
-            })
-        }
-        ctx.store.onChange && ctx.store.onChange(diffResult)
-        for (let key in diffResult) {
-            updateByPath(originData, key, diffResult[key])
-        }
+    } else {
+        needDiff = true
     }
+    if (needDiff) {
+        diffResult = diff(globalStore.data, originData)
+    }
+    for (let key in globalStore.instances) {
+        globalStore.instances[key].forEach(ins => {
+            ins.setData.call(ins, diffResult)
+        })
+    }
+    globalStore.onChange && globalStore.onChange(diffResult)
+    for (let key in diffResult) {
+        updateByPath(originData, key, diffResult[key])
+    }
+}
+
+function rewriteUpdate(ctx) {
+    ctx.update = update
 }
 
 function updateByPath(origin, path, value) {
