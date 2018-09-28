@@ -39,13 +39,21 @@ export default function create(store, option) {
 
 function rewriteUpdate(ctx) {
     ctx.update = (patch) => {
+        let needDiff = false
+        let diffResult = patch
         if (patch) {
             for (let key in patch) {
                 updateByPath(ctx.store.data, key, patch[key])
+                if (typeof patch[key] === 'object') {
+                    needDiff = true
+                }
             }
+        } else {
+            needDiff = true
         }
-        const diffResult = diff(ctx.store.data, originData)
-        //优化数据和组件关联定向更新
+        if (needDiff) {
+            diffResult = diff(ctx.store.data, originData)
+        }
         for (let key in ctx.store.instances) {
             ctx.store.instances[key].forEach(ins => {
                 ins.setData.call(ins, diffResult)
