@@ -11,6 +11,7 @@ export default function create(store, option) {
         globalStore = store
         globalStore.instances = []
         create.store = globalStore
+        store.update = update
     }
 
     const attached = opt.attached
@@ -25,13 +26,12 @@ export default function create(store, option) {
     Component(opt)
 }
 
-function rewriteUpdate(ctx) {
-    ctx.update = (patch) => {
+function update(patch){
         let needDiff = false
         let diffResult = patch
         if (patch) {
             for (let key in patch) {
-                updateByPath(ctx.store.data, key, patch[key])
+                updateByPath(globalStore.data, key, patch[key])
                 if (typeof patch[key] === 'object') {
                     needDiff = true
                 }
@@ -40,16 +40,20 @@ function rewriteUpdate(ctx) {
             needDiff = true
         }
         if (needDiff) {
-            diffResult = diff(ctx.store.data, originData)
+            diffResult = diff(globalStore.data, originData)
         }
         globalStore.instances.forEach(ins => {
             ins.setData.call(ins, diffResult)
         })
-        ctx.store.onChange && ctx.store.onChange(diffResult)
+        globalStore.onChange && globalStore.onChange(diffResult)
         for (let key in diffResult) {
             updateByPath(originData, key, diffResult[key])
         }
-    }
+    
+}
+
+function rewriteUpdate(ctx) {
+    ctx.update = update
 }
 
 function updateByPath(origin, path, value) {

@@ -57,3 +57,10 @@ create(store, {
     }, 4000)
   }
 })
+
+//组件之外使用 store.update
+setTimeout(() => {
+  store.update(
+    { 'list[2].price': 200000 }
+  )
+}, 5000)
