@@ -209,7 +209,7 @@ function update() {
 }
 ```
 
-## Proxy 兼容性
+## Proxy 兼容性(IOS10+支持，安卓基本都支持)
 
 ![](../../asset/ios.jpg)
 
