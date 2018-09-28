@@ -23,6 +23,23 @@ Westore 开源两天就突破了 1000 star，受到了海量关注，收到了�
 
 ![](./asset/update.jpg)
 
+再举个例子：
+
+``` js
+this.store.data.motto = 'Hello Store222'
+this.store.data.b.arr.push({ name: 'ccc' })
+this.update()
+```
+
+等同于
+
+``` js
+this.update({
+  motto:'Hello Store222',
+  [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
+})
+```
+
 ---
 
 ## 小程序插件
