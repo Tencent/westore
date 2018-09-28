@@ -400,6 +400,16 @@ this.setData({
 
 ### Update 
 
+#### 页面生命周期函数
+
+| 名称 | 描述  |
+| ------ | ------  |
+| onLoad | 	监听页面加载	  |
+| onShow | 监听页面显示	  |
+| onReady | 监听页面初次渲染完成  |
+| onHide | 监听页面隐藏	  |
+| onUnload | 监听页面卸载  |
+
 这里区分在页面中的 update 和 组件中的 update。页面中的 update 在 onLoad 事件中进行实例收集。
 
 ```js
@@ -432,16 +442,31 @@ Component(store)
 rewriteUpdate 的实现如下:
 
 ``` js
-function rewriteUpdate(ctx){
-    ctx.update = () => {
-        const diffResult = diff(ctx.store.data, originData)  
-        for(let key in ctx.store.instances){
+function rewriteUpdate(ctx) {
+    ctx.update = (patch) => {
+        let needDiff = false
+        let diffResult = patch
+        if (patch) {
+            for (let key in patch) {
+                updateByPath(ctx.store.data, key, patch[key])
+                if (typeof patch[key] === 'object') {
+                    needDiff = true
+                }
+            }
+        } else {
+            needDiff = true
+        }
+        if (needDiff) {
+            diffResult = diff(ctx.store.data, originData)
+        }
+        for (let key in ctx.store.instances) {
             ctx.store.instances[key].forEach(ins => {
                 ins.setData.call(ins, diffResult)
             })
         }
+        ctx.store.onChange && ctx.store.onChange(diffResult)
         for (let key in diffResult) {
-            updateOriginData(originData, key, diffResult[key])
+            updateByPath(originData, key, diffResult[key])
         }
     }
 }
