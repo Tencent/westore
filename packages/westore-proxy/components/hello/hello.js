@@ -18,15 +18,14 @@ create({
   },
 
   ready: function () {
-    this.store.onChange = function(info){
+    this.store.onChange = function (info) {
       console.log(info)
     }
 
     setTimeout(() => {
       this.store.data.motto = 'Hello Store'
       this.store.data.a.b = 1234
-      this.update()
-    }, 2000)
+    }, 1000)
   },
   /**
    * 组件的方法列表

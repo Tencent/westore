@@ -7,23 +7,22 @@ import JSONProxy from './proxy'
 let currentStore = null
 let currentData = null
 let timeout = null
-const noop = function () { }
-
 let patchs = {}
+
 const handler = function (patch) {
     clearTimeout(timeout)
     if (patch.op === 'remove') {//fix arr splice 
         const kv = getArrayPatch(patch.path)
         patchs[kv.k] = kv.v
         timeout = setTimeout(function () {
-            update(patchs)
+            _update(patchs)
             patchs = {}
         })
     } else {
         const key = fixPath(patch.path)
         patchs[key] = patch.value
         timeout = setTimeout(function () {
-            update(patchs)
+            _update(patchs)
             patchs = {}
         })
     }
@@ -36,6 +35,7 @@ export default function create(store, option) {
         }
         if (!store.instances) {
             store.instances = {}
+            store.update = update
         }
 
         getApp().globalData && (getApp().globalData.store = store)
@@ -45,8 +45,7 @@ export default function create(store, option) {
         const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
         option.onLoad = function (e) {
-            //兼容1.0不报错
-            this.update = noop
+            this.update = update
             this.store = store
             this.store.data = jp.observe(true, handler)
             store.instances[this.route] = []
@@ -57,8 +56,7 @@ export default function create(store, option) {
     } else {
         const ready = store.ready
         store.ready = function () {
-            //兼容1.0不报错
-            this.update = noop
+            this.update = update
             this.page = getCurrentPages()[getCurrentPages().length - 1]
             this.store = this.page.store
             Object.assign(this.store.data, store.data)
@@ -71,11 +69,20 @@ export default function create(store, option) {
     }
 }
 
-function update(kv) {
+function _update(kv) {
     for (let key in currentStore.instances) {
         currentStore.instances[key].forEach(ins => {
             ins.setData.call(ins, kv)
         })
+    }
+    currentStore.onChange && currentStore.onChange(kv)
+}
+
+function update(patch) {
+    if (patch) {
+        for (let key in patch) {
+            updateByPath(currentStore.data, key, patch[key])
+        }
     }
 }
 
@@ -125,4 +132,17 @@ function fixPath(path) {
         }
     })
     return mpPath
+}
+
+function updateByPath(origin, path, value) {
+    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
+    if (arr[arr.length - 1] == '') arr.pop()
+    let current = origin
+    for (let i = 0, len = arr.length; i < len; i++) {
+        if (i === len - 1) {
+            current[arr[i]] = value
+        } else {
+            current = current[arr[i]]
+        }
+    }
 }
