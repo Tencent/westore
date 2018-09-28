@@ -1,4 +1,4 @@
-# Westore 2.0 【未发布】
+# Westore Proxy 版本【未发布】
 
 > 世界上最小却强大的小程序框架 - [100多行代码](https://github.com/dntzhang/westore/blob/master/utils/create2.js)搞定全局状态管理和跨页通讯
 
