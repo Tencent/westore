@@ -11,7 +11,7 @@
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
 * this.update 兼容 setData 同样的语法
 * this.update 比原生 setData 的性能更优，更加智能
-* Westore 专为小程序插件开发定制了模板
+* Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
 
 受制于 this.data 和 setData 的条款:
 
