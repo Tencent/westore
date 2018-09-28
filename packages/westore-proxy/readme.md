@@ -23,12 +23,14 @@
 
 ## API
 
-Westore 2.0 API 只有二个, 大道至简:
+Westore Proxy API 只有四个, 大道至简:
 
 * create(store, option) 创建页面
 * create(option)        创建组件
+* this.update(data)   更新页面或组件，其中 data 为必选，data 的格式和 setData 一致
+* store.update(data)   更新页面或组件，在非页面非组件的 js 文件中使用
 
-和 1.0 相比，API 没有变化，只是更改完 store.data 之后不再需要调用 this.update.
+和 1.0 相比，API 没有变化，但是 this.update 不传参就没有必要调用了，数据变更会自动刷新视图
 
 ## 使用指南
 
@@ -65,12 +67,13 @@ create(store, {
     if (app.globalData.userInfo) {
       this.store.data.userInfo = app.globalData.userInfo
       this.store.data.hasUserInfo = true
-      //this.update()
     } else if (this.data.canIUse) {
       app.userInfoReadyCallback = res => {
-        this.store.data.userInfo = res.userInfo
-        this.store.data.hasUserInfo = true
-        //this.update()
+        //也可使用 Object.assign
+        Object.assign(this.store.data, {
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
       }
     } else {
       wx.getUserInfo({
@@ -78,7 +81,6 @@ create(store, {
           app.globalData.userInfo = res.userInfo
           this.store.data.userInfo = res.userInfo
           this.store.data.hasUserInfo = true
-          //this.update()
         }
       })
     }
@@ -173,26 +175,7 @@ this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
 
 ## 原理
 
-```
- ---------------       -------------------        -----------------------
-| this.update  |  →  |     json diff     |   →  | setData()-setData()...|  →  之后就是黑盒(小程序官方实现，但是 dom/apply diff 肯定是少不了)
- ---------------       -------------------        -----------------------
-```
-
-虽然和 Omi 一样同为 this.updata 但是却有着本质的区别。Omi 的如下:
-
-```
- ---------------       -------------------        ----------------         ------------------------------
-|  this.update  |  →  |     setState      |   →  |  jsx rerender  |   →   |   vdom diff → apply diff...  |
- ---------------       -------------------        ----------------         ------------------------------
-```
-
-都是数据驱动视图，但本质不同，原因:
-
-* 小程序 store 和 dom 不在同一个环境，先在 js 环境进行 json diff，然后使用 diff 结果通过 setData 通讯
-* web 里使用 omi 的话 store 和 dom 在同一环境，setState 直接驱动的 vdom diff 然后把 diff 结果作用在真是 dom 上
-
-###
+### Proxy 简介
 
 ```js
 const handler = {
@@ -226,6 +209,9 @@ function update() {
 }
 ```
 
+## Proxy 兼容性
+
+![](../../asset/ios.jpg)
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
