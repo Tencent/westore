@@ -1,3 +1,5 @@
+import store from './store'
+
 //app.js
 App({
   onLaunch: function () {
@@ -12,6 +14,13 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
+
+    setTimeout(function(){
+      store.data.motto = 'update from app.js'
+      //这里只能用 store.update 而不是 this.update
+      store.update()
+    },10000)
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
