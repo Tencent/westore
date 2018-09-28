@@ -13,9 +13,12 @@
 * this.update 比原生 setData 的性能更优，更加智能
 * Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
 
-受制于 this.data 和 setData 的条款:
+总结下小程序的痛点:
 
-> 使用 this.data 可以获取内部数据和属性值，但不要直接修改它们，应使用 setData 修改。
+* 使用 this.data 可以获取内部数据和属性值，但不要直接修改它们，应使用 setData 修改
+* setData 编程体验不好，很多场景直接赋值更加直观方便
+* setData 卡卡卡慢慢慢，JsCore 和 Webview 数据对象来回传浪费计算资源和内存资源
+* 组件间通讯或跨页通讯会把程序搞得乱七八糟，变得极难维护和扩展 
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
@@ -24,6 +27,8 @@
 使用完 westore 之后:
 
 ![westore](./asset/westore.png)
+
+上面两种方式也可以混合使用。
 
 可以看到，westore 不仅支持直接赋值，而且 this.update 兼容了 this.setData 的语法，但性能大大优于 this.setData，再举个例子：
 
@@ -41,6 +46,10 @@ this.update({
   [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
 })
 ```
+
+这里需要特别强调，虽然 this.update 可以兼容小程序的 this.setData 的方式传参，但是更加智能，this.update 会按需 Diff 或者 透传给 setData。原理:
+
+![](./asset/update.jpg)
 
 ---
 
