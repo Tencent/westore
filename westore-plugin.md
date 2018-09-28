@@ -38,7 +38,14 @@ Westore 开源两天就突破了 1000 star，受到了海量关注，收到了�
 
 ## 插件开发
 
-插件可以是纯 js 接口，自定义组件或页面的封装。
+Westore 提供的目录如下:
+
+```
+|--components
+|--westore	
+|--plugin.json	
+|--store.js
+```
 
 创建插件:
 
