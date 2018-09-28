@@ -27,12 +27,21 @@ export default function create(store, option) {
 
 function rewriteUpdate(ctx) {
     ctx.update = (patch) => {
+        let needDiff = false
+        let diffResult = patch
         if (patch) {
             for (let key in patch) {
                 updateByPath(ctx.store.data, key, patch[key])
+                if (typeof patch[key] === 'object') {
+                    needDiff = true
+                }
             }
+        } else {
+            needDiff = true
         }
-        const diffResult = diff(ctx.store.data, originData)
+        if (needDiff) {
+            diffResult = diff(ctx.store.data, originData)
+        }
         globalStore.instances.forEach(ins => {
             ins.setData.call(ins, diffResult)
         })

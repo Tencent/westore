@@ -11,7 +11,7 @@ export default function create(store, option) {
             originData = JSON.parse(JSON.stringify(store.data))
             store.instances = {}
         }
-        getApp().globalData.store = store
+        getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
         const onLoad = option.onLoad
         option.onLoad = function (e) {

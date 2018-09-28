@@ -38,7 +38,7 @@ export default function create(store, option) {
             store.instances = {}
         }
 
-        getApp().globalData.store = store
+        getApp().globalData && (getApp().globalData.store = store)
         currentStore = store
         option.data = store.data
         currentData = store.data
