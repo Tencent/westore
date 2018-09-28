@@ -11,15 +11,15 @@ export default function create(store, option) {
             originData = JSON.parse(JSON.stringify(store.data))
             store.instances = {}
         }
-        getApp().globalData&&(getApp().globalData.store = store)
+        getApp().globalData.store = store
         option.data = store.data
         const onLoad = option.onLoad
-        option.onLoad = function () {
+        option.onLoad = function (e) {
             this.store = store
             rewriteUpdate(this)
             store.instances[this.route] = []
             store.instances[this.route].push(this)
-            onLoad && onLoad.call(this)
+            onLoad && onLoad.call(this, e)
         }
         Page(option)
     } else {
@@ -38,9 +38,22 @@ export default function create(store, option) {
 }
 
 function rewriteUpdate(ctx) {
-    ctx.update = () => {
-        const diffResult = diff(ctx.store.data, originData)
-        //优化数据和组件关联定向更新
+    ctx.update = (patch) => {
+        let needDiff = false
+        let diffResult = patch
+        if (patch) {
+            for (let key in patch) {
+                updateByPath(ctx.store.data, key, patch[key])
+                if (typeof patch[key] === 'object') {
+                    needDiff = true
+                }
+            }
+        } else {
+            needDiff = true
+        }
+        if (needDiff) {
+            diffResult = diff(ctx.store.data, originData)
+        }
         for (let key in ctx.store.instances) {
             ctx.store.instances[key].forEach(ins => {
                 ins.setData.call(ins, diffResult)
@@ -48,12 +61,12 @@ function rewriteUpdate(ctx) {
         }
         ctx.store.onChange && ctx.store.onChange(diffResult)
         for (let key in diffResult) {
-            updateOriginData(originData, key, diffResult[key])
+            updateByPath(originData, key, diffResult[key])
         }
     }
 }
 
-function updateOriginData(origin, path, value) {
+function updateByPath(origin, path, value) {
     const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
     if (arr[arr.length - 1] == '') arr.pop()
     let current = origin
