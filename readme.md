@@ -73,11 +73,12 @@ this.update({
 
 ## API
 
-Westore API 只有三个, 大道至简:
+Westore API 只有四个, 大道至简:
 
 * create(store, option) 创建页面
 * create(option)        创建组件
 * this.update([data])   更新页面或组件，其中 data 为可选，data 的格式和 setData 一致
+* store.update([data])   更新页面或组件，在非页面非组件的 js 文件中使用
 
 ## 使用指南
 
