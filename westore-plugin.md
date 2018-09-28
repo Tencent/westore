@@ -100,5 +100,54 @@ create(store, {
 
 插件内所有组件公用的 store 和插件外小程序的 store 是相互隔离的。 
 
+## 原理
+
+### 页面生命周期函数
+
+| 名称 | 描述  |
+| ------ | ------  |
+| onLoad | 	监听页面加载	  |
+| onShow | 监听页面显示	  |
+| onReady | 监听页面初次渲染完成  |
+| onHide | 监听页面隐藏	  |
+| onUnload | 监听页面卸载  |
+
+### 组件生命周期函数
+
+| 名称 | 描述  |
+| ------ | ------  |
+| created | 	在组件实例进入页面节点树时执行，注意此时不能调用 setData	  |
+| attached | 在组件实例进入页面节点树时执行	  |
+| ready | 在组件布局完成后执行，此时可以获取节点信息（使用 SelectorQuery ）	  |
+| moved | 在组件实例被移动到节点树另一个位置时执行	  |
+| detached | 在组件实例被从页面节点树移除时执行  |
+
+由于开发插件时候的组件没有 this.page，所以 store 是从根组件注入，而且可以在 attached 提前注入:
+
+``` js
+export default function create(store, option) {
+    let opt = store
+    if (option) {
+        opt = option
+        originData = JSON.parse(JSON.stringify(store.data))
+        globalStore = store
+        globalStore.instances = []
+        create.store = globalStore
+    }
+
+    const attached = opt.attached
+    opt.attached = function () {
+        this.store = globalStore
+        this.store.data = Object.assign(globalStore.data, opt.data)
+        this.setData.call(this, this.store.data)
+        globalStore.instances.push(this)
+        rewriteUpdate(this)
+        attached && attached.call(this)
+    }
+    Component(opt)
+}
+```
+
 ## License
+
 MIT [@dntzhang](https://github.com/dntzhang)
