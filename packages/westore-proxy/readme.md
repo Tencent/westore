@@ -213,5 +213,7 @@ function update() {
 
 ![](../../asset/ios.jpg)
 
+实时统计地址：https://developer.apple.com/support/app-store/
+
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
