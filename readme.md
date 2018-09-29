@@ -165,12 +165,12 @@ create(store, {
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-
+  <view>{{$fullName}}</view>
   <hello></hello>
 </view>
 ```
 
-和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。 
+和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。 data 的函数属性通过前置 $ 来绑定。
 
 ### 更新页面
 
