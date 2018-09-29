@@ -9,6 +9,7 @@
 * 和 Omi 同样简洁的 Store API
 * 超小的代码尺寸(包括 json diff 共100多行)
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
+* 为 data 提供了函数属性，通过前置 $ 来绑定到 wxml
 * this.update 兼容 setData 同样的语法
 * this.update 比原生 setData 的性能更优，更加智能
 * Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
