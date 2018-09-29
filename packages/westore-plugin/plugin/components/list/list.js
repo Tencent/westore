@@ -55,6 +55,13 @@ create(store, {
         { 'list[2].price': 100000 }
       )
     }, 4000)
+
+    setTimeout(() => {
+      this.update(
+        {firstName: 'DNT' }
+      )
+      this.update()
+    }, 6000)
   }
 })
 

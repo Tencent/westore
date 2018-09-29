@@ -2,6 +2,7 @@ import diff from './diff'
 
 let originData = null
 let globalStore = null
+let fnMapping = {}
 
 export default function create(store, option) {
     let opt = store
@@ -18,6 +19,7 @@ export default function create(store, option) {
     opt.attached = function () {
         this.store = globalStore
         this.store.data = Object.assign(globalStore.data, opt.data)
+        exceDataFn(option?store.data:(opt.data||{}))
         this.setData.call(this, this.store.data)
         globalStore.instances.push(this)
         rewriteUpdate(this)
@@ -41,6 +43,10 @@ function update(patch){
         }
         if (needDiff) {
             diffResult = diff(globalStore.data, originData)
+        }else{
+            Object.keys(fnMapping).forEach(k =>{
+                diffResult[k] = globalStore.data[k]
+            })
         }
         globalStore.instances.forEach(ins => {
             ins.setData.call(ins, diffResult)
@@ -67,4 +73,18 @@ function updateByPath(origin, path, value) {
             current = current[arr[i]]
         }
     }
+}
+
+function exceDataFn(data) {
+    Object.keys(data).forEach(key => {
+        const fn = data[key]
+        if (typeof fn == 'function') {
+            fnMapping[key] = true
+            Object.defineProperty(globalStore.data, key, {
+                get: () => {
+                    return fn.call(globalStore.data)
+                }
+            })
+        }
+    })
 }
