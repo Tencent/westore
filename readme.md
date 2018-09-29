@@ -34,7 +34,7 @@
 可以看到，westore 不仅支持直接赋值，而且 this.update 兼容了 this.setData 的语法，但性能大大优于 this.setData，再举个例子：
 
 ``` js
-this.store.data.motto = 'Hello Store222'
+this.store.data.motto = 'Hello Westore'
 this.store.data.b.arr.push({ name: 'ccc' })
 this.update()
 ```
@@ -43,7 +43,7 @@ this.update()
 
 ``` js
 this.update({
-  motto:'Hello Store222',
+  motto:'Hello Westore',
   [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
 })
 ```

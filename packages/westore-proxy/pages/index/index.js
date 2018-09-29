@@ -45,13 +45,14 @@ create(store, {
     }, 4000)
 
     setTimeout(() => {
+      this.store.data.firstName = 'DNT'
       this.update({
         'motto': 'Update from update'
       })
     }, 6000)
 
     setTimeout(() => {
-      this.store.data.firstName = 'DNT'
+      this.store.data.firstName = 'dnt'
       Object.assign(this.store.data, {
         'motto': 'Update from assign',
         b: { arr: [{ name: 'assign' }, { name: 'assign2' }] }
@@ -67,6 +68,7 @@ create(store, {
 })
 
 setTimeout(() => {
+  store.data.firstName = 'dnt'
   store.update({
     'motto': 'Update from store.update'
   })
