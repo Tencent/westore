@@ -91,7 +91,12 @@ export default {
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    logs: []
+    logs: [],
+    firstName: 'dnt',
+    lastName: 'zhang',
+    fullName:function(){
+      return this.firstName + this.lastName
+    }
   },
   logMotto: function () {
     console.log(this.data.motto)
@@ -100,6 +105,11 @@ export default {
 ```
 
 你不需要在页面和组件上再声明 data 属性。如果申明了也没关系，会被 Object.assign 覆盖到 store.data 上。后续只需修改 this.store.data 便可。
+比起原生小程序增强的功能是提供了 data 函数属性，比如上面的 fullName，在小程序种通过前置 $ 来绑定：
+
+```jsx
+<view>{{$fullName}}</view>
+```
 
 ### 创建页面
 
