@@ -70,6 +70,7 @@ this.update({
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
+  - [函数属性](#函数属性)
 - [License](#license)
 
 ## API
@@ -485,6 +486,26 @@ function rewriteUpdate(ctx) {
 ```
 
 westore 会收集所有页面和组件的实例，在开发者执行 this.update 的时候遍历所有实例进行 setData。
+
+### 函数属性
+
+``` js
+function exceDataFn(data) {
+    Object.keys(data).forEach(key => {
+        const fn = data[key]
+        if (typeof fn == 'function') {
+            fnMapping[key] = true
+            Object.defineProperty(globalStore.data, key, {
+                get: () => {
+                    return fn.call(globalStore.data)
+                }
+            })
+        }
+    })
+}
+```
+
+通过 defineProperty 重写了属性的 get。
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
