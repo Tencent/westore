@@ -69,11 +69,16 @@ function update(patch) {
     }
 }
 
-function exceDataFn(){
-    Object.keys(globalStore.data).forEach(key=>{
-       if(typeof globalStore.data[key] == 'function'){
-        globalStore.data['$'+key] = globalStore.data[key].call(globalStore.data)
-       }
+function exceDataFn() {
+    Object.keys(globalStore.data).forEach(key => {
+        const fn = globalStore.data[key]
+        if (typeof fn == 'function') {
+            Object.defineProperty(globalStore.data, key, {
+                get: () => {
+                    return fn.call(globalStore.data)
+                }
+            })
+        }
     })
 }
 
