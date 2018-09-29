@@ -17,6 +17,7 @@ export default function create(store, option) {
         getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
         const onLoad = option.onLoad
+        exceDataFn(store.data)
         option.onLoad = function (e) {
             this.store = store
             rewriteUpdate(this)
@@ -31,7 +32,7 @@ export default function create(store, option) {
             this.page = getCurrentPages()[getCurrentPages().length - 1]
             this.store = this.page.store
             Object.assign(this.store.data, store.data)
-            exceDataFn()
+            exceDataFn(store.data)
             this.setData.call(this, this.store.data)
             rewriteUpdate(this)
             this.store.instances[this.page.route].push(this)
@@ -54,7 +55,6 @@ function update(patch) {
     } else {
         needDiff = true
     }
-    exceDataFn()
     if (needDiff) {
         diffResult = diff(globalStore.data, originData)
     }
@@ -69,9 +69,9 @@ function update(patch) {
     }
 }
 
-function exceDataFn() {
-    Object.keys(globalStore.data).forEach(key => {
-        const fn = globalStore.data[key]
+function exceDataFn(data) {
+    Object.keys(data).forEach(key => {
+        const fn = data[key]
         if (typeof fn == 'function') {
             Object.defineProperty(globalStore.data, key, {
                 get: () => {
