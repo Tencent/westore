@@ -9,7 +9,7 @@
 * 和 Omi 同样简洁的 Store API
 * 超小的代码尺寸(包括 json diff 共100多行)
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
-* 为 data 提供了函数属性，通过前置 $ 来绑定到 wxml
+* 增强 data 数据绑定，函数属性可直接绑定到 WXML
 * this.update 兼容 setData 同样的语法
 * this.update 比原生 setData 的性能更优，更加智能
 * Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
@@ -106,10 +106,10 @@ export default {
 ```
 
 你不需要在页面和组件上再声明 data 属性。如果申明了也没关系，会被 Object.assign 覆盖到 store.data 上。后续只需修改 this.store.data 便可。
-比起原生小程序增强的功能是提供了 data 函数属性，比如上面的 fullName，在小程序种通过前置 $ 来绑定：
+比起原生小程序增强的功能是提供了 data 函数属性，比如上面的 fullName，在小程序 WXML 直接绑定：
 
 ```jsx
-<view>{{$fullName}}</view>
+<view>{{fullName}}</view>
 ```
 
 ### 创建页面
@@ -165,12 +165,12 @@ create(store, {
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-  <view>{{$fullName}}</view>
+  <view>{{fullName}}</view>
   <hello></hello>
 </view>
 ```
 
-和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。 data 的函数属性通过前置 $ 来绑定。
+和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。 data 的函数属性也可以直接绑定。
 
 ### 更新页面
 
