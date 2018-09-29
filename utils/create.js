@@ -2,6 +2,7 @@ import diff from './diff'
 
 let originData = null
 let globalStore = null
+let fnMapping = {}
 
 export default function create(store, option) {
     if (arguments.length === 2) {
@@ -57,6 +58,10 @@ function update(patch) {
     }
     if (needDiff) {
         diffResult = diff(globalStore.data, originData)
+    }else{
+        Object.keys(fnMapping).forEach(k =>{
+            diffResult[k] = globalStore.data[k]
+        })
     }
     for (let key in globalStore.instances) {
         globalStore.instances[key].forEach(ins => {
@@ -73,6 +78,7 @@ function exceDataFn(data) {
     Object.keys(data).forEach(key => {
         const fn = data[key]
         if (typeof fn == 'function') {
+            fnMapping[key] = true
             Object.defineProperty(globalStore.data, key, {
                 get: () => {
                     return fn.call(globalStore.data)
