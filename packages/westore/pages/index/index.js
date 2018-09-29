@@ -62,6 +62,13 @@ create(store, {
       this.update()
 
     }, 8000)
+
+    setTimeout(() => {
+      //测试函数属性
+      this.update({
+        firstName:'lei',
+      })
+    }, 10000)
   },
 
   getUserInfo: function (e) {
