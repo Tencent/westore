@@ -19,20 +19,7 @@ function syncKeys(current, pre) {
             if (currentValue === undefined) {
                 current[key] = null
             } else {
-                const preValue = pre[key]
-                const currentType = type(currentValue)
-                const preType = type(preValue)
-                if (currentType == ARRAYTYPE && preType == ARRAYTYPE) {
-                    if (currentValue.length >= preValue.length) {
-                        preValue.forEach((item, index) => {
-                            syncKeys(currentValue[index], item)
-                        })
-                    }
-                } else if (currentType == OBJECTTYPE && preType == OBJECTTYPE) {
-                    for (let subKey in preValue) {
-                        syncKeys(currentValue, preValue)
-                    }
-                }
+                syncKeys(currentValue, pre[key])
             }
         }
     } else if (rootCurrentType == ARRAYTYPE && rootPreType == ARRAYTYPE) {
