@@ -51,6 +51,7 @@ create(store, {
     }, 6000)
 
     setTimeout(() => {
+      this.store.data.firstName = 'DNT'
       Object.assign(this.store.data, {
         'motto': 'Update from assign',
         b: { arr: [{ name: 'assign' }, { name: 'assign2' }] }

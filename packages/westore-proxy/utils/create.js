@@ -4,10 +4,14 @@
 
 import JSONProxy from './proxy'
 
-let currentStore = null
+let globalStore = null
 let currentData = null
 let timeout = null
 let patchs = {}
+
+const fnMapping = {}
+const fnPreResult = {}
+const fnCurrentResult = {}
 
 const handler = function (patch) {
     clearTimeout(timeout)
@@ -39,11 +43,12 @@ export default function create(store, option) {
         }
 
         getApp().globalData && (getApp().globalData.store = store)
-        currentStore = store
+        globalStore = store
         option.data = store.data
         currentData = store.data
         const jp = new JSONProxy(store.data, handler)
         const onLoad = option.onLoad
+        setFnMapping(globalStore.data)
         option.onLoad = function (e) {
             this.update = update
             this.store = store
@@ -60,6 +65,7 @@ export default function create(store, option) {
             this.page = getCurrentPages()[getCurrentPages().length - 1]
             this.store = this.page.store
             Object.assign(this.store.data, store.data)
+            setFnMapping(store.data)
             this.setData.call(this, this.store.data)
 
             this.store.instances[this.page.route].push(this)
@@ -70,20 +76,45 @@ export default function create(store, option) {
 }
 
 function _update(kv) {
-    for (let key in currentStore.instances) {
-        currentStore.instances[key].forEach(ins => {
+    exceDataFn()
+    Object.keys(fnCurrentResult).forEach(key => {
+        const v = fnCurrentResult[key]
+        if(v !== fnPreResult[key]){
+            kv[key] = v
+            fnPreResult[key] = v
+        }
+    })
+    for (let key in globalStore.instances) {
+        globalStore.instances[key].forEach(ins => {
             ins.setData.call(ins, kv)
         })
     }
-    currentStore.onChange && currentStore.onChange(kv)
+    globalStore.onChange && globalStore.onChange(kv)
 }
 
 function update(patch) {
     if (patch) {
         for (let key in patch) {
-            updateByPath(currentStore.data, key, patch[key])
+            updateByPath(globalStore.data, key, patch[key])
         }
     }
+}
+
+function setFnMapping(data) {
+    Object.keys(data).forEach(key => {
+        const fn = data[key]
+        if (typeof fn == 'function') {
+            fnMapping[key] = () => {
+                return fn.call(globalStore.data)
+            }
+        }
+    })
+}
+
+function exceDataFn(){
+    Object.keys(fnMapping).forEach(key => {
+        fnCurrentResult[key] = fnMapping[key]()
+    })
 }
 
 function getArrayPatch(path) {
