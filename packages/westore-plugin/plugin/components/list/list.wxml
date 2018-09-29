@@ -3,3 +3,4 @@
 </view>
 
 <pager></pager>
+<view>create by {{fullName}}</view>
