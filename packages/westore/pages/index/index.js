@@ -55,6 +55,13 @@ create(store, {
       this.update()
 
     }, 6000)
+
+    setTimeout(() => {
+      //测试函数属性
+      this.store.data.firstName = 'DNT'
+      this.update()
+
+    }, 8000)
   },
 
   getUserInfo: function (e) {

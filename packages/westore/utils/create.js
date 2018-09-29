@@ -31,6 +31,7 @@ export default function create(store, option) {
             this.page = getCurrentPages()[getCurrentPages().length - 1]
             this.store = this.page.store
             Object.assign(this.store.data, store.data)
+            exceDataFn()
             this.setData.call(this, this.store.data)
             rewriteUpdate(this)
             this.store.instances[this.page.route].push(this)
@@ -53,6 +54,7 @@ function update(patch) {
     } else {
         needDiff = true
     }
+    exceDataFn()
     if (needDiff) {
         diffResult = diff(globalStore.data, originData)
     }
@@ -65,6 +67,14 @@ function update(patch) {
     for (let key in diffResult) {
         updateByPath(originData, key, diffResult[key])
     }
+}
+
+function exceDataFn(){
+    Object.keys(globalStore.data).forEach(key=>{
+       if(typeof globalStore.data[key] == 'function'){
+        globalStore.data['$'+key] = globalStore.data[key].call(globalStore.data)
+       }
+    })
 }
 
 function rewriteUpdate(ctx) {

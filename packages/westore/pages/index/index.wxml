@@ -14,5 +14,6 @@
   <view wx:for="{{b.arr}}" wx:for-item="item">
     <text class="log-item">{{index + 1}}. {{item.name}}</text>
   </view>
+  <view>FullName: {{$fullName}}</view>
   <hello></hello>
 </view>
