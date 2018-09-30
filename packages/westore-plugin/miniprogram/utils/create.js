@@ -79,10 +79,13 @@ function exceDataFn(data) {
     Object.keys(data).forEach(key => {
         const fn = data[key]
         if (typeof fn == 'function') {
-            fnMapping[key] = true
+            fnMapping[key] = fn
             Object.defineProperty(globalStore.data, key, {
                 get: () => {
-                    return fn.call(globalStore.data)
+                    return fnMapping[key].call(globalStore.data)
+                },
+                set: (value) => {
+                    fnMapping[key] = value
                 }
             })
         }

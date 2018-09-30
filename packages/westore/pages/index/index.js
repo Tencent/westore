@@ -64,6 +64,9 @@ create(store, {
     }, 8000)
 
     setTimeout(() => {
+      this.store.data.fullName = function(){
+        return '修改 fullName 函数'
+      }
       //测试函数属性
       this.update({
         firstName:'lei',
