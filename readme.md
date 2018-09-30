@@ -423,6 +423,16 @@ this.setData({
 | onHide | 监听页面隐藏	  |
 | onUnload | 监听页面卸载  |
 
+### 组件生命周期函数
+
+| 名称 | 描述  |
+| ------ | ------  |
+| created | 	在组件实例进入页面节点树时执行，注意此时不能调用 setData	  |
+| attached | 在组件实例进入页面节点树时执行	  |
+| ready | 在组件布局完成后执行，此时可以获取节点信息（使用 SelectorQuery ）	  |
+| moved | 在组件实例被移动到节点树另一个位置时执行	  |
+| detached | 在组件实例被从页面节点树移除时执行  |
+
 这里区分在页面中的 update 和 组件中的 update。页面中的 update 在 onLoad 事件中进行实例收集。
 
 ```js
