@@ -76,7 +76,7 @@ export default function create(store, option) {
 }
 
 function _update(kv) {
-    exceDataFn()
+    defineFnProp()
     Object.keys(fnCurrentResult).forEach(key => {
         const v = fnCurrentResult[key]
         if(v !== fnPreResult[key]){
@@ -112,7 +112,7 @@ function setFnMapping(data) {
     })
 }
 
-function exceDataFn(){
+function defineFnProp(){
     Object.keys(fnMapping).forEach(key => {
         fnCurrentResult[key] = fnMapping[key]()
     })

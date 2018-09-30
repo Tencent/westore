@@ -19,7 +19,7 @@ export default function create(store, option) {
     opt.attached = function () {
         this.store = globalStore
         this.store.data = Object.assign(globalStore.data, opt.data)
-        exceDataFn(option?store.data:(opt.data||{}))
+        defineFnProp(option?store.data:(opt.data||{}))
         this.setData.call(this, this.store.data)
         globalStore.instances.push(this)
         rewriteUpdate(this)
@@ -48,7 +48,7 @@ function update(patch){
                 diffResult[k] = globalStore.data[k]
             })
         }
-        exceDataFn(globalStore.data)
+        defineFnProp(globalStore.data)
         globalStore.instances.forEach(ins => {
             ins.setData.call(ins, diffResult)
         })
@@ -76,7 +76,7 @@ function updateByPath(origin, path, value) {
     }
 }
 
-function exceDataFn(data) {
+function defineFnProp(data) {
     Object.keys(data).forEach(key => {
         const fn = data[key]
         if (typeof fn == 'function') {

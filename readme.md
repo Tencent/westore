@@ -500,14 +500,17 @@ westore 会收集所有页面和组件的实例，在开发者执行 this.update
 ### 函数属性
 
 ``` js
-function exceDataFn(data) {
+function defineFnProp(data) {
     Object.keys(data).forEach(key => {
         const fn = data[key]
         if (typeof fn == 'function') {
-            fnMapping[key] = true
+            fnMapping[key] = fn
             Object.defineProperty(globalStore.data, key, {
                 get: () => {
-                    return fn.call(globalStore.data)
+                    return fnMapping[key].call(globalStore.data)
+                },
+                set: (value) => {
+                    fnMapping[key] = value
                 }
             })
         }
@@ -515,7 +518,7 @@ function exceDataFn(data) {
 }
 ```
 
-通过 defineProperty 重写了属性的 get。
+通过 defineProperty 重写了属性的 get 和 set，fnMapping 存放所有 key 和函数的映射。
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)
