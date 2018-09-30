@@ -84,6 +84,7 @@ function _update(kv) {
             fnPreResult[key] = v
         }
     })
+    setFnMapping(globalStore.data)
     for (let key in globalStore.instances) {
         globalStore.instances[key].forEach(ins => {
             ins.setData.call(ins, kv)

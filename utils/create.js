@@ -63,6 +63,7 @@ function update(patch) {
             diffResult[k] = globalStore.data[k]
         })
     }
+    exceDataFn(globalStore.data)
     for (let key in globalStore.instances) {
         globalStore.instances[key].forEach(ins => {
             ins.setData.call(ins, diffResult)
