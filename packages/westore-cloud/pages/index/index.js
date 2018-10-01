@@ -44,7 +44,9 @@ create(store, {
       console.log(res.data)
        this.update()
     })
-    this.store.db.collection('user').get().then(res => {
+    this.store.db.collection('user').where({
+      //_id:'W7FWJQ6qgQy38iWu'
+    }).get().then(res => {
       this.store.data.list.user = res.data
       console.log(res.data)
       this.update()

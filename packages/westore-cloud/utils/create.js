@@ -14,7 +14,7 @@ export default function create(store, option) {
             globalStore = store
             store.instances = {}
             store.update = update
-            initCloud(store.env)
+            store.env && initCloud(store.env)
         }
         getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
