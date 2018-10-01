@@ -1,0 +1,8 @@
+/**index.wxss**/
+
+.split{
+  width: 750rpx;
+  border-top: 1px solid black;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}

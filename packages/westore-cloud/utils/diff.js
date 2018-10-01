@@ -102,5 +102,3 @@ function setResult(result, k, v) {
 function type(obj) {
     return Object.prototype.toString.call(obj)
 }
-
-wxdf970566455966b0
