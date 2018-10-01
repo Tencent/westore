@@ -14,7 +14,8 @@ export default function create(store, option) {
             globalStore = store
             store.instances = {}
             store.update = update
-            store.updateAndPush = updateAndPush
+            store.push = push
+            store.pull = pull
             store.env && initCloud(store.env)
         }
         getApp().globalData && (getApp().globalData.store = store)
@@ -52,18 +53,17 @@ function initCloud(env) {
     })
 }
 
-function updateAndPush(patch){
+function push(patch){
     return new Promise(function(resolve, reject){
-        push(update(patch),resolve, reject)
+        _push(update(patch),resolve, reject)
     })
-   
 }
 
 // function diffToPushObj(diffResult){
 
 // }
 
-function push(diffResult, resolve, reject){
+function _push(diffResult, resolve){
     Object.keys(diffResult).forEach((path)=>{
         const arr = path.split('.')
         const obj = getDataByPath(path)
@@ -75,7 +75,7 @@ function push(diffResult, resolve, reject){
         }).then((res) => {
             resolve(res)
         })
-          obj._id = id
+        obj._id = id
     })
 }
 
@@ -131,7 +131,6 @@ function defineFnProp(data) {
 
 function rewriteUpdate(ctx) {
     ctx.update = update
-    ctx.updateAndPush = updateAndPush
 }
 
 function updateByPath(origin, path, value) {
@@ -155,4 +154,12 @@ function getDataByPath(path) {
         current = current[arr[i]]
     }
     return current
+}
+
+function pull(cn, where){
+    return new Promise(function(resolve, reject){
+        globalStore.db.collection(cn).where(where||{}).get().then((res) => {
+            resolve(res)
+        })
+    })
 }

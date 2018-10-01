@@ -39,27 +39,25 @@ create(store, {
       })
     }
 
-    this.store.db.collection('user').doc('W7INq92AWotkUcwC').get().then(res => {
-       this.store.data.item.user = res.data
-      console.log(res.data)
-       this.update()
-
-       setTimeout(()=>{
-        this.store.data.item.user.name = 'DNTzhang2'
-        this.updateAndPush().then((res)=>{
-          console.log(res)
-        })
-      },2000)
-    })
-    this.store.db.collection('user').where({
-      //_id:'W7FWJQ6qgQy38iWu'
-    }).get().then(res => {
+    this.store.pull('user').then(res => {
       this.store.data.list.user = res.data
-      console.log(res.data)
       this.update()
     })
 
-    
+    this.store.pull('user', {
+      _id: 'W7INq92AWotkUcwC'
+    }).then((res) => {
+      this.store.data.item.user = res.data[0]
+      this.update()
+      setTimeout(() => {
+        this.store.data.item.user.name = 'dntzhang' + Date.now()
+        //push === update cloud + update local
+        this.store.push().then((res) => {
+          console.log(res)
+        })
+      }, 2000)
+    })
+
 
   },
 
