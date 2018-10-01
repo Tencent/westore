@@ -3,6 +3,7 @@
 */
 
 //push 先diff 在同步到云库
+//没有标记 _id 的直接进行 add 并把生成的id 写到 store.data
 function push(collectionName, items) {
     if (Object.prototype.toString.call(items) === '[object Array]') {
 
