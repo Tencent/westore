@@ -157,9 +157,5 @@ function getDataByPath(path) {
 }
 
 function pull(cn, where){
-    return new Promise(function(resolve, reject){
-        globalStore.db.collection(cn).where(where||{}).get().then((res) => {
-            resolve(res)
-        })
-    })
+    return globalStore.db.collection(cn).where(where||{}).get();
 }
