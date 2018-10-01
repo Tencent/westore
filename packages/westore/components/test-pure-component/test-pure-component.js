@@ -1,7 +1,6 @@
 
 //纯组件直接使用 Component
 Component({
- // pure: true,
   /**
    * 组件的属性列表
    */
