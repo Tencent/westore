@@ -43,8 +43,8 @@ create(store, {
       // this.store.data.motto = 'Hello Store222'
       // this.store.data.b.arr.push({ name: 'ccc' })
       this.update({
-        motto:'Hello Store222',
-        [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
+        motto:'Hello Westore',
+        [`b.arr[${this.store.data.b.arr.length}]`]:{name:'数组项2(将被删除)'}
       })
 
     }, 4000)
@@ -65,19 +65,28 @@ create(store, {
 
     setTimeout(() => {
       this.store.data.fullName = function(){
-        return '修改 fullName 函数'
+        return '成功修改 fullName 函数'
       }
       //测试函数属性
       this.update({
         firstName:'lei',
       })
     }, 10000)
+
+    setTimeout(() => {
+      this.store.data.pure = '成功修改 Pure Component'
+      this.update()
+    }, 12000)
   },
 
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
     this.store.data.userInfo = e.detail.userInfo
     this.store.data.hasUserInfo = true
+    this.update()
+  },
+  onRandom:function(evt){
+    this.store.data.pure = evt.detail.rd
     this.update()
   }
 })

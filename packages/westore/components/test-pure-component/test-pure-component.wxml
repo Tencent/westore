@@ -1,0 +1,6 @@
+<view class="ctn" ontap="onTap">
+   <view> <text  > Pure Component! 【{{text}}】</text>
+</view>
+<view> <text>点击我触发单向数据流，更新所有其他组件 </text>
+</view>
+</view>

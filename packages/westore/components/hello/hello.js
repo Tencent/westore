@@ -18,9 +18,9 @@ create({
   },
 
   ready: function () {
-    this.store.onChange = function(info){
-      console.log(info)
-    }
+    // this.store.onChange = function(info){
+    //   console.log(info)
+    // }
 
     setTimeout(() => {
       this.store.data.motto = 'Hello Store'
