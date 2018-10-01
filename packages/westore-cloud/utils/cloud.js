@@ -16,6 +16,16 @@ function pull(collectionName, where) {
 
 }
 
+//push 本地数据全部同步到云库
+function pushLocal() {
+
+}
+
+//pull 先收集所有collectionName 和 _id 数据，然后拉去并同步到本地数据
+function pullLocal() {
+
+}
+
 //增加数据云库
 function add(collectionName, data) {
 
