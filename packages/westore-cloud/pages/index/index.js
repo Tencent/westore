@@ -39,10 +39,17 @@ create(store, {
       })
     }
 
-    this.store.db.collection('user').doc('W7FWJQ6qgQy38iWu').get().then(res => {
+    this.store.db.collection('user').doc('W7INq92AWotkUcwC').get().then(res => {
        this.store.data.item.user = res.data
       console.log(res.data)
        this.update()
+
+       setTimeout(()=>{
+        this.store.data.item.user.name = 'DNTzhang2'
+        this.updateAndPush().then((res)=>{
+          console.log(res)
+        })
+      },2000)
     })
     this.store.db.collection('user').where({
       //_id:'W7FWJQ6qgQy38iWu'
@@ -51,6 +58,8 @@ create(store, {
       console.log(res.data)
       this.update()
     })
+
+    
 
   },
 

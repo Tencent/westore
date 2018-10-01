@@ -14,6 +14,7 @@ export default function create(store, option) {
             globalStore = store
             store.instances = {}
             store.update = update
+            store.updateAndPush = updateAndPush
             store.env && initCloud(store.env)
         }
         getApp().globalData && (getApp().globalData.store = store)
@@ -51,6 +52,33 @@ function initCloud(env) {
     })
 }
 
+function updateAndPush(patch){
+    return new Promise(function(resolve, reject){
+        push(update(patch),resolve, reject)
+    })
+   
+}
+
+// function diffToPushObj(diffResult){
+
+// }
+
+function push(diffResult, resolve, reject){
+    Object.keys(diffResult).forEach((path)=>{
+        const arr = path.split('.')
+        const obj = getDataByPath(path)
+        const id = obj._id
+        delete obj._openid
+        delete obj._id
+        globalStore.db.collection(arr[1]).doc(id).update({
+            data: obj
+        }).then((res) => {
+            resolve(res)
+        })
+          obj._id = id
+    })
+}
+
 function update(patch) {
     let needDiff = false
     let diffResult = patch
@@ -81,6 +109,7 @@ function update(patch) {
     for (let key in diffResult) {
         updateByPath(originData, key, diffResult[key])
     }
+    return diffResult
 }
 
 function defineFnProp(data) {
@@ -102,6 +131,7 @@ function defineFnProp(data) {
 
 function rewriteUpdate(ctx) {
     ctx.update = update
+    ctx.updateAndPush = updateAndPush
 }
 
 function updateByPath(origin, path, value) {
@@ -115,4 +145,14 @@ function updateByPath(origin, path, value) {
             current = current[arr[i]]
         }
     }
+}
+
+function getDataByPath(path) {
+    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
+    if (arr[arr.length - 1] == '') arr.pop()
+    let current = globalStore.data
+    for (let i = 0, len = 2; i < len; i++) {
+        current = current[arr[i]]
+    }
+    return current
 }
