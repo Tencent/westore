@@ -54,7 +54,7 @@ function update(patch){
         })
         globalStore.onChange && globalStore.onChange(diffResult)
         for (let key in diffResult) {
-            updateByPath(originData, key, diffResult[key])
+            updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
         }
     
 }
