@@ -1,10 +1,10 @@
 <!--index.wxml-->
 <view class="container">
    <view>用户信息</view>
-   <view>姓名:{{item.user.name}}</view>
-   <view>年龄:{{item.user.age}}</view>
-   <view>城市:{{item.user.city}}</view>
-   <view>性别:{{item.user.gender===1?'男':'女'}}</view>
+   <view>姓名:{{user.item.name}}</view>
+   <view>年龄:{{user.item.age}}</view>
+   <view>城市:{{user.item.city}}</view>
+   <view>性别:{{user.item.gender===1?'男':'女'}}</view>
    <view class='split'></view>
    <user-list></user-list>
 </view>

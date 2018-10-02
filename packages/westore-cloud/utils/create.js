@@ -70,7 +70,7 @@ function _push(diffResult, resolve){
         const id = obj._id
         delete obj._openid
         delete obj._id
-        globalStore.db.collection(arr[1]).doc(id).update({
+        globalStore.db.collection(arr[0]).doc(id).update({
             data: obj
         }).then((res) => {
             resolve(res)

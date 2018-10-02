@@ -40,17 +40,17 @@ create(store, {
     }
 
     this.store.pull('user').then(res => {
-      this.store.data.list.user = res.data
+      this.store.data.user.list = res.data
       this.update()
     })
 
     this.store.pull('user', {
       _id: 'W7INq92AWotkUcwC'
     }).then((res) => {
-      this.store.data.item.user = res.data[0]
+      this.store.data.user.item = res.data[0]
       this.update()
       setTimeout(() => {
-        this.store.data.item.user.name = 'dntzhang' + Date.now()
+        this.store.data.user.item.name = 'dntzhang' + Date.now()
         //push === update cloud + update local
         this.store.push().then((res) => {
           console.log(res)
