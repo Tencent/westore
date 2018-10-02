@@ -7,4 +7,5 @@
    <view>性别:{{user.item.gender===1?'男':'女'}}</view>
    <view class='split'></view>
    <user-list></user-list>
+   <view>点击上方每项年龄 +1，测试 list 的 push</view>
 </view>

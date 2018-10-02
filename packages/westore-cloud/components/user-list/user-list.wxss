@@ -1,10 +1,10 @@
 
-.list{
+.list-item{
     display: flex;
     width: 750rpx;
     
 }
-.list text{
+.list-item text{
     text-align: center;
     width: 166.6rpx;
     flex-wrap: nowrap;
@@ -12,7 +12,7 @@
     border: 1px solid #ddd;
 }
 
-.list .user-name{
+.list-item .user-name{
     width: 250rpx;
     text-align: left;
 }

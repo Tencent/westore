@@ -32,6 +32,17 @@ create({
    * 组件的方法列表
    */
   methods: {
+    onTap: function (evt) {
+      const id = evt.currentTarget.dataset.id
+      const list = this.store.data.user.list
+      for (let i = 0, len = list.length; i < len; i++) {
+        if (list[i]._id === id) {
+          list[i].age++
+          break
+        }
+      }
 
+      this.update()
+    }
   }
 })

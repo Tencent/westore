@@ -16,6 +16,7 @@ export default function create(store, option) {
             store.update = update
             store.push = push
             store.pull = pull
+            store.originData = originData
             store.env && initCloud(store.env)
         }
         getApp().globalData && (getApp().globalData.store = store)
@@ -107,7 +108,7 @@ function update(patch) {
     }
     globalStore.onChange && globalStore.onChange(diffResult)
     for (let key in diffResult) {
-        updateByPath(originData, key, diffResult[key])
+        updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
     }
     return diffResult
 }
