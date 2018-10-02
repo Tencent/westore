@@ -42,16 +42,17 @@ create(store, {
     this.store.pull('user').then(res => {
       this.store.data.user = res.data
       this.update()
+      setTimeout(() => {
+        this.store.data.user[0].name = 'dntzhang' +Math.floor(Math.random()*100)
+        //push === update cloud + update local
+        this.store.push().then((res) => {
+          console.log(res)
+        })
+      },2000)
+  
     })
 
-    setTimeout(() => {
-      this.store.data.user[0].name = 'dntzhang' +Math.floor(Math.random()*100)
-      //push === update cloud + update local
-      this.store.push().then((res) => {
-        console.log(res)
-      })
-    },2000)
-
+    
     // this.store.pull('user', {
     //   _id: 'W7INq92AWotkUcwC'
     // }).then((res) => {

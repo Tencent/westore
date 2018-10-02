@@ -56,31 +56,24 @@ function initCloud(env) {
     })
 }
 
-function push(patch){
-    return new Promise(function(resolve, reject){
-        _push(update(patch),resolve, reject)
+function push(patch) {
+    return new Promise(function (resolve, reject) {
+        _push(update(patch), resolve, reject)
     })
 }
 
-// function diffToPushObj(diffResult){
+function _push(diffResult, resolve) {
+    const objs = diffToPushObj(diffResult)
 
-// }
-
-function _push(diffResult, resolve){
-    Object.keys(diffResult).forEach((path)=>{
-        const cn = path.split('[')[0]
-        const obj = getDataByPath(path)
-        const id = obj._id
-        const openid = obj._openid
-        delete obj._openid
-        delete obj._id
-        globalStore.db.collection(cn).doc(id).update({
+    Object.keys(objs).forEach((path) => {
+        const arr = path.split('-')
+        const id = globalStore.data[arr[0]][parseInt(arr[1])]._id
+        const obj = objs[path]
+        globalStore.db.collection(arr[0]).doc(id).update({
             data: obj
         }).then((res) => {
             resolve(res)
         })
-        obj._id = id
-        obj._openid = openid
     })
 }
 
@@ -99,8 +92,8 @@ function update(patch) {
     }
     if (needDiff) {
         diffResult = diff(globalStore.data, originData)
-    }else{
-        Object.keys(fnMapping).forEach(k =>{
+    } else {
+        Object.keys(fnMapping).forEach(k => {
             diffResult[k] = globalStore.data[k]
         })
     }
@@ -139,7 +132,7 @@ function rewriteUpdate(ctx) {
 }
 
 function updateByPath(origin, path, value) {
-    const arr = path.replace(/]/g,'').replace(/\[/g, '.').split('.')
+    const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
     let current = origin
     for (let i = 0, len = arr.length; i < len; i++) {
         if (i === len - 1) {
@@ -151,23 +144,56 @@ function updateByPath(origin, path, value) {
 }
 
 function getDataByPath(path) {
-    const arr = path.replace(/]/g,'').replace(/\[/g, '.').split('.')
+    const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
     let current = globalStore.data
-    const len = 2
-    for (let i = 0; i < len; i++) {
+    for (let i = 0, len = arr.length; i < len; i++) {
         current = current[arr[i]]
     }
     return current
 }
 
-function pull(cn, where){
-    return globalStore.db.collection(cn).where(where||{}).get()
+function pull(cn, where) {
+    return globalStore.db.collection(cn).where(where || {}).get()
 }
 
-function add(cn, data){
-    return globalStore.db.collection(cn).add({data})
+function add(cn, data) {
+    return globalStore.db.collection(cn).add({ data })
 }
 
-function remove(cn, id){
-   return globalStore.db.collection(cn).doc(id).remove()
+function remove(cn, id) {
+    return globalStore.db.collection(cn).doc(id).remove()
+}
+//测试深度嵌套的字段
+function diffToPushObj(diffResult) {
+    const result = {}
+    Object.keys(diffResult).forEach(key => {
+        diffItemToObj(key, diffResult[key], result)
+    })
+    return result
+}
+//console.error(diffToPushObj({'user[2].name':{cc:1},'user[2].age':13,'user[1].a.b':{xxx:1}}))
+function diffItemToObj(path, value, result) {
+    const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
+    const obj = {}
+    let current = null
+    const len = arr.length
+    for (let i = 2; i < len; i++) {
+        if (len === 3) {
+            obj[arr[i]] = value
+        } else {
+            if (i === len - 1) {
+                current[arr[i]] = value
+            } else {
+                const pre = current
+                current = {}
+                if (i === 2) {
+                    obj[arr[i]] = current
+                } else {
+                    pre[arr[i]] = current
+                }
+            }
+        }
+    }
+    const key = arr[0] + '-' + arr[1]
+    result[key] = Object.assign(result[key] || {}, obj)
 }
