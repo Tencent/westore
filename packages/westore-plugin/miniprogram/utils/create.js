@@ -14,6 +14,10 @@ export default function create(store, option) {
             globalStore = store
             store.instances = {}
             store.update = update
+            store.push = push
+            store.pull = pull
+            store.originData = originData
+            store.env && initCloud(store.env)
         }
         getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
@@ -41,6 +45,39 @@ export default function create(store, option) {
         }
         Component(store)
     }
+}
+
+function initCloud(env) {
+    wx.cloud.init()
+    globalStore.db = wx.cloud.database({
+        env: env
+    })
+}
+
+function push(patch){
+    return new Promise(function(resolve, reject){
+        _push(update(patch),resolve, reject)
+    })
+}
+
+// function diffToPushObj(diffResult){
+
+// }
+
+function _push(diffResult, resolve){
+    Object.keys(diffResult).forEach((path)=>{
+        const arr = path.split('.')
+        const obj = getDataByPath(path)
+        const id = obj._id
+        delete obj._openid
+        delete obj._id
+        globalStore.db.collection(arr[0]).doc(id).update({
+            data: obj
+        }).then((res) => {
+            resolve(res)
+        })
+        obj._id = id
+    })
 }
 
 function update(patch) {
@@ -71,8 +108,9 @@ function update(patch) {
     }
     globalStore.onChange && globalStore.onChange(diffResult)
     for (let key in diffResult) {
-        updateByPath(originData, key, diffResult[key])
+        updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
     }
+    return diffResult
 }
 
 function defineFnProp(data) {
@@ -107,4 +145,18 @@ function updateByPath(origin, path, value) {
             current = current[arr[i]]
         }
     }
+}
+
+function getDataByPath(path) {
+    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
+    if (arr[arr.length - 1] == '') arr.pop()
+    let current = globalStore.data
+    for (let i = 0, len = 2; i < len; i++) {
+        current = current[arr[i]]
+    }
+    return current
+}
+
+function pull(cn, where){
+    return globalStore.db.collection(cn).where(where||{}).get();
 }
