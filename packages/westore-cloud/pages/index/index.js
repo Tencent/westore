@@ -66,5 +66,23 @@ create(store, {
     // this.store.data.userInfo = e.detail.userInfo
     // this.store.data.hasUserInfo = true
     // this.update()
+  },
+
+  addUser: function(){
+    const len = this.store.data.user.list.length
+    const user = {
+      name:'new user'+this.store.data.user.list.length,
+      age:1,
+      city:'江西',
+      gender:2
+    }
+    this.store.data.user.list.push(user)
+    this.update()
+    this.store.add('user', user).then((res)=>{
+      //设置_id
+      user._id = res._id
+      
+      this.update()
+    })
   }
 })

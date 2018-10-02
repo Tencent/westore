@@ -8,6 +8,6 @@
    <view class='split'></view>
    <user-list></user-list>
    <view>
-    <button>新增 User</button>
+    <button ontap="addUser">新增 User</button>
    </view>
 </view>

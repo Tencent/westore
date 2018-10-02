@@ -16,6 +16,7 @@ export default function create(store, option) {
             store.update = update
             store.push = push
             store.pull = pull
+            store.add = add
             store.originData = originData
             store.env && initCloud(store.env)
         }
@@ -162,5 +163,9 @@ function getDataByPath(path) {
 }
 
 function pull(cn, where){
-    return globalStore.db.collection(cn).where(where||{}).get();
+    return globalStore.db.collection(cn).where(where||{}).get()
+}
+
+function add(cn, data){
+    return globalStore.db.collection(cn).add({data})
 }
