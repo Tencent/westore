@@ -1,0 +1,4 @@
+<!--index.wxml-->
+<view class="ctn">
+   手机里打开 log 面板全部为 true 代表测试通过 
+</view>

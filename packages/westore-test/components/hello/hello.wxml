@@ -1,0 +1,8 @@
+<view class="ctn">
+    <view>
+        <text> Hello Component!</text>
+    </view>
+    <view>
+        <text>【{{pure}}】 from Pure Component!</text>
+    </view>
+</view>
