@@ -1,1 +1,23 @@
-/* components/hello/hello.wxss */
+
+.list{
+    display: flex;
+    width: 750rpx;
+    
+}
+.list text{
+    text-align: center;
+    width: 166.6rpx;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    border: 1px solid #ddd;
+}
+
+.list .user-name{
+    width: 250rpx;
+    text-align: left;
+}
+
+.title{
+    text-align: center;
+    font-size:50rpx; 
+}

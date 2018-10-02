@@ -50,7 +50,7 @@ create(store, {
       this.store.data.user.item = res.data[0]
       this.update()
       setTimeout(() => {
-        this.store.data.user.item.name = 'dntzhang' + Date.now()
+        this.store.data.user.item.name = 'dntzhang' +Math.floor(Math.random()*100)
         //push === update cloud + update local
         this.store.push().then((res) => {
           console.log(res)
