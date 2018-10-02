@@ -40,23 +40,25 @@ create(store, {
     }
 
     this.store.pull('user').then(res => {
-      this.store.data.user.list = res.data
+      this.store.data.user = res.data
       this.update()
     })
 
-    this.store.pull('user', {
-      _id: 'W7INq92AWotkUcwC'
-    }).then((res) => {
-      this.store.data.user.item = res.data[0]
-      this.update()
-      setTimeout(() => {
-        this.store.data.user.item.name = 'dntzhang' +Math.floor(Math.random()*100)
-        //push === update cloud + update local
-        this.store.push().then((res) => {
-          console.log(res)
-        })
-      }, 2000)
-    })
+    setTimeout(() => {
+      this.store.data.user[0].name = 'dntzhang' +Math.floor(Math.random()*100)
+      //push === update cloud + update local
+      this.store.push().then((res) => {
+        console.log(res)
+      })
+    },2000)
+
+    // this.store.pull('user', {
+    //   _id: 'W7INq92AWotkUcwC'
+    // }).then((res) => {
+    //   this.store.data.user.item = res.data[0]
+    //   this.update()
+    //   }, 2000)
+    // })
 
 
   },
@@ -69,14 +71,14 @@ create(store, {
   },
 
   addUser: function(){
-    const len = this.store.data.user.list.length
+    const len = this.store.data.user.length
     const user = {
-      name:'new user'+this.store.data.user.list.length,
+      name:'new user'+this.store.data.user.length,
       age:1,
       city:'江西',
       gender:2
     }
-    this.store.data.user.list.push(user)
+    this.store.data.user.push(user)
     this.update()
     this.store.add('user', user).then((res)=>{
       //设置_id

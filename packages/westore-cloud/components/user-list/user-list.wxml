@@ -1,5 +1,5 @@
 <view class="title">用户列表</view>
-<view class="list" wx:for="{{user.list}}" wx:for-item="item">
+<view class="list" wx:for="{{user}}" wx:for-item="item">
     <view class="list-item" >
         <text class="user-name">{{index + 1}}. {{item.name}}</text>
         <text class="log-item">{{item.city}}</text>

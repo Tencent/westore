@@ -68,13 +68,13 @@ function push(patch){
 
 function _push(diffResult, resolve){
     Object.keys(diffResult).forEach((path)=>{
-        const arr = path.split('.')
+        const cn = path.split('[')[0]
         const obj = getDataByPath(path)
         const id = obj._id
         const openid = obj._openid
         delete obj._openid
         delete obj._id
-        globalStore.db.collection(arr[0]).doc(id).update({
+        globalStore.db.collection(cn).doc(id).update({
             data: obj
         }).then((res) => {
             resolve(res)
@@ -152,10 +152,8 @@ function updateByPath(origin, path, value) {
 
 function getDataByPath(path) {
     const arr = path.replace(/]/g,'').replace(/\[/g, '.').split('.')
-   
     let current = globalStore.data
-    let len = 2
-    if (arr[1] === 'list') len = 3
+    const len = 2
     for (let i = 0; i < len; i++) {
         current = current[arr[i]]
     }
