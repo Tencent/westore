@@ -6,10 +6,18 @@
 }
 .list-item text{
     text-align: center;
-    width: 166.6rpx;
+    width: 100rpx;
     flex-wrap: nowrap;
     white-space: nowrap;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; 
+}
+
+.list-item button{
+    text-align: center;
+    width: 120rpx;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    border: 1px solid #ddd; 
 }
 
 .list-item .user-name{

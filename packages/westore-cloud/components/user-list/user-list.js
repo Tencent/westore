@@ -33,16 +33,13 @@ create({
    */
   methods: {
     onTap: function (evt) {
-      const id = evt.currentTarget.dataset.id
-      const list = this.store.data.user.list
-      for (let i = 0, len = list.length; i < len; i++) {
-        if (list[i]._id === id) {
-          list[i].age++
-          break
-        }
-      }
-
-      this.update()
+     setTimeout(()=>{
+      this.store.data.user.list[0].age++
+      this.store.push()
+     },3000)
+      // const index = parseInt(evt.currentTarget.dataset.index)
+      // this.store.data.user.list.splice(index, 1)
+      // this.update()
     }
   }
 })

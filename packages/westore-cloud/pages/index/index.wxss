@@ -11,3 +11,7 @@
 .title{
   font-size:50rpx; 
 }
+
+button{
+  margin-top: 10rpx; 
+}

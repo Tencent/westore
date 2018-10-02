@@ -69,6 +69,7 @@ function _push(diffResult, resolve){
         const arr = path.split('.')
         const obj = getDataByPath(path)
         const id = obj._id
+        const openid = obj._openid
         delete obj._openid
         delete obj._id
         globalStore.db.collection(arr[0]).doc(id).update({
@@ -77,6 +78,7 @@ function _push(diffResult, resolve){
             resolve(res)
         })
         obj._id = id
+        obj._openid = openid
     })
 }
 
@@ -151,7 +153,9 @@ function getDataByPath(path) {
     const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
     if (arr[arr.length - 1] == '') arr.pop()
     let current = globalStore.data
-    for (let i = 0, len = 2; i < len; i++) {
+    let len = 2
+    if (arr[1] === 'list') len = 3
+    for (let i = 0; i < len; i++) {
         current = current[arr[i]]
     }
     return current
