@@ -36,3 +36,49 @@ function add(collectionName, data) {
 function remove(collectionName, id) {
 
 }
+
+//测试深度嵌套的字段
+function diffToPushObj(diffResult, storeData){
+
+}
+
+console.error(diffItemToObj('user.item.a.b',{cc:1}))
+console.error(diffItemToObj('user.list[1].a.b',{cc:1}))
+function diffItemToObj(path, value, storeData){
+    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
+    if (arr[arr.length - 1] == '') arr.pop()
+    const result = {}
+    const obj = {}
+    result.obj = obj
+    let current = null
+    const len = arr.length
+    
+    if (arr[1] === 'list') {
+        console.log(arr)
+        //const item = 
+    } else{
+        for (let i = 2; i < len; i++) {
+            if(len === 3){
+                obj[arr[i]]  = value
+            }else{
+                if(i === len-1){
+                    current[arr[i]] = value
+                }else{
+                    const pre = current
+                    current ={}
+                    if(i===2){
+                        obj[arr[i]] = current
+                    }else{
+                        pre[arr[i]] = current
+                    }
+                }
+                
+            
+              
+            }
+        }
+    }
+
+    return obj
+    
+}

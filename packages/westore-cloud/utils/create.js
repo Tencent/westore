@@ -139,8 +139,7 @@ function rewriteUpdate(ctx) {
 }
 
 function updateByPath(origin, path, value) {
-    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
-    if (arr[arr.length - 1] == '') arr.pop()
+    const arr = path.replace(/]/g,'').replace(/\[/g, '.').split('.')
     let current = origin
     for (let i = 0, len = arr.length; i < len; i++) {
         if (i === len - 1) {
@@ -152,8 +151,8 @@ function updateByPath(origin, path, value) {
 }
 
 function getDataByPath(path) {
-    const arr = path.replace(/\[|(].)|\]/g, '.').split('.')
-    if (arr[arr.length - 1] == '') arr.pop()
+    const arr = path.replace(/]/g,'').replace(/\[/g, '.').split('.')
+   
     let current = globalStore.data
     let len = 2
     if (arr[1] === 'list') len = 3
