@@ -33,13 +33,16 @@ create({
    */
   methods: {
     onTap: function (evt) {
-     setTimeout(()=>{
-      this.store.data.user.list[0].age++
-      this.store.push()
-     },3000)
-      // const index = parseInt(evt.currentTarget.dataset.index)
-      // this.store.data.user.list.splice(index, 1)
-      // this.update()
+    //  setTimeout(()=>{
+    //   this.store.data.user.list[0].age++
+    //   this.store.push()
+    //  },3000)
+
+    
+      const index = parseInt(evt.currentTarget.dataset.index)
+      const item = this.store.data.user.list.splice(index, 1)[0]
+      this.update()
+      this.store.remove('user', item._id)
     }
   }
 })

@@ -17,6 +17,7 @@ export default function create(store, option) {
             store.push = push
             store.pull = pull
             store.add = add
+            store.remove = remove
             store.originData = originData
             store.env && initCloud(store.env)
         }
@@ -168,4 +169,8 @@ function pull(cn, where){
 
 function add(cn, data){
     return globalStore.db.collection(cn).add({data})
+}
+
+function remove(cn, id){
+   return globalStore.db.collection(cn).doc(id).remove()
 }
