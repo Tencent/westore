@@ -49,35 +49,35 @@ create(store, {
         this.store.data.testList.push({ d: 'diffToPushObj', r: r })
 
         r = deepEqual(
-            path2arr('a.b.c'),
+            path2Arr('a.b.c'),
             ['a', 'b', 'c']
         )
-        this.store.data.testList.push({ d: 'path2arr', r: r })
+        this.store.data.testList.push({ d: 'path2Arr', r: r })
 
 
         r = deepEqual(
-            path2arr('a[1].c'),
+            path2Arr('a[1].c'),
             ['a', '1', 'c']
         )
-        this.store.data.testList.push({ d: 'path2arr', r: r })
+        this.store.data.testList.push({ d: 'path2Arr', r: r })
 
         r = deepEqual(
-            path2arr('a[1][2].c'),
+            path2Arr('a[1][2].c'),
             ['a', '1', '2', 'c']
         )
-        this.store.data.testList.push({ d: 'path2arr', r: r })
+        this.store.data.testList.push({ d: 'path2Arr', r: r })
 
         r = deepEqual(
-            path2arr('a.b[1][2]'),
+            path2Arr('a.b[1][2]'),
             ['a', 'b', '1', '2']
         )
-        this.store.data.testList.push({ d: 'path2arr', r: r })
+        this.store.data.testList.push({ d: 'path2Arr', r: r })
 
         r = deepEqual(
-            path2arr('a.b[1].c[2]'),
+            path2Arr('a.b[1].c[2]'),
             ['a', 'b', '1', 'c', '2']
         )
-        this.store.data.testList.push({ d: 'path2arr', r: r })
+        this.store.data.testList.push({ d: 'path2Arr', r: r })
 
 
         this.update()
@@ -85,6 +85,6 @@ create(store, {
 
 })
 
-function path2arr(path) {
+function path2Arr(path) {
     return path.replace(/]/g, '').replace(/\[/g, '.').split('.')
 }
