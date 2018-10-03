@@ -16,52 +16,44 @@ create(store, {
   },
 
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      // this.update({
-      //   userInfo:app.globalData.userInfo,
-      //   hasUserInfo:true
-      // })
-    } else if (this.data.canIUse) {
-
-      // app.userInfoReadyCallback = res => {
-      //   this.store.data.userInfo = res.userInfo
-      //   this.store.data.hasUserInfo = true
-      //   this.update()
-      // }
-    } else {
-      wx.getUserInfo({
-        success: res => {
-          // app.globalData.userInfo = res.userInfo
-          // this.store.data.userInfo = res.userInfo
-          // this.store.data.hasUserInfo = true
-          // this.update()
-        }
-      })
+    if (!(app.globalData.userInfo || this.data.canIUse)) {
+      wx.getUserInfo()
     }
 
     this.store.pull('user').then(res => {
       this.store.data.user = res.data
       this.update()
       setTimeout(() => {
-        this.store.data.user[0].name = 'dntzhang' +Math.floor(Math.random()*100)
+        this.store.data.user[0].name = 'dntzhang' + Math.floor(Math.random() * 100)
         //push === update cloud + update local
         this.store.push().then((res) => {
           console.log(res)
         })
-      },2000)
-  
+      }, 2000)
     })
 
-    
-    // this.store.pull('user', {
-    //   _id: 'W7INq92AWotkUcwC'
+    //新增测试数据
+    // this.store.add('product', {
+    //   address:{
+    //     province:'广东省',
+    //     city:'深圳市',
+    //   }
     // }).then((res) => {
-    //   this.store.data.user.item = res.data[0]
-    //   this.update()
-    //   }, 2000)
+    //   console.log(res)
     // })
 
-
+    this.store.pull('product').then(res => {
+      console.log( res.data)
+      this.store.data.product = res.data
+      this.update()
+      setTimeout(() => {
+        this.store.data.product[0].address.city = '广州市'
+        this.store.push().then((res) => {
+          console.log(res)
+        })
+      }, 2000)
+    })
+   
   },
 
   getUserInfo: function (e) {
@@ -71,20 +63,20 @@ create(store, {
     // this.update()
   },
 
-  addUser: function(){
+  addUser: function () {
     const len = this.store.data.user.length
     const user = {
-      name:'new user'+this.store.data.user.length,
-      age:1,
-      city:'江西',
-      gender:2
+      name: 'new user' + this.store.data.user.length,
+      age: 1,
+      city: '江西',
+      gender: 2
     }
     this.store.data.user.push(user)
     this.update()
-    this.store.add('user', user).then((res)=>{
+    this.store.add('user', user).then((res) => {
       //设置_id
       user._id = res._id
-      
+
       this.update()
     })
   }
