@@ -143,15 +143,6 @@ function updateByPath(origin, path, value) {
     }
 }
 
-function getDataByPath(path) {
-    const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
-    let current = globalStore.data
-    for (let i = 0, len = arr.length; i < len; i++) {
-        current = current[arr[i]]
-    }
-    return current
-}
-
 function pull(cn, where) {
     return globalStore.db.collection(cn).where(where || {}).get()
 }

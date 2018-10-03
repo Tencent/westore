@@ -7,19 +7,49 @@ create(store, {
 
 
     onLoad: function () {
-        const r1 = deepEqual(
+        let r = deepEqual(
             diff(
                 { a: 1, b: 2 },
                 { a: 2, b: 2, c: 3 }),
             { "a": 1, "c": null })
-        this.store.data.testList.push({ d: 'Diff', r: r1 })
+        this.store.data.testList.push({ d: 'Diff', r: r })
+
+        r = deepEqual(
+            diff(
+                { a: 1, b: 2 },
+                { a: 1, b: 2 }),
+            {})
+        this.store.data.testList.push({ d: 'Diff', r: r })
+
+        r = deepEqual(
+            diff(
+                { a: { b: 1 } },
+                { a: { b: 2 } }),
+            { "a.b": 1 })
+        this.store.data.testList.push({ d: 'Diff', r: r })
+
+        r = deepEqual(
+            diff(
+                { a: [1,2,3] },
+                { a: [1,2,3,4] }),
+            { "a": [1,2,3] })
+        this.store.data.testList.push({ d: 'Diff', r: r })
+
+        r = deepEqual(
+            create.diffToPushObj({ 'user[2].name': 'dnt', 'user[2].age': 13}),
+            { "user-2": { "name": 'dnt', "age": 13 } }
+        )
+        this.store.data.testList.push({ d: 'diffToPushObj', r: r })
 
 
-        const r2 = deepEqual(
+        r = deepEqual(
             create.diffToPushObj({ 'user[2].name': { cc: 1 }, 'user[2].age': 13, 'user[1].a.b': { xxx: 1 } }),
             { "user-2": { "name": { "cc": 1 }, "age": 13 }, "user-1": { "a": { "b": { "xxx": 1 } } } }
         )
-        this.store.data.testList.push({ d: 'diffToPushObj', r: r2 })
+        this.store.data.testList.push({ d: 'diffToPushObj', r: r })
+
+        
+
         this.update()
     }
 
