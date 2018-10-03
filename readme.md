@@ -1,6 +1,44 @@
 # Westore 1.0 正式发布 - 一个框架就够
 
-> 世界上最小却强大的小程序框架 - [100多行代码](https://github.com/dntzhang/westore/blob/master/utils/create.js)搞定全局状态管理、跨页通讯和插件开发
+> 做世界上最小最强的小程序框架 - [100多行代码](https://github.com/dntzhang/westore/blob/master/utils/create.js)搞定全局状态管理、跨页通讯和插件开发
+
+---
+
+- [Packages 简介](#packages-简介)
+- [前言](#前言)
+- [API](#api)
+- [使用指南](#使用指南)
+	- [定义全局 store](#定义全局-store)
+  - [创建页面](#创建页面)
+  - [绑定数据](#绑定数据)
+  - [更新页面](#更新页面)
+  - [创建组件](#创建组件)
+  - [更新组件](#更新组件)
+  - [setData 和 update 对比](#setdata-和-update-对比)
+  - [跨页面同步数据](#跨页面同步数据)
+  - [纯组件](#纯组件)
+  - [调试](#调试)
+  - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
+  - [局部 Store 开发 Plugin](./westore-plugin.md) 
+- [原理](#原理)
+  - [JSON Diff](#json-diff)
+  - [Update](#update)
+  - [函数属性](#函数属性)
+- [License](#license)
+
+
+## Packages 简介
+
+| Package | 介绍  |
+| ------ | ------  |
+| westore | 	小程序演示项目	  |
+| westore-cloud  | 小程序 + 腾讯云演示项目	  |
+| westore-plugin | 小程序插件开发演示项目  |
+| westore-proxy | 小程序底层使用 Proxy 演示项目	  |
+| westore-test  |  测试 westore API 的小程序  |
+| westore-web  |  小程序开发 Web 的项目(规划中..未提交))  |
+
+## 前言
 
 众所周知，小程序通过页面或组件各自的 setData 再加上各种父子、祖孙、姐弟、嫂子与堂兄等等组件间的通讯会把程序搞成一团浆糊，如果再加上跨页面之间的组件通讯，会让程序非常难维护和调试。虽然市面上出现了许多技术栈编译转小程序的技术，但是我觉没有戳中小程序的痛点。小程序不管从组件化、开发、调试、发布、灰度、回滚、上报、统计、监控和最近的云能力都非常完善，小程序的工程化简直就是前端的典范。而开发者工具也在持续更新，可以想象的未来，组件布局的话未必需要写代码了。而且据统计，开发小程序使用最多的技术栈是使用小程序本身的开发工具和语法，所以最大的痛点只剩下状态管理和跨页通讯。Westore 的方案:
 
@@ -55,28 +93,6 @@ this.update({
 这里需要特别强调，虽然 this.update 可以兼容小程序的 this.setData 的方式传参，但是更加智能，this.update 会按需 Diff 或者 透传给 setData。原理:
 
 ![](./asset/update.jpg)
-
----
-
-- [API](#api)
-- [使用指南](#使用指南)
-	- [定义全局 store](#定义全局-store)
-  - [创建页面](#创建页面)
-  - [绑定数据](#绑定数据)
-  - [更新页面](#更新页面)
-  - [创建组件](#创建组件)
-  - [更新组件](#更新组件)
-  - [setData 和 update 对比](#setdata-和-update-对比)
-  - [跨页面同步数据](#跨页面同步数据)
-  - [纯组件](#纯组件)
-  - [调试](#调试)
-  - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
-  - [局部 Store 开发 Plugin](./westore-plugin.md) 
-- [原理](#原理)
-  - [JSON Diff](#json-diff)
-  - [Update](#update)
-  - [函数属性](#函数属性)
-- [License](#license)
 
 ## API
 
