@@ -8,6 +8,7 @@
     <view class="title" >产品(测试深层属性绑定和更新)</view>
    <view>省:{{product[0].address.province}}</view>
    <view>市:{{product[0].address.city}}</view>
+    <view>代理商:{{product[0].agentString}}</view>
    <view class='split'></view>
    <user-list></user-list>
    <view>
