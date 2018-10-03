@@ -47,7 +47,7 @@ create(store, {
       this.update()
       setTimeout(() => {
         this.store.data.product[0].address.city = '广州市'
-        this.store.data.product[0].agent[1] = 'QQ23'
+        this.store.data.product[0].agent[1] = 'QQ'
         this.store.data.product[0].agent[2] = '腾讯云'
         this.store.push().then((res) => {
           console.log(res)

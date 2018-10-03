@@ -64,7 +64,6 @@ function push(patch) {
 
 function _push(diffResult, resolve) {
     const objs = diffToPushObj(diffResult)
-
     Object.keys(objs).forEach((path) => {
         const arr = path.split('-')
         const id = globalStore.data[arr[0]][parseInt(arr[1])]._id
@@ -92,11 +91,7 @@ function update(patch) {
     }
     if (needDiff) {
         diffResult = diff(globalStore.data, originData)
-    } else {
-        Object.keys(fnMapping).forEach(k => {
-            diffResult[k] = globalStore.data[k]
-        })
-    }
+    } 
     defineFnProp(globalStore.data)
     for (let key in globalStore.instances) {
         globalStore.instances[key].forEach(ins => {
@@ -116,6 +111,7 @@ function defineFnProp(data) {
         if (typeof fn == 'function') {
             fnMapping[key] = fn
             Object.defineProperty(globalStore.data, key, {
+                enumerable: true,
                 get: () => {
                     return fnMapping[key].call(globalStore.data)
                 },
@@ -144,7 +140,29 @@ function updateByPath(origin, path, value) {
 }
 
 function pull(cn, where) {
-    return globalStore.db.collection(cn).where(where || {}).get()
+    return new Promise(function (resolve) {
+        globalStore.db.collection(cn).where(where || {}).get().then(res=>{
+            extend(res, cn)
+            resolve(res)
+        })
+    })
+}
+
+function extend(res, cn){
+    res.data.forEach(item => {
+        const mds =  globalStore.methods[cn]
+        mds && Object.keys(mds).forEach(key=>{
+            Object.defineProperty(item, key, {
+                enumerable: true,
+                get: () => {
+                    return mds[key].call(item)
+                },
+                set: () => {
+                    //方法不能改写
+                }
+            })
+        })
+    })
 }
 
 function add(cn, data) {
