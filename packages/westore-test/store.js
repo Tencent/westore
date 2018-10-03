@@ -4,7 +4,7 @@ export default {
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    logs: [],
+    testList: [],
     b: { arr: [{ name: '数值项目1' }] },
     firstName: 'dnt',
     lastName: 'zhang',

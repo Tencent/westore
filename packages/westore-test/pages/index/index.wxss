@@ -25,3 +25,11 @@
   border:1px solid black;
   margin: 20px;
 }
+
+.pass{
+  color: green;
+}
+
+.error{
+  color: red;
+}

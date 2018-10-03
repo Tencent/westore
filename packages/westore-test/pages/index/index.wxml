@@ -1,4 +1,6 @@
 <!--index.wxml-->
 <view class="ctn">
-   手机里打开 log 面板全部为 true 代表测试通过 
+   <block wx:for="{{testList}}" wx:for-item="item">
+    <view class="{{item.r?'pass':'error'}}">{{item.d}}-{{item.r?'通过':'不通过'}}</view>
+  </block>
 </view>
