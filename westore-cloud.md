@@ -18,6 +18,42 @@
 
 Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。
 
+## 快速入门
+
+### 新增测试数据
+
+### 定义映射 Store
+
+### 扩展数据库每项方法
+
+```js
+export default {
+  data: {
+    //user 对应 db 的 collectionName
+    'user':[],
+    //其他 collection 可以继续添加
+    'product': []
+  },
+  methods:{
+    //这里可以扩展 collection 每一项的方法
+    'product':{
+      'agentString':function(){
+        return this.agent.join('-')
+      }
+    }
+  },
+  env:'test-06eb2e'
+}
+```
+
+通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图。
+
+### 拉取数据
+
+### 修改数据
+
+### 删除数据
+
 ## API
 
 ### this.store.pull(collectionName, [where])
@@ -127,29 +163,19 @@ this.update()
 this.store.remove('user', item._id)
 ```
 
-## 扩展方法
+## 原理
 
-```js
-export default {
-  data: {
-    //user 对应 db 的 collectionName
-    'user':[],
-    //其他 collection 可以继续添加
-    'product': []
-  },
-  methods:{
-    //这里可以扩展 collection 每一项的方法
-    'product':{
-      'agentString':function(){
-        return this.agent.join('-')
-      }
-    }
-  },
-  env:'test-06eb2e'
-}
+### 转 Diff Result 为数据库更新请求
+
+``` js
+diffToPushObj({ 'user[2].name': { cc: 1 }, 'user[2].age': 13, 'user[1].a.b': { xxx: 1 } })
 ```
 
-通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图。
+返回:
+
+```js
+{ 'user-2': { 'name': { 'cc': 1 }, 'age': 13 }, 'user-1': { 'a': { 'b': { 'xxx': 1 } } } }
+```
 
 ## License
 
