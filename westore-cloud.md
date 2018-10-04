@@ -1,4 +1,4 @@
-# Westore Cloud 
+# Westore Cloud - 隐形云开发
 
 ## 小程序云开发简介
 
@@ -16,7 +16,7 @@
 
 ## Westore Cloud 简介
 
-Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。
+Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。
 
 ## API
 
@@ -32,6 +32,7 @@ Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到
 | where | 不必须	  |	JSON Object  |查询条件，如查询18岁 {age : 18}	  |
 
 更多 where 的构建查询条件的 API 可以[点击这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database/query.html)。
+
 #### 返回值
 
 返回 Promise 对象的实例。
@@ -47,6 +48,84 @@ this.store.pull('user', {age: 18}).then(res => {
 })
 ```
 
+### this.store.pull()
+
+同步本地 JSON 到云数据库
+
+#### 返回值
+
+返回 Promise 对象的实例。
+
+#### 示例
+
+``` js
+this.store.data.user[0].name = 'dntzhang'
+this.store.data.product[0].address.city = '广州市'
+this.store.data.product[0].agent[1] = 'QQ'
+this.store.data.product[0].agent[2] = '腾讯云'
+this.store.push().then((res) => {
+  console.log('同步数据完成！')
+})
+```
+
+### this.store.add(collectionName, data)
+
+添加 JSON 数据到数据库
+
+#### 参数
+
+| 名称 | 是否可选  |类型|描述|
+| ------ | ------  |------  |------  |
+| collectionName | 	必须	  |	字符串	  |集合名称	  |
+| data | 必须	  |	JSON Object  |添加到数据库的数据项   |
+
+
+#### 返回值
+
+返回 Promise 对象的实例。
+
+#### 示例
+
+```js
+const user = {
+  name: 'new user' + this.store.data.user.length,
+  age: 1,
+  city: '江西',
+  gender: 2
+}
+this.store.data.user.push(user)
+this.update()
+this.store.add('user', user).then((res) => {
+  //设置_id
+  user._id = res._id
+  this.update()
+})
+```
+
+
+### this.store.remove(collectionName, id)
+
+根据 id 删除数据库中的数据
+
+#### 参数
+
+| 名称 | 是否可选  |类型|描述|
+| ------ | ------  |------  |------  |
+| collectionName | 	必须	  |	字符串	  |集合名称	  |
+| id | 必须	  |	字符串  |对应数据库中自动生成的 _id 字段   |
+
+
+#### 返回值
+
+返回 Promise 对象的实例。
+
+#### 示例
+
+```js
+const item = this.store.data.user.splice(index, 1)[0]
+this.update()
+this.store.remove('user', item._id)
+```
 
 ## License
 

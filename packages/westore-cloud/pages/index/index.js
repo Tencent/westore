@@ -65,7 +65,6 @@ create(store, {
   },
 
   addUser: function () {
-    const len = this.store.data.user.length
     const user = {
       name: 'new user' + this.store.data.user.length,
       age: 1,
@@ -77,7 +76,6 @@ create(store, {
     this.store.add('user', user).then((res) => {
       //设置_id
       user._id = res._id
-
       this.update()
     })
   }
