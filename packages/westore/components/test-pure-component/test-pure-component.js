@@ -1,6 +1,9 @@
 
-//纯组件直接使用 Component
-Component({
+import create from '../../utils/create'
+
+//纯组件直接使用 Component 或者 加上 pure : true
+create({
+  pure : true,
   /**
    * 组件的属性列表
    */
@@ -17,9 +20,9 @@ Component({
   /**
    * 组件的初始数据
    */
-  // data: {
-  //   text: { b: 123 }
-  // },
+  data: {
+    privateData: 'privateData'
+  },
 
   ready: function () {
     console.log(this.properties.text)
@@ -35,6 +38,8 @@ Component({
       // this.setData({
       //   text : rd
       // })
+      this.store.data.privateData = 'privateData2'
+      this.update()
       //从这里开始绘制一张单向数据流的图
       this.triggerEvent('random', {rd:rd})
     }
