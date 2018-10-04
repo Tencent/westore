@@ -575,6 +575,7 @@ function defineFnProp(data) {
         if (typeof fn == 'function') {
             fnMapping[key] = fn
             Object.defineProperty(globalStore.data, key, {
+                enumerable: true,
                 get: () => {
                     return fnMapping[key].call(globalStore.data)
                 },
@@ -587,7 +588,7 @@ function defineFnProp(data) {
 }
 ```
 
-通过 defineProperty 重写了属性的 get 和 set，fnMapping 存放所有 key 和函数的映射。
+通过 defineProperty 重写了属性的 get 和 set，fnMapping 存放所有 key 和函数的映射。这里一定要设置 enumerable 为 true，因为 diff 的时候需要遍历。
 
 ## License
 MIT [@dntzhang](https://github.com/dntzhang)

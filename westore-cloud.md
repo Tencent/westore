@@ -127,6 +127,30 @@ this.update()
 this.store.remove('user', item._id)
 ```
 
+## 扩展方法
+
+```js
+export default {
+  data: {
+    //user 对应 db 的 collectionName
+    'user':[],
+    //其他 collection 可以继续添加
+    'product': []
+  },
+  methods:{
+    //这里可以扩展 collection 每一项的方法
+    'product':{
+      'agentString':function(){
+        return this.agent.join('-')
+      }
+    }
+  },
+  env:'test-06eb2e'
+}
+```
+
+通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图。
+
 ## License
 
 MIT [@dntzhang](https://github.com/dntzhang)
