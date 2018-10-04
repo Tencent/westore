@@ -104,7 +104,7 @@ Westore API 只有四个, 大道至简:
 * this.update([data])   更新页面或组件，其中 data 为可选，data 的格式和 setData 一致
 * store.update([data])   更新页面或组件，在非页面非组件的 js 文件中使用
 
-纯组件建议使用小程序自带的 Component，不使用 create。
+纯组件使用小程序自带的 Component，或使用 create({ pure: true })。create的方式可以使用 update 方法，Component 方式不行。
 
 ## 使用指南
 
@@ -268,11 +268,15 @@ this.update()
 组件的显示状态由传入的 props 决定，与外界的通讯通过内部 triggerEvent 暴露的回调。
 triggerEvent 的回调函数可以改变全局状态，实现单向数据流同步所有状态给其他兄弟、堂兄、姑姑等组件。
 
-Westore里的纯组件和原生小程序一样，使用 Component 创建：
+Westore里的纯组件和原生小程序一样，使用 Component 创建或者需要使用 update 和 diff 的话，使用 create({ pure: true })：
 
 ```js
-//
-Component({
+
+import create from '../../utils/create'
+
+//纯组件直接使用 Component 或者 加上 pure : true
+create({
+  pure : true,
   /**
    * 组件的属性列表
    */
@@ -286,6 +290,13 @@ Component({
     }
   },
 
+  /**
+   * 组件的初始数据
+   */
+  data: {
+    privateData: 'privateData'
+  },
+
   ready: function () {
     console.log(this.properties.text)
   },
@@ -295,13 +306,14 @@ Component({
    */
   methods: {
     onTap: function(){
-      const rd = Math.random()
-      //从这里开始可以触发单向数据流
-      this.triggerEvent('random', {rd:rd})
+      
+      this.store.data.privateData = '成功修改 privateData'
+      this.update()
+      //从这里开始绘制一张单向数据流的图
+      this.triggerEvent('random', {rd:'成功发起单向数据流'+Math.floor( Math.random()*1000)})
     }
   }
 })
-
 ```
 
 大型项目一定会包含纯组件、业务组件。通过纯组件，可以很好理解单向数据流。
