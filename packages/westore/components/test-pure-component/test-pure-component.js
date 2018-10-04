@@ -34,14 +34,10 @@ create({
   methods: {
     onTap: function(){
       
-      const rd = Math.random()
-      // this.setData({
-      //   text : rd
-      // })
-      this.store.data.privateData = 'privateData2'
+      this.store.data.privateData = '成功修改 privateData'
       this.update()
       //从这里开始绘制一张单向数据流的图
-      this.triggerEvent('random', {rd:rd})
+      this.triggerEvent('random', {rd:'成功发起单向数据流'+Math.floor( Math.random()*1000)})
     }
   }
 })
