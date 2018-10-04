@@ -77,22 +77,13 @@ function _push(diffResult, resolve) {
 }
 
 function update(patch) {
-    let needDiff = false
-    let diffResult = patch
+    defineFnProp(globalStore.data)
     if (patch) {
         for (let key in patch) {
             updateByPath(globalStore.data, key, patch[key])
-            if (typeof patch[key] === 'object') {
-                needDiff = true
-            }
         }
-    } else {
-        needDiff = true
-    }
-    if (needDiff) {
-        diffResult = diff(globalStore.data, originData)
     } 
-    defineFnProp(globalStore.data)
+    let diffResult = diff(globalStore.data, originData)
     for (let key in globalStore.instances) {
         globalStore.instances[key].forEach(ins => {
             ins.setData.call(ins, diffResult)
