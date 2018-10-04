@@ -33,7 +33,7 @@
 | Package | 介绍  |
 | ------ | ------  |
 | westore | 	小程序演示项目	  |
-| westore-cloud  | 小程序 + 腾讯云演示项目	  |
+| westore-cloud  | 小程序 + 腾讯云演示项目(隐形云☁️)	  |
 | westore-plugin | 小程序插件开发演示项目  |
 | westore-proxy | 小程序底层使用 Proxy 演示项目	  |
 | westore-test  |  测试 westore API 的小程序  |
