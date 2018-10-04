@@ -91,9 +91,9 @@ this.update({
 })
 ```
 
-这里需要特别强调，虽然 this.update 可以兼容小程序的 this.setData 的方式传参，但是更加智能，this.update 会按需 Diff 或者 透传给 setData。原理:
+这里需要特别强调，虽然 this.update 可以兼容小程序的 this.setData 的方式传参，但是更加智能，this.update 会先 Diff 然后 setData。原理:
 
-![](./asset/update.jpg)
+![](./asset/update2.jpg)
 
 ## API
 
