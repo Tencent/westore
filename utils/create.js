@@ -35,17 +35,44 @@ export default function create(store, option) {
         Page(option)
     } else {
         const ready = store.ready
+        const pure = store.pure
         store.ready = function () {
-            this.page = getCurrentPages()[getCurrentPages().length - 1]
-            this.store = this.page.store
-            Object.assign(this.store.data, store.data)
-            defineFnProp(store.data || {})
-            this.setData.call(this, this.store.data)
-            rewriteUpdate(this)
-            this.store.instances[this.page.route].push(this)
+            if(pure){
+                this.store = { data: store.data||{} }
+                this.store.originData = store.data?JSON.parse(JSON.stringify(store.data)):{}
+                defineFnProp(store.data || {})
+                rewritePureUpdate(this)
+            }else{
+                this.page = getCurrentPages()[getCurrentPages().length - 1]
+                this.store = this.page.store
+                Object.assign(this.store.data, store.data)
+                defineFnProp(store.data || {})
+                this.setData.call(this, this.store.data)
+                rewriteUpdate(this)
+                this.store.instances[this.page.route].push(this)
+            }
             ready && ready.call(this)
         }
         Component(store)
+    }
+}
+
+function rewritePureUpdate(ctx){
+    ctx.update = function(patch){
+        const store = this.store
+        defineFnProp(store.data)
+        if (patch) {
+            for (let key in patch) {
+                updateByPath(store.data, key, patch[key])
+            }
+        } 
+        let diffResult = diff(store.data, store.originData)
+        this.setData(diffResult)
+        store.onChange && store.onChange(diffResult)
+        for (let key in diffResult) {
+            updateByPath(store.originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+        }
+        return diffResult
     }
 }
 
