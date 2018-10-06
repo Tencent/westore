@@ -67,10 +67,12 @@ function rewritePureUpdate(ctx){
             }
         } 
         let diffResult = diff(store.data, store.originData)
-        this.setData(diffResult)
-        store.onChange && store.onChange(diffResult)
-        for (let key in diffResult) {
-            updateByPath(store.originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+        if(Object.keys(diffResult).length > 0){
+            this.setData(diffResult)
+            store.onChange && store.onChange(diffResult)
+            for (let key in diffResult) {
+                updateByPath(store.originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+            }
         }
         return diffResult
     }
@@ -111,14 +113,16 @@ function update(patch) {
         }
     } 
     let diffResult = diff(globalStore.data, originData)
-    for (let key in globalStore.instances) {
-        globalStore.instances[key].forEach(ins => {
-            ins.setData.call(ins, diffResult)
-        })
-    }
-    globalStore.onChange && globalStore.onChange(diffResult)
-    for (let key in diffResult) {
-        updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+    if(Object.keys(diffResult).length > 0){
+        for (let key in globalStore.instances) {
+            globalStore.instances[key].forEach(ins => {
+                ins.setData.call(ins, diffResult)
+            })
+        }
+        globalStore.onChange && globalStore.onChange(diffResult)
+        for (let key in diffResult) {
+            updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+        }
     }
     return diffResult
 }
