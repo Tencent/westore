@@ -6,7 +6,7 @@
 
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
-- [云开发](./westore-cloud.md) 
+- [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md) 
 - [插件开发](./westore-plugin.md) 
 - [普通开发](#普通开发)
 	- [定义全局 store](#定义全局-store)
