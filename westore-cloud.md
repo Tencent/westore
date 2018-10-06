@@ -18,13 +18,24 @@
 
 Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。
 
+## Westore Cloud 特性
+
+* 小程序直连数据库
+* 数据库数据项函数扩展
+* 极简的 API(pull push add remove)
+* 只需要一种编程语言(javascript)编写前端、后端、mongodb 
+* 开发者只需专注数据和数据的逻辑(即store)，隐形的数据库同步功能
+* 做到无延迟的设计(先更新本地刷新视图、再sync db、最后 diff 本地更新视图)
+
 ## 快速入门
 
-### 新增测试数据
+### 新建集合
+
+![](./asset/create-coll.jpg)
 
 ### 定义映射 Store
 
-### 扩展数据库每项方法
+安装上面建立的集合名称一一对应建立好 store 的 data:
 
 ```js
 export default {
@@ -32,6 +43,48 @@ export default {
     //user 对应 db 的 collectionName
     'user':[],
     //其他 collection 可以继续添加
+    'product': []
+  },
+  env:'test-06eb2e'
+}
+```
+
+上面的 env 对应云控制台的环境 ID:
+
+![](./asset/update2.jpg)
+
+### 新增测试数据
+
+通过 add 方法往集合 user 添加数据:
+
+```js
+this.store.add('user', {
+  name: 'dntzhang',
+  city: '深圳',
+  age: 22,
+  gender: 1
+}).then((res) => { })
+```
+
+通过 add 方法往集合 product 添加数据:
+
+```js
+this.store.add('product', {
+  address:{
+    province:'广东省',
+    city:'深圳市',
+  }
+})
+```
+
+![](./asset/update2.jpg)
+
+### 扩展数据库每项方法
+
+```js
+export default {
+  data: {
+    'user':[],
     'product': []
   },
   methods:{
@@ -50,9 +103,40 @@ export default {
 
 ### 拉取数据
 
+```js
+this.store.pull('user').then(res => {
+  this.store.data.user = res.data
+  this.update()
+})
+```
+
 ### 修改数据
 
+```js
+this.store.data.user[0].name = 'dntzhang' + Math.floor(Math.random() * 100)
+this.store.push().then((res) => {
+  console.log('成功更新云数据库')
+})
+```
+
+`push` 方法等于 update local + update cloud。所以不仅本地视图会刷新，云数据库也会同步更新，更新回调在 then 里执行。
+
+支持精准更新深层的嵌套属性，如:
+
+```js
+this.store.data.product[0].address.city = '深圳市'
+this.store.data.product[0].agent[1] = '微信支付'
+this.store.data.product[0].agent[2] = '腾讯云'
+this.store.push()
+```
+
 ### 删除数据
+
+```js
+const item = this.store.data.user.splice(index, 1)[0]
+this.update() //更新本地数据和视图
+this.store.remove('user', item._id)  //同步到云数据库
+```
 
 ## API
 
