@@ -18,7 +18,7 @@
 
 ## Westore Cloud 简介
 
-Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。架构图如下所示:
+Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。架构图如下所示:
 
 ![](./asset/westore-cloud.jpg)
 
@@ -28,7 +28,7 @@ Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到
 
 * 小程序直连数据库
 * 数据库数据项函数扩展
-* 极简的 API(pull push add remove)
+* 极简的 API 设计 (pull push add remove)
 * 只需要一种编程语言(javascript)编写前端、后端、mongodb 
 * 开发者只需专注数据和数据的逻辑(即store)，隐形的数据库同步功能
 * 无延迟的设计(先更新本地刷新视图、再sync db、最后 diff 本地更新视图)
@@ -116,6 +116,27 @@ this.store.pull('user').then(res => {
 })
 ```
 
+### 绑定数据到视图
+
+```jsx
+<view class="container">
+   <view class="title" >用户信息</view>
+   <view>姓名:{{user[0].name}}</view>
+   <view>年龄:{{user[0].age}}</view>
+   <view>城市:{{user[0].city}}</view>
+   <view>性别:{{user[0].gender===1?'男':'女'}}</view>
+    <view class="title" >产品(测试深层属性绑定和更新)</view>
+   <view>省:{{product[0].address.province}}</view>
+   <view>市:{{product[0].address.city}}</view>
+    <view>代理商:{{product[0].agentString}}</view>
+   <view class='split'></view>
+   <user-list></user-list>
+   <view>
+    <button ontap="addUser">新增 User</button>
+   </view>
+</view>
+```
+
 ### 修改数据
 
 ```js
@@ -130,11 +151,16 @@ this.store.push().then((res) => {
 支持精准更新深层的嵌套属性，如:
 
 ```js
-this.store.data.product[0].address.city = '深圳市'
-this.store.data.product[0].agent[1] = '微信支付'
+this.store.data.product[0].address.city = '广州市'
+this.store.data.product[0].agent[0] = '微信'
+this.store.data.product[0].agent[1] = 'QQ'
 this.store.data.product[0].agent[2] = '腾讯云'
 this.store.push()
 ```
+
+更新后:
+
+![](./asset/db.jpg)
 
 ### 删除数据
 
@@ -174,7 +200,7 @@ this.store.pull('user', {age: 18}).then(res => {
 })
 ```
 
-### this.store.pull()
+### this.store.push()
 
 同步本地 JSON 到云数据库
 
