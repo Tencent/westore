@@ -7,7 +7,9 @@
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
 - [API](#api)
-- [使用指南](#使用指南)
+- [插件开发](./westore-plugin.md) 
+- [云开发](./westore-cloud.md) 
+- [普通开发](#普通开发)
 	- [定义全局 store](#定义全局-store)
   - [创建页面](#创建页面)
   - [绑定数据](#绑定数据)
@@ -19,8 +21,6 @@
   - [纯组件](#纯组件)
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
-- [插件开发](./westore-plugin.md) 
-- [云开发](./westore-cloud.md) 
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
@@ -106,7 +106,7 @@ Westore API 只有四个, 大道至简:
 
 纯组件使用小程序自带的 Component，或使用 create({ pure: true })。create的方式可以使用 update 方法，Component 方式不行。
 
-## 使用指南
+## 普通开发
 
 ### 定义全局 store
 
