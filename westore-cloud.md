@@ -72,18 +72,19 @@ this.store.add('user', {
 }).then((res) => { })
 ```
 
+![](./asset/db.jpg)
+
 通过 add 方法往集合 product 添加数据:
 
 ```js
 this.store.add('product', {
-  address:{
+  address: {
     province:'广东省',
     city:'深圳市',
-  }
+  },
+  agent: [ '微信支付', '微信搜一搜', '微信读书']
 })
 ```
-
-![](./asset/db.jpg)
 
 ### 扩展数据库每项方法
 
@@ -97,6 +98,7 @@ export default {
     //这里可以扩展 collection 每一项的方法
     'product':{
       'agentString':function(){
+        //this.agent 对应 product 集合的 agent字段
         return this.agent.join('-')
       }
     }
@@ -105,7 +107,11 @@ export default {
 }
 ```
 
-通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图。
+通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图，比如展示本地第一条数据的 agentString:
+
+```jsx
+<view>{{product[0].agentString}}<view>
+```
 
 ### 拉取数据
 
