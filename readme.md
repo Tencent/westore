@@ -1,6 +1,6 @@
 # Westore - 微信小程序解决方案
 
-> 做世界上最小最强的小程序框架 - [100多行代码](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/create.js)搞定全局状态管理、跨页通讯和插件开发
+> [1KB javascript](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/create.js)覆盖状态管理、跨页通讯、插件开发和云数据库开发
 
 ---
 
