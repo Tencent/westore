@@ -16,7 +16,11 @@
 
 ## Westore Cloud 简介
 
-Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。
+Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到数据库的存在(隐形云)，只需要专注于本地数据、本地数据逻辑和本地数据的流动，通过简单的 pull、push、add 和 remove 同步本地数据库和云数据库。数据库相关的官方文档可以[点这里](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/database.html)。架构图如下所示:
+
+![](./asset/westore-cloud.jpg)
+
+典型的 Data First 架构设计，小型项目可以去掉 Models 和 Adapter 两大模块。
 
 ## Westore Cloud 特性
 
