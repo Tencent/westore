@@ -51,7 +51,7 @@ export default {
 
 上面的 env 对应云控制台的环境 ID:
 
-![](./asset/update2.jpg)
+![](./asset/env-id.jpg)
 
 ### 新增测试数据
 
@@ -77,7 +77,7 @@ this.store.add('product', {
 })
 ```
 
-![](./asset/update2.jpg)
+![](./asset/db.jpg)
 
 ### 扩展数据库每项方法
 
