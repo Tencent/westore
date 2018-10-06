@@ -160,7 +160,7 @@ this.store.push()
 
 更新后:
 
-![](./asset/db.jpg)
+![](./asset/update-test.jpg)
 
 ### 删除数据
 
