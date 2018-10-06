@@ -25,7 +25,7 @@ Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到
 * 极简的 API(pull push add remove)
 * 只需要一种编程语言(javascript)编写前端、后端、mongodb 
 * 开发者只需专注数据和数据的逻辑(即store)，隐形的数据库同步功能
-* 做到无延迟的设计(先更新本地刷新视图、再sync db、最后 diff 本地更新视图)
+* 无延迟的设计(先更新本地刷新视图、再sync db、最后 diff 本地更新视图)
 
 ## 快速入门
 
