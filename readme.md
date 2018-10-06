@@ -70,7 +70,7 @@
 
 使用完 westore 之后:
 
-![westore](./asset/westore.png)
+![westore](./asset/westore2.png)
 
 上面两种方式也可以混合使用。
 
