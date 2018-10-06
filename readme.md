@@ -6,9 +6,8 @@
 
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
-- [API](#api)
-- [插件开发](./westore-plugin.md) 
 - [云开发](./westore-cloud.md) 
+- [插件开发](./westore-plugin.md) 
 - [普通开发](#普通开发)
 	- [定义全局 store](#定义全局-store)
   - [创建页面](#创建页面)
@@ -21,6 +20,7 @@
   - [纯组件](#纯组件)
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
+- [API](#api)  
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
