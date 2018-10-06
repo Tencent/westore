@@ -29,34 +29,22 @@ export default function create(store, option) {
 }
 
 function update(patch){
-        let needDiff = false
-        let diffResult = patch
+        defineFnProp(globalStore.data)
         if (patch) {
             for (let key in patch) {
                 updateByPath(globalStore.data, key, patch[key])
-                if (typeof patch[key] === 'object') {
-                    needDiff = true
-                }
             }
-        } else {
-            needDiff = true
         }
-        if (needDiff) {
-            diffResult = diff(globalStore.data, originData)
-        }else{
-            Object.keys(fnMapping).forEach(k =>{
-                diffResult[k] = globalStore.data[k]
+        let diffResult = diff(globalStore.data, originData)
+        if(Object.keys(diffResult).length > 0){
+            globalStore.instances.forEach(ins => {
+                ins.setData.call(ins, diffResult)
             })
+            globalStore.onChange && globalStore.onChange(diffResult)
+            for (let key in diffResult) {
+                updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+            }
         }
-        defineFnProp(globalStore.data)
-        globalStore.instances.forEach(ins => {
-            ins.setData.call(ins, diffResult)
-        })
-        globalStore.onChange && globalStore.onChange(diffResult)
-        for (let key in diffResult) {
-            updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
-        }
-    
 }
 
 function rewriteUpdate(ctx) {
@@ -81,6 +69,7 @@ function defineFnProp(data) {
         if (typeof fn == 'function') {
             fnMapping[key] = fn
             Object.defineProperty(globalStore.data, key, {
+                enumerable: true,
                 get: () => {
                     return fnMapping[key].call(globalStore.data)
                 },
