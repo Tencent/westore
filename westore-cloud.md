@@ -1,4 +1,4 @@
-# Westore Cloud - 隐形云，NoBackEnd，NoSql，NoDatabase
+# Westore Cloud - 隐形云，NoBackEnd，NoSql，HiddenDB
 
 > 好的设计便是感觉不到设计的存在
 
