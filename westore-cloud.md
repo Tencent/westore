@@ -267,6 +267,8 @@ diffToPushObj({ 'user[2].name': { cc: 1 }, 'user[2].age': 13, 'user[1].a.b': { x
 { 'user-2': { 'name': { 'cc': 1 }, 'age': 13 }, 'user-1': { 'a': { 'b': { 'xxx': 1 } } } }
 ```
 
+### 未完待续....
+
 ## License
 
 MIT [@dntzhang](https://github.com/dntzhang)
