@@ -56,6 +56,7 @@
 * this.update 兼容 setData 同样的语法
 * this.update 比原生 setData 的性能更优，更加智能
 * Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
+* Westore 集成了腾讯云开发
 
 总结下小程序的痛点:
 
@@ -103,8 +104,9 @@ Westore API 只有四个, 大道至简:
 * create(option)        创建组件
 * this.update([data])   更新页面或组件，其中 data 为可选，data 的格式和 setData 一致
 * store.update([data])   更新页面或组件，在非页面非组件的 js 文件中使用
+* store.onChange = fn   监听 store data 的变化回调，一般可在里面写一些上报或监控数据变化的其他公共逻辑
 
-纯组件使用小程序自带的 Component，或使用 create({ pure: true })。create的方式可以使用 update 方法，Component 方式不行。
+纯组件使用小程序自带的 Component，或使用 `create({ pure: true })`。create的方式可以使用 update 方法，Component 方式不行。
 
 ## 普通开发
 
