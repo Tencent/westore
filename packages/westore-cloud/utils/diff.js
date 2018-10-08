@@ -14,12 +14,14 @@ function syncKeys(current, pre) {
     const rootCurrentType = type(current)
     const rootPreType = type(pre)
     if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
-        for (let key in pre) {
-            const currentValue = current[key]
-            if (currentValue === undefined) {
-                current[key] = null
-            } else {
-                syncKeys(currentValue, pre[key])
+        if(Object.keys(current).length >= Object.keys(pre).length){
+            for (let key in pre) {
+                const currentValue = current[key]
+                if (currentValue === undefined) {
+                    current[key] = null
+                } else {
+                    syncKeys(currentValue, pre[key])
+                }
             }
         }
     } else if (rootCurrentType == ARRAYTYPE && rootPreType == ARRAYTYPE) {
@@ -36,7 +38,7 @@ function _diff(current, pre, path, result) {
     const rootCurrentType = type(current)
     const rootPreType = type(pre)
     if (rootCurrentType == OBJECTTYPE) {
-        if (rootPreType != OBJECTTYPE) {
+        if (rootPreType != OBJECTTYPE || Object.keys(current).length < Object.keys(pre).length) {
             setResult(result, path, current)
         } else {
             for (let key in current) {
@@ -61,7 +63,7 @@ function _diff(current, pre, path, result) {
                         }
                     }
                 } else if (currentType == OBJECTTYPE) {
-                    if (preType != OBJECTTYPE) {
+                    if (preType != OBJECTTYPE || Object.keys(currentValue).length < Object.keys(preValue).length) {
                         setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
                     } else {
                         for (let subKey in currentValue) {
