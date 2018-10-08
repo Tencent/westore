@@ -193,6 +193,12 @@ this.store.data.user.push(user)
 //优先更新本地视图
 this.update() 
 //增加到云数据库
+this.store.add('user', user)
+```
+
+如果新增的条数据后续需要修改且同步到云数据库需要设置 _id，即最后一行代码改成:
+
+```js
 this.store.add('user', user).then((res) => {
   //设置_id，方便后续修改进行 push
   user._id = res._id
