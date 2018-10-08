@@ -51,7 +51,7 @@ Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到
 export default {
   data: {
     //user 对应 db 的 collectionName
-    'user':[],
+    'user': [],
     //其他 collection 可以继续添加
     'product': []
   },
