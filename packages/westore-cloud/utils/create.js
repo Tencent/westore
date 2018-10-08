@@ -67,6 +67,9 @@ function rewritePureUpdate(ctx){
             }
         } 
         let diffResult = diff(store.data, store.originData)
+        if(Object.keys(diffResult)[0] == ''){
+            diffResult = diffResult['']
+        }
         if(Object.keys(diffResult).length > 0){
             this.setData(diffResult)
             store.onChange && store.onChange(diffResult)
@@ -113,6 +116,9 @@ function update(patch) {
         }
     } 
     let diffResult = diff(globalStore.data, originData)
+    if(Object.keys(diffResult)[0] == ''){
+        diffResult = diffResult['']
+    }
     if(Object.keys(diffResult).length > 0){
         for (let key in globalStore.instances) {
             globalStore.instances[key].forEach(ins => {
