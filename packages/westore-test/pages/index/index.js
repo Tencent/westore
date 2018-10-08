@@ -11,7 +11,7 @@ create(store, {
             diff(
                 { a: 1, b: 2 },
                 { a: 2, b: 2, c: 3 }),
-            { 'a': 1, 'c': null })
+            { "": { a: 1, b: 2 } })
         this.store.data.testList.push({ d: 'Diff', r: r })
 
         r = deepEqual(
@@ -35,6 +35,13 @@ create(store, {
             { 'a': [1, 2, 3] })
         this.store.data.testList.push({ d: 'Diff', r: r })
 
+        r = deepEqual(
+            diff(
+                { a: {} },
+                { a: { b: 1, c: 2 } }),
+            { 'a': {}})
+        this.store.data.testList.push({ d: 'Diff', r: r })
+        
         r = deepEqual(
             create.diffToPushObj({ 'user[2].name': 'dnt', 'user[2].age': 13 }),
             { 'user-2': { 'name': 'dnt', 'age': 13 } }
