@@ -114,7 +114,7 @@ export default {
 通过上面的扩展方法，在遍历 product 表的每一项时，可以直接使用 agentString 属性绑定到视图，比如展示本地第一条数据的 agentString:
 
 ```jsx
-<view>{{product[0].agentString}}<view>
+<view>{{product[0].agentString}}</view>
 ```
 
 ### 拉取数据
