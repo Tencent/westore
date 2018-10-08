@@ -180,6 +180,28 @@ this.update() //更新本地数据和视图
 this.store.remove('user', item._id)  //同步到云数据库
 ```
 
+## 新增数据
+
+```js
+const user = {
+  name: 'new user' + this.store.data.user.length,
+  age: 1,
+  city: '江西',
+  gender: 2
+}
+this.store.data.user.push(user)
+//优先更新本地视图
+this.update() 
+//增加到云数据库
+this.store.add('user', user).then((res) => {
+  //设置_id，方便后续修改进行 push
+  user._id = res._id
+  this.update()
+})
+```
+
+增加改查完整的 DEMO 可以[点击这里](https://github.com/dntzhang/westore/tree/master/packages/westore-cloud)。
+
 ## API
 
 ### this.store.pull(collectionName, [where])
