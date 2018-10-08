@@ -180,7 +180,7 @@ this.update() //更新本地数据和视图
 this.store.remove('user', item._id)  //同步到云数据库
 ```
 
-## 新增数据
+### 新增数据
 
 ```js
 const user = {
