@@ -265,36 +265,78 @@ this.update()
 
 ### 纯组件
 
+这里说的组件便是自定义组件，使用原生小程序的开发格式如下:
 
-常见纯组件由很多，如 tip、alert、dialog、pager、日历等，与业务数据无直接耦合关系。
+```js
+
+Component({
+  properties: { },
+
+  data: { },
+
+  methods: { }
+})
+```
+
+使用 Westore 之后:
+
+```js
+import create from '../../utils/create'
+
+create({
+  properties: { },
+
+  data: { },
+
+  methods: { }
+})
+```
+
+看着差别不大，但是区别：
+
+* Component 的方式使用 setData 更新视图
+* create 的方式直接更改 store.data 然后调用 update
+* create 的方式可以使用函数属性，Component 不可以，如：
+
+```js
+export default {
+  data: {
+    firstName: 'dnt',
+    lastName: 'zhang',
+    fullName:function(){
+      return this.firstName + this.lastName
+    }
+  }
+}
+```
+
+绑定到视图:
+
+```jsx
+<view>{{fullName}}</view>
+```
+
+有一些组件区别于业务组件，叫纯组件。如 tip、alert、dialog、pager、日历等，与业务数据无直接耦合关系。
 组件的显示状态由传入的 props 决定，与外界的通讯通过内部 triggerEvent 暴露的回调。
-triggerEvent 的回调函数可以改变全局状态，实现单向数据流同步所有状态给其他兄弟、堂兄、姑姑等组件。
+triggerEvent 的回调函数可以改变全局状态，实现单向数据流同步所有状态给其他兄弟、堂兄、姑姑等组件或者其他页面。
 
-Westore里的纯组件和原生小程序一样，使用 Component 创建或者需要使用 update 和 diff 的话，使用 create({ pure: true })：
+Westore里可以使用 `create({ pure: true })` 创建纯组件（当然也可以直接使用 Component），比如 ：
 
 ```js
 
 import create from '../../utils/create'
 
-//纯组件直接使用 Component 或者 加上 pure : true
 create({
   pure : true,
-  /**
-   * 组件的属性列表
-   */
+  
   properties: {
     text: {
       type: String,
       value: '',
-      observer(newValue, oldValue) {
-        console.log(newValue, oldValue)
-      }
+      observer(newValue, oldValue) { }
     }
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     privateData: 'privateData'
   },
@@ -303,22 +345,29 @@ create({
     console.log(this.properties.text)
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     onTap: function(){
-      
       this.store.data.privateData = '成功修改 privateData'
       this.update()
-      //从这里开始绘制一张单向数据流的图
-      this.triggerEvent('random', {rd:'成功发起单向数据流'+Math.floor( Math.random()*1000)})
+      this.triggerEvent('random', {rd:'成功发起单向数据流' + Math.floor( Math.random()*1000)})
     }
   }
 })
 ```
 
-大型项目一定会包含纯组件、业务组件。通过纯组件，可以很好理解单向数据流。
+需要注意的是，加上 `pure : true` 之后就是纯组件，组件的 data 不会被合并到全局的 store.data 上。 
+
+组件区分业务组件和纯组件，他们的区别如下：
+
+* 业务组件与业务数据紧耦合，换一个项目可能该组件就用不上，除非非常类似的项目
+* 业务组件通过 store 获得所需参数，通过更改 store 与外界通讯
+* 业务组件也可以通过 props 获得所需参数，通过 triggerEvent 与外界通讯
+* 纯组件与业务数据无关，可移植和复用
+* 纯组件只能通过 props 获得所需参数，通过 triggerEvent 与外界通讯
+
+大型项目一定会包含纯组件、业务组件。通过纯组件，可以很好理解单向数据流:
+
+![data-flow](./asset/data-flow2.jpg)
 
 ### 调试
 
