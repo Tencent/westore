@@ -323,7 +323,7 @@ this.store.remove('user', item._id)
 
 ## 原理
 
-### 转 Diff Result 为数据库更新请求
+### JSON Diff Result 转为数据库更新请求
 
 ``` js
 diffToPushObj({ 'user[2].name': { cc: 1 }, 'user[2].age': 13, 'user[1].a.b': { xxx: 1 } })
@@ -334,6 +334,8 @@ diffToPushObj({ 'user[2].name': { cc: 1 }, 'user[2].age': 13, 'user[1].a.b': { x
 ```js
 { 'user-2': { 'name': { 'cc': 1 }, 'age': 13 }, 'user-1': { 'a': { 'b': { 'xxx': 1 } } } }
 ```
+
+其中，'user-2'.split('-') 之后可以得到DB的集合名user，数字 2 代表本地数据第三条。
 
 ### 未完待续....
 
