@@ -26,7 +26,11 @@ Westore Cloud 在基于小程序云的数据库能力，让开发者感知不到
 
 ![](./asset/westore-cloud.jpg)
 
-典型的 Data First 架构设计，小型项目可以去掉 Models 和 Adapter 两大模块。
+典型的 Data First 架构设计，中小型项目可以去掉 Models 和 Adapter 两大模块。可以与 Model first 的架构对比:
+
+![](./asset/model-first.jpg)
+
+Model first 的架构里，如果不需要持久化存储，可以去掉 Database，只剩下 Models。Models 与渲染无关，专注于模型的抽象与模型之间的逻辑，具体是渲染到 Web、安卓、IOS 还是 Flash 或者 WPF 统统不属于 Models 需要操心的问提。
 
 ## Westore Cloud 特性
 
