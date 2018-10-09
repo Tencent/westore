@@ -37,12 +37,12 @@ export default function create(store, option) {
         const ready = store.ready
         const pure = store.pure
         store.ready = function () {
-            if(pure){
-                this.store = { data: store.data||{} }
-                this.store.originData = store.data?JSON.parse(JSON.stringify(store.data)):{}
+            if (pure) {
+                this.store = { data: store.data || {} }
+                this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
                 defineFnProp(store.data || {})
                 rewritePureUpdate(this)
-            }else{
+            } else {
                 this.page = getCurrentPages()[getCurrentPages().length - 1]
                 this.store = this.page.store
                 Object.assign(this.store.data, store.data)
@@ -57,20 +57,20 @@ export default function create(store, option) {
     }
 }
 
-function rewritePureUpdate(ctx){
-    ctx.update = function(patch){
+function rewritePureUpdate(ctx) {
+    ctx.update = function (patch) {
         const store = this.store
         defineFnProp(store.data)
         if (patch) {
             for (let key in patch) {
                 updateByPath(store.data, key, patch[key])
             }
-        } 
+        }
         let diffResult = diff(store.data, store.originData)
-        if(Object.keys(diffResult)[0] == ''){
+        if (Object.keys(diffResult)[0] == '') {
             diffResult = diffResult['']
         }
-        if(Object.keys(diffResult).length > 0){
+        if (Object.keys(diffResult).length > 0) {
             this.setData(diffResult)
             store.onChange && store.onChange(diffResult)
             for (let key in diffResult) {
@@ -100,6 +100,13 @@ function _push(diffResult, resolve) {
         const arr = path.split('-')
         const id = globalStore.data[arr[0]][parseInt(arr[1])]._id
         const obj = objs[path]
+        if (globalStore.methods && globalStore.methods[arr[0]]) {
+            Object.keys(globalStore.methods[arr[0]]).forEach(key => {
+                if (obj.hasOwnProperty(key)) {
+                    delete obj[key]
+                }
+            })
+        }
         globalStore.db.collection(arr[0]).doc(id).update({
             data: obj
         }).then((res) => {
@@ -114,12 +121,12 @@ function update(patch) {
         for (let key in patch) {
             updateByPath(globalStore.data, key, patch[key])
         }
-    } 
+    }
     let diffResult = diff(globalStore.data, originData)
-    if(Object.keys(diffResult)[0] == ''){
+    if (Object.keys(diffResult)[0] == '') {
         diffResult = diffResult['']
     }
-    if(Object.keys(diffResult).length > 0){
+    if (Object.keys(diffResult).length > 0) {
         for (let key in globalStore.instances) {
             globalStore.instances[key].forEach(ins => {
                 ins.setData.call(ins, diffResult)
@@ -169,17 +176,17 @@ function updateByPath(origin, path, value) {
 
 function pull(cn, where) {
     return new Promise(function (resolve) {
-        globalStore.db.collection(cn).where(where || {}).get().then(res=>{
+        globalStore.db.collection(cn).where(where || {}).get().then(res => {
             extend(res, cn)
             resolve(res)
         })
     })
 }
 
-function extend(res, cn){
+function extend(res, cn) {
     res.data.forEach(item => {
-        const mds =  globalStore.methods[cn]
-        mds && Object.keys(mds).forEach(key=>{
+        const mds = globalStore.methods[cn]
+        mds && Object.keys(mds).forEach(key => {
             Object.defineProperty(item, key, {
                 enumerable: true,
                 get: () => {
@@ -200,7 +207,7 @@ function add(cn, data) {
 function remove(cn, id) {
     return globalStore.db.collection(cn).doc(id).remove()
 }
-//测试深度嵌套的字段
+
 function diffToPushObj(diffResult) {
     const result = {}
     Object.keys(diffResult).forEach(key => {
@@ -208,7 +215,7 @@ function diffToPushObj(diffResult) {
     })
     return result
 }
-//console.error(diffToPushObj({'user[2].name':{cc:1},'user[2].age':13,'user[1].a.b':{xxx:1}}))
+
 function diffItemToObj(path, value, result) {
     const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
     const obj = {}
