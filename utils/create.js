@@ -4,10 +4,14 @@ let originData = null
 let globalStore = null
 let fnMapping = {}
 
+const OBJECTTYPE = '[object Object]'
+
 export default function create(store, option) {
-    if (arguments.length === 2) {
+    let updatePath = null
+    if (arguments.length === 2) {   
         if (option.data && Object.keys(option.data).length > 0) {
-            Object.assign(store.data, option.data)
+            updatePath = getUpdatePath(option.data)
+            syncValues(store.data, option.data)
         }
         if (!originData) {
             originData = JSON.parse(JSON.stringify(store.data))
@@ -27,6 +31,7 @@ export default function create(store, option) {
         defineFnProp(store.data)
         option.onLoad = function (e) {
             this.store = store
+            this._updatePath = updatePath
             rewriteUpdate(this)
             store.instances[this.route] = []
             store.instances[this.route].push(this)
@@ -45,7 +50,8 @@ export default function create(store, option) {
             } else {
                 this.page = getCurrentPages()[getCurrentPages().length - 1]
                 this.store = this.page.store
-                Object.assign(this.store.data, store.data)
+                this._updatePath = getUpdatePath(store.data)
+                syncValues(this.store.data, store.data)
                 defineFnProp(store.data || {})
                 this.setData.call(this, this.store.data)
                 rewriteUpdate(this)
@@ -55,6 +61,38 @@ export default function create(store, option) {
         }
         Component(store)
     }
+}
+
+function syncValues(from, to){
+    Object.keys(to).forEach(key=>{
+        to[key] = from[key]
+    })
+}
+
+function getUpdatePath(data){
+    const result = {}
+    dataToPath(data, result)
+    return result
+}
+
+function dataToPath(data, result){
+    Object.keys(data).forEach(key => {
+        result[key] = true
+        const type = Object.prototype.toString.call(data[key])
+        if(type === OBJECTTYPE){
+            _dataToPath(data[key], key, result)
+        } 
+    })
+}
+
+function _dataToPath(data, path, result){
+    Object.keys(data).forEach(key => {
+        result[path+'.'+key] = true
+        const type = Object.prototype.toString.call(data[key])
+        if(type === OBJECTTYPE){
+            _dataToPath(data[key], path+'.'+key, result)
+        } 
+    })
 }
 
 function rewritePureUpdate(ctx) {
@@ -129,7 +167,9 @@ function update(patch) {
     if (Object.keys(diffResult).length > 0) {
         for (let key in globalStore.instances) {
             globalStore.instances[key].forEach(ins => {
-                ins.setData.call(ins, diffResult)
+                if(globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
+                    ins.setData.call(ins, diffResult)
+                }
             })
         }
         globalStore.onChange && globalStore.onChange(diffResult)
@@ -138,6 +178,30 @@ function update(patch) {
         }
     }
     return diffResult
+}
+
+function needUpdate(diffResult, updatePath){
+    for(let keyA in diffResult){
+        if(updatePath[keyA]){
+            return true
+        }
+        for(let keyB in updatePath){
+            if(includePath(keyA, keyB)){
+                return true
+            }
+        }
+    }
+    return false
+}
+
+function includePath(pathA, pathB){
+    if(pathA.indexOf(pathB)===0){
+        const next = pathA.substr(pathB.length, 1)
+        if(next === '['||next === '.'){
+            return true
+        }
+    }
+    return false
 }
 
 function defineFnProp(data) {
