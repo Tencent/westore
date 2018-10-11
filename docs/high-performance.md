@@ -60,7 +60,7 @@ create({
 
 纯组件的 data 是完全属于自己，和全局 store.data 没有任何关系，通过 props 接收外界传入参数，通过 triggerEvent 和外界通讯。
 
-![](../asset/update2.jpg)
+![](../asset/data-flow2.jpg)
 
 ## 按需更新
 
