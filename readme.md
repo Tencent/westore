@@ -128,11 +128,34 @@ export default {
   },
   logMotto: function () {
     console.log(this.data.motto)
-  }
+  },
+  //默认 false，为 true 会无脑更新所有页面和组件
+  //updateAll: true
 }
 ```
 
-你不需要在页面和组件上再声明 data 属性。如果申明了也没关系，会被 Object.assign 覆盖到 store.data 上。后续只需修改 this.store.data 便可。
+页面和组件上同样需要声明依赖的 data，这样 westore 会按需局部更新。如 Page 的 data：
+
+```js
+data: {
+  motto: null,
+  userInfo: null,
+  hasUserInfo: null,
+  canIUse: null,
+  b: { arr: [ ] },
+  firstName: null,
+  lastName: null,
+  pureProp: null
+}
+```
+
+页面和组件上声明的 data 的值会被 store 上的值覆盖掉。所以页面和组件默认值在 store.data 上标记，而不是在组件和页面的 data。纯组件在组件内部的 data 定义默认值。所以归纳一下：
+
+* store.data 用来列出所有属性和默认值
+* 组件和页面的 data 用来列出依赖的 store.data 的属性 (westore会记录path)，按需更新
+* 如果小程序页面和组件很少，可以 updateAll 设置成 true，并且组件和页面不需要声明 data，也就不会按需更新
+* 纯组件的 data 和 store.data 没有关系，所有其 data 用来列出所有属性和默认值
+
 比起原生小程序增强的功能是提供了 data 函数属性，比如上面的 fullName，在小程序 WXML 直接绑定：
 
 ```jsx

@@ -1,8 +1,8 @@
 <view class="ctn">
     <view>
-        <text> Hello Component!</text>
+        <text> Hello Component!{{abc}}</text>
     </view>
     <view>
-        <text>【{{pure}}】 from Pure Component!</text>
+        <text>【{{pureProp}}】 from Pure Component!</text>
     </view>
 </view>

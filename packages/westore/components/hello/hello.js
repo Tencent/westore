@@ -14,7 +14,8 @@ create({
    * 组件的初始数据
    */
   data: {
-    a: { b: 123 }
+    abc : '',
+    pureProp: ''
   },
 
   ready: function () {
@@ -22,11 +23,10 @@ create({
     //   console.log(info)
     // }
 
-    setTimeout(() => {
-      this.store.data.motto = 'Hello Store'
-      this.store.data.a.b = 1234
-      this.update()
-    }, 2000)
+    // setTimeout(() => {
+    //   this.store.data.abc = 'efg'
+    //   this.update()
+    // }, 2000)
   },
   /**
    * 组件的方法列表

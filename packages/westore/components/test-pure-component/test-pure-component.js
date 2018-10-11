@@ -8,7 +8,7 @@ create({
    * 组件的属性列表
    */
   properties: {
-    text: {
+    pureProp: {
       type: String,
       value: '',
       observer(newValue, oldValue) {
@@ -25,7 +25,7 @@ create({
   },
 
   ready: function () {
-    console.log(this.properties.text)
+    //console.log(this.properties.pureProp)
   },
 
   /**

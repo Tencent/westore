@@ -11,6 +11,17 @@ create(store, {
     })
   },
 
+  data: {
+    motto: null,
+    userInfo: null,
+    hasUserInfo: null,
+    canIUse: null,
+    b: { arr: [ ] },
+    firstName: null,
+    lastName: null,
+    pureProp: null
+  },
+
   onShow() {
     this.update()
   },
@@ -74,7 +85,7 @@ create(store, {
     }, 10000)
 
     setTimeout(() => {
-      this.store.data.pure = '成功修改 Pure Component'
+      this.store.data.pureProp = '成功修改 Pure Component prop'
       this.update()
     }, 12000)
   },
@@ -86,7 +97,7 @@ create(store, {
     this.update()
   },
   onRandom:function(evt){
-    this.store.data.pure = evt.detail.rd
+    this.store.data.pureProp = evt.detail.rd
     this.update()
   }
 })

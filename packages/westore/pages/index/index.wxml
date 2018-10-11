@@ -16,5 +16,5 @@
   </view>
   <view>FullName: {{fullName}}</view>
   <hello></hello>
-  <test-pure-component bind:random="onRandom" text="{{pure}}"></test-pure-component>
+  <test-pure-component bind:random="onRandom" pureProp="{{pureProp}}"></test-pure-component>
 </view>
