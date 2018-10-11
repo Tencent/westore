@@ -171,7 +171,6 @@ function _dataToPath(data, path, result) {
 转换之后的值会挂载在页面或组件的实例下，用来校验需要还是不需要更新视图:
 
 ```js
-//TODO 按需更新？待优化？
 for (let key in globalStore.instances) {
     globalStore.instances[key].forEach(ins => {
         if(globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
