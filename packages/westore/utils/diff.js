@@ -91,13 +91,8 @@ function _diff(current, pre, path, result) {
 }
 
 function setResult(result, k, v) {
-    const t = type(v)
-    if (t != FUNCTIONTYPE) {
-        //if (t != OBJECTTYPE && t != ARRAYTYPE) {
+    if (type(v) != FUNCTIONTYPE) {
         result[k] = v
-        // } else {
-        //     result[k] = JSON.parse(JSON.stringify(v))
-        // }
     }
 }
 
