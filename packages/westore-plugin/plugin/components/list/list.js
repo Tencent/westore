@@ -11,6 +11,11 @@ create(store, {
       }
     }
   },
+  data:{
+      list: [],
+      firstName: null,
+      lastName: null
+  },
   attached: function () {
     //获取插件上声明传递过来的属性
     console.log(this.properties.authKey)
