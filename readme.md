@@ -104,6 +104,7 @@ Westore API 只有四个, 大道至简:
 * create(option)        创建组件
 * this.update([data])   更新页面或组件，其中 data 为可选，data 的格式和 setData 一致
 * store.update([data])   更新页面或组件，在非页面非组件的 js 文件中使用
+* store.method(path, fn)   更新或扩展函数属性，注意这里不能直接赋值的方式修改函数属性，需要使用 store.method
 * store.onChange = fn   监听 store data 的变化回调，一般可在里面写一些上报或监控数据变化的其他公共逻辑
 
 纯组件使用小程序自带的 Component，或使用 `create({ pure: true })`。create的方式可以使用 update 方法，Component 方式不行。
@@ -166,6 +167,7 @@ data: {
 * 组件和页面的 data 用来列出依赖的 store.data 的属性 (westore会记录path)，按需更新
 * 如果小程序页面和组件很少，可以 updateAll 设置成 true，并且组件和页面不需要声明 data，也就不会按需更新
 * 纯组件的 data 和 store.data 没有关系，所有其 data 用来列出所有属性和默认值
+* globalData 里声明的 path，只要修改了对应 path 的值，就会刷新所有页面和组件
 
 比起原生小程序增强的功能是提供了 data 函数属性，比如上面的 fullName，在小程序 WXML 直接绑定：
 
