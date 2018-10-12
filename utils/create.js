@@ -4,7 +4,9 @@ let originData = null
 let globalStore = null
 let fnMapping = {}
 
+const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
+const FUNCTIONTYPE = '[object Function]'
 
 export default function create(store, option) {
     let updatePath = null
@@ -24,11 +26,12 @@ export default function create(store, option) {
             store.remove = remove
             store.originData = originData
             store.env && initCloud(store.env)
+            extendStoreMethod(store)
         }
         getApp().globalData && (getApp().globalData.store = store)
         option.data = store.data
         const onLoad = option.onLoad
-        defineFnProp(store.data)
+        walk(store.data)
         option.onLoad = function (e) {
             this.store = store
             this._updatePath = updatePath
@@ -45,14 +48,14 @@ export default function create(store, option) {
             if (pure) {
                 this.store = { data: store.data || {} }
                 this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
-                defineFnProp(store.data || {})
+                walk(store.data || {})
                 rewritePureUpdate(this)
             } else {
                 this.page = getCurrentPages()[getCurrentPages().length - 1]
                 this.store = this.page.store
                 this._updatePath = getUpdatePath(store.data)
                 syncValues(this.store.data, store.data)
-                defineFnProp(store.data || {})
+                walk(store.data || {})
                 this.setData.call(this, this.store.data)
                 rewriteUpdate(this)
                 this.store.instances[this.page.route].push(this)
@@ -98,7 +101,7 @@ function _dataToPath(data, path, result){
 function rewritePureUpdate(ctx) {
     ctx.update = function (patch) {
         const store = this.store
-        defineFnProp(store.data)
+        //defineFnProp(store.data)
         if (patch) {
             for (let key in patch) {
                 updateByPath(store.data, key, patch[key])
@@ -154,7 +157,7 @@ function _push(diffResult, resolve) {
 }
 
 function update(patch) {
-    defineFnProp(globalStore.data)
+    //defineFnProp(globalStore.data)
     if (patch) {
         for (let key in patch) {
             updateByPath(globalStore.data, key, patch[key])
@@ -164,10 +167,11 @@ function update(patch) {
     if (Object.keys(diffResult)[0] == '') {
         diffResult = diffResult['']
     }
+    const updateAll = matchGlobalData(diffResult)
     if (Object.keys(diffResult).length > 0) {
         for (let key in globalStore.instances) {
             globalStore.instances[key].forEach(ins => {
-                if(globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
+                if(updateAll || globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
                     ins.setData.call(ins, diffResult)
                 }
             })
@@ -178,6 +182,20 @@ function update(patch) {
         }
     }
     return diffResult
+}
+
+function matchGlobalData(diffResult) {
+    for (let keyA in diffResult) {
+        if (globalStore.globalData.indexOf(keyA) > -1) {
+            return true
+        }
+        for (let i = 0, len = globalStore.globalData.length; i < len; i++) {
+            if (includePath(keyA, globalStore.globalData[i])) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 function needUpdate(diffResult, updatePath){
@@ -202,24 +220,6 @@ function includePath(pathA, pathB){
         }
     }
     return false
-}
-
-function defineFnProp(data) {
-    Object.keys(data).forEach(key => {
-        const fn = data[key]
-        if (typeof fn == 'function') {
-            fnMapping[key] = fn
-            Object.defineProperty(globalStore.data, key, {
-                enumerable: true,
-                get: () => {
-                    return fnMapping[key].call(globalStore.data)
-                },
-                set: (value) => {
-                    fnMapping[key] = value
-                }
-            })
-        }
-    })
 }
 
 function rewriteUpdate(ctx) {
@@ -304,4 +304,89 @@ function diffItemToObj(path, value, result) {
     }
     const key = arr[0] + '-' + arr[1]
     result[key] = Object.assign(result[key] || {}, obj)
+}
+
+function extendStoreMethod() {
+    globalStore.method = function (path, fn) {
+        fnMapping[path] = fn
+        let ok = getObjByPath(path)
+        Object.defineProperty(ok.obj, ok.key, {
+            enumerable: true,
+            get: () => {
+                return fnMapping[path].call(globalStore.data)
+            },
+            set: () => {
+                console.warn('Please using store.method to set method prop of data!')
+            }
+        })
+    }
+}
+
+function getObjByPath(path) {
+    const arr = path.replace(/]/g, '').replace(/\[/g, '.').split('.')
+    const len = arr.length
+    if (len > 1) {
+        let current = globalStore.data[arr[0]]
+        for (let i = 1; i < len - 1; i++) {
+            current = current[arr[i]]
+        }
+        return { obj: current, key: arr[len - 1] }
+    } else {
+        return { obj: globalStore.data, key: arr[0] }
+    }
+}
+
+function walk(data) {
+    Object.keys(data).forEach(key => {
+        const obj = data[key]
+        const tp = type(obj)
+        if (tp == FUNCTIONTYPE) {
+            setProp(key, obj)
+        } else if (tp == OBJECTTYPE) {
+            Object.keys(obj).forEach(subKey => {
+                _walk(obj[subKey], key + '.' + subKey)
+            })
+
+        } else if (tp == ARRAYTYPE) {
+            obj.forEach((item, index) => {
+                _walk(item, key + '[' + index + ']')
+            })
+
+        }
+    })
+}
+
+function _walk(obj, path) {
+    const tp = type(obj)
+    if (tp == FUNCTIONTYPE) {
+        setProp(path, obj)
+    } else if (tp == OBJECTTYPE) {
+        Object.keys(obj).forEach(subKey => {
+            _walk(obj[subKey], path + '.' + subKey)
+        })
+
+    } else if (tp == ARRAYTYPE) {
+        obj.forEach((item, index) => {
+            _walk(item, path + '[' + index + ']')
+        })
+
+    }
+}
+
+function setProp(path, fn) {
+    const ok = getObjByPath(path)
+    fnMapping[path] = fn
+    Object.defineProperty(ok.obj, ok.key, {
+        enumerable: true,
+        get: () => {
+            return fnMapping[path].call(globalStore.data)
+        },
+        set: () => {
+            console.warn('Please using store.method to set method prop of data!')
+        }
+    })
+}
+
+function type(obj) {
+    return Object.prototype.toString.call(obj)
 }
