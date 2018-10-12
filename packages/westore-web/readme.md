@@ -9,29 +9,31 @@ npm run test   //测试
 
 目前除了 template，其余基本都支持，不支持的欢迎反馈或 PR。
 
-举个例子:
+举个99乘法表的例子:
 
 ```js
-var compile = require('../scripts/index')
-
-var wxml1 = `
+compile(`
 <view wx:for="{{[1, 2, 3, 4, 5, 6, 7, 8, 9]}}" wx:for-item="i">
   <view wx:for="{{[1, 2, 3, 4, 5, 6, 7, 8, 9]}}" wx:for-item="j">
     <view wx:if="{{i <= j}}">
       {{i}} * {{j}} = {{i * j}}
     </view>
   </view>
-</view>
-`
+</view>`)
+```
 
-console.log(compile(wxml1) === 
-`function render(){
-  return h('view',{},[1,2,3,4,5,6,7,8,9].map((i,index)=>{
-        h('view',{},[1,2,3,4,5,6,7,8,9].map((j,index)=>{
-        i<=j&&h('view',{},[\`\${i} * \${j} = \${i * j}\`])
+编译之后：
+
+```js
+function render() {
+  return (
+    h('view', {}, [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i, index) => {
+      h('view', {}, [1, 2, 3, 4, 5, 6, 7, 8, 9].map((j, index) => {
+        i <= j && h('view', {}, [`${i} * ${j} = ${i * j}`])
       }))
-      })) 
-}`)
+    }))
+  )
+}
 ```
 
 完成的测试用例[点击这里](https://github.com/dntzhang/westore/blob/master/packages/westore-web/test/index.js)
