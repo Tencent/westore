@@ -171,7 +171,17 @@ import create from '../../utils/create'
 const app = getApp()
 
 create(store, {
-
+  //只是用来给 westore 生成依赖 path 局部更新
+  data: {
+    motto: null,
+    userInfo: null,
+    hasUserInfo: null,
+    canIUse: null,
+    b: { arr: [ ] },
+    firstName: null,
+    lastName: null,
+    pureProp: null
+  },
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.store.data.userInfo = app.globalData.userInfo
