@@ -37,7 +37,7 @@
 | westore-plugin | 小程序插件开发演示项目  |
 | westore-proxy | 小程序底层使用 Proxy 演示项目	  |
 | westore-test  |  测试 westore API 的小程序  |
-| westore-web  |  小程序开发 Web 的项目(规划中..未提交))  |
+| westore-web  |  小程序开发 Web 的项目(规划中..只提交了 WXML 编译器))  |
 
 ## 前言
 
