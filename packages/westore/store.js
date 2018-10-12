@@ -5,7 +5,12 @@ export default {
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     logs: [],
-    b: { arr: [{ name: '数值项目1' }] },
+    b: { 
+      arr: [{ name: '数值项目1' }] ,
+      fnTest:function(){
+        return this.motto.split('').reverse().join('')
+      }
+    },
     firstName: 'dnt',
     lastName: 'zhang',
     fullName: function () {
