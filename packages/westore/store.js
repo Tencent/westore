@@ -7,6 +7,7 @@ export default {
     logs: [],
     b: { 
       arr: [{ name: '数值项目1' }] ,
+      //深层节点也支持函数属性
       fnTest:function(){
         return this.motto.split('').reverse().join('')
       }
