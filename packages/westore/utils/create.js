@@ -164,10 +164,11 @@ function update(patch) {
     if (Object.keys(diffResult)[0] == '') {
         diffResult = diffResult['']
     }
+    const updateAll = matchGlobalData(diffResult)
     if (Object.keys(diffResult).length > 0) {
         for (let key in globalStore.instances) {
             globalStore.instances[key].forEach(ins => {
-                if(globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
+                if(updateAll || globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
                     ins.setData.call(ins, diffResult)
                 }
             })
@@ -178,6 +179,20 @@ function update(patch) {
         }
     }
     return diffResult
+}
+
+function matchGlobalData(diffResult) {
+    for (let keyA in diffResult) {
+        if (globalStore.globalData.indexOf(keyA) > -1) {
+            return true
+        }
+        for (let i = 0, len = globalStore.globalData.length; i < len; i++) {
+            if (includePath(keyA, globalStore.globalData[i])) {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 function needUpdate(diffResult, updatePath){

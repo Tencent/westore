@@ -8,11 +8,14 @@ export default {
     b: { arr: [{ name: '数值项目1' }] },
     firstName: 'dnt',
     lastName: 'zhang',
-    fullName:function(){
+    fullName: function () {
       return this.firstName + this.lastName
     },
-    pureProp: 'pureProp'
+    pureProp: 'pureProp',
+    globalPropTest: 'abc', //更改我会刷新所有页面,不需要再组件和页面声明data依赖
+    ccc: { ddd: 1 } //更改我会刷新所有页面,不需要再组件和页面声明data依赖
   },
+  globalData: ['globalPropTest', 'ccc.ddd'],
   logMotto: function () {
     console.log(this.data.motto)
   },
