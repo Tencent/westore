@@ -4,6 +4,7 @@
 
 ---
 
+- [Omi 4.0](https://github.com/Tencent/omi)
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
 - [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md) 
