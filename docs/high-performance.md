@@ -103,6 +103,23 @@ data: {
 }
 ```
 
+westore 内部会生成如下更新 Path:
+
+```js
+{
+  "motto": true,
+  "userInfo": true,
+  "hasUserInfo": true,
+  "canIUse": true,
+  "b.arr": true,
+  "firstName": true,
+  "lastName": true,
+  "pureProp": true
+}
+```
+
+注意的是，你如果更新 b 是不是触发视图更新，必须更新 b.arr 或者 b.arr[index]
+
 比如 log 页面的 data:
 
 ```js
@@ -208,16 +225,43 @@ function includePath(pathA, pathB){
 }
 ```
 
-比如:
+举例说明 Path 命中规则:
 
-* diffResult key 包含 'abc[1]' , updatePath key 包含 'abc' ,执行更新！
-* 如果是 'abcd[1]' 和 'abc' , 不执行更新！
-* 如果是 abc.a.b 和 'abc.a' 执行更新！
-* 如果是 abc.a.b 和 'abc.ab' 不执行更新！
-* 如果是 abc 和 abc 执行更新!
-* ...
+| diffResult | updatePath  |是否更新|
+| ------ | ------  |------  |
+| abc | 	abc  |	更新 |	 
+| abc[1] | 	abc  |	更新 |
+| abc.a| 	abc  |	更新 |
+| abc| 	abc.a  |	不更新 |
+| abc| 	abc[1]  |	不更新 |
+| abc| 	abc[1].c  |	不更新 |
+| abc.b| 	abc.b |	更新 |
 
-诸如此类逻辑场景进行更新判断。
+以上只要命中一个条件就可以进行更新！
+
+总结就是只要等于 updatePath 或者在 updatePath 子节点下都进行更新！
+
+对应测试用例:
+
+```js
+test('needUpdate', () => {
+  const updatePath = { 'a': true, 'b.c': true, 'd[2][1]': true }
+  expect(needUpdate({ a: 1 }, updatePath)).toEqual(true)
+
+  expect(needUpdate({ 'a[1]': 1 }, updatePath)).toEqual(true)
+
+  expect(needUpdate({ 'b': 1 }, updatePath)).toEqual(false)
+
+  expect(needUpdate({ 'd[2][1]': 1 }, updatePath)).toEqual(true)
+
+  expect(needUpdate({ 'd[2][1].c': 1 }, updatePath)).toEqual(true)
+
+  expect(needUpdate({ 'd[2]': 1 }, updatePath)).toEqual(false)
+
+  expect(needUpdate({ 'b.c.d': 1 }, updatePath)).toEqual(true)
+
+})
+```
 
 ## License
 
