@@ -204,6 +204,7 @@ function update(patch) {
 }
 
 function matchGlobalData(diffResult) {
+    if(!globalStore.globalData) return false
     for (let keyA in diffResult) {
         if (globalStore.globalData.indexOf(keyA) > -1) {
             return true
