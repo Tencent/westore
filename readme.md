@@ -165,6 +165,7 @@ data: {
 页面和组件上声明的 data 的值会被 store 上的值覆盖掉。所以页面和组件默认值在 store.data 上标记，而不是在组件和页面的 data。纯组件在组件内部的 data 定义默认值。所以归纳一下：
 
 * store.data 用来列出所有属性和默认值
+* 组件的私有 data 也可以放在自身的 data 上，不用挂在 store.data 上，但是不能通过 this.update 更新，只能通过 setData
 * 组件和页面的 data 用来列出依赖的 store.data 的属性 (westore会记录path)，按需更新
 * 如果小程序页面和组件很少，可以 updateAll 设置成 true，并且组件和页面不需要声明 data，也就不会按需更新
 * 纯组件的 data 和 store.data 没有关系，所有其 data 用来列出所有属性和默认值
