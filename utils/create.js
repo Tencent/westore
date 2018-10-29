@@ -68,7 +68,9 @@ export default function create(store, option) {
 
 function syncValues(from, to){
     Object.keys(to).forEach(key=>{
-        to[key] = from[key]
+        if(from.hasOwnProperty(key)){
+            to[key] = from[key]
+        }
     })
 }
 
