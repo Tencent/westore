@@ -29,7 +29,7 @@ export default function create(store, option) {
             extendStoreMethod(store)
         }
         getApp().globalData && (getApp().globalData.store = store)
-        option.data = store.data
+        //option.data = store.data
         const onLoad = option.onLoad
         walk(store.data)
         option.onLoad = function (e) {

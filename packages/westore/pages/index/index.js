@@ -19,7 +19,8 @@ create(store, {
     b: { arr: [ ] },
     firstName: null,
     lastName: null,
-    pureProp: null
+    pureProp: null,
+    aaa: '私有数据，不放在store'
   },
 
   onShow() {
@@ -49,6 +50,11 @@ create(store, {
         }
       })
     }
+    setTimeout(() => {
+      this.setData({
+        aaa:'使用 setData 修改不放在store的私有数据'
+      })
+    }, 2000)
 
     setTimeout(() => {
       // this.store.data.motto = 'Hello Store222'

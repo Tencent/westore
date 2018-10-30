@@ -18,6 +18,7 @@
     <text class="log-item">{{index + 1}}. {{item.name}}</text>
   </view>
   <view>FullName: {{fullName}}</view>
+   <view>aaa: {{aaa}}</view>
   <hello></hello>
   <test-pure-component bind:random="onRandom" pureProp="{{pureProp}}"></test-pure-component>
 </view>
