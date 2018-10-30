@@ -15,7 +15,8 @@ create({
    */
   data: {
     abc : '',
-    pureProp: ''
+    pureProp: '',
+    bbb: '组件私有数据'
   },
 
   ready: function () {
@@ -23,10 +24,11 @@ create({
     //   console.log(info)
     // }
 
-    // setTimeout(() => {
-    //   this.store.data.abc = 'efg'
-    //   this.update()
-    // }, 2000)
+    setTimeout(() => {
+      this.setData({
+        bbb:'使用 setData 修改组件私有数据'
+      })
+    }, 2000)
   },
   /**
    * 组件的方法列表

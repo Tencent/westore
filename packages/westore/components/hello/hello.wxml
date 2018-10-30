@@ -5,4 +5,7 @@
     <view>
         <text>【{{pureProp}}】 from Pure Component!</text>
     </view>
+    <view>
+        <text>{{bbb}}</text>
+    </view>
 </view>
