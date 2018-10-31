@@ -21,7 +21,8 @@
   - [纯组件](#纯组件)
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
-- [API](#api)  
+- [API](#api)
+- [注意事项](#注意事项)  
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
@@ -507,6 +508,25 @@ export default {
 ```
 
 当然，也可以不用按照页面拆分文件或模块，也可以按照领域来拆分，这个很自由，视情况而定。
+
+## 注意事项
+
+解决元素组件状态不同步的问题，比如 switch 需要通过绑定 bindtap 去记录状态，不然无法 diff 出更改：
+
+```html
+<switch bindtap='switchTap' checked="{{value}}"></switch>
+```
+
+```js
+  switchTap() {
+    this.store.data.value = !this.store.data.value
+    this.update()
+  },
+  restore() {
+    this.store.data.value = true
+    this.update()
+  }
+```
 
 ## 原理
 
