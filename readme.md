@@ -1,7 +1,7 @@
-# Westore - 微信小程序解决方案
 
-> [1KB javascript](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/create.js)覆盖状态管理、跨页通讯、插件开发和云数据库开发
+# Westore - WeChat applet solution
 
+> [1KB javascript](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/create.js) Overrides state management, cross-page communication, plugin development, and cloud database development
 ---
 
 - [Omi 4.0![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi) - 同样是 Web Components，同样是 Path Updating
