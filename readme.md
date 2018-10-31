@@ -528,6 +528,8 @@ export default {
   }
 ```
 
+原本是用户交互状态不影响 data 的，需要特别注意同步 data 到 store.data，不然无法 diff 出 patch，多谢 @i7soft。
+
 ## 原理
 
 ```
