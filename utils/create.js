@@ -39,6 +39,8 @@ export default function create(store, option) {
             store.instances[this.route] = []
             store.instances[this.route].push(this)
             onLoad && onLoad.call(this, e)
+            syncValues(store.data, this.data)
+            this.setData(this.data)
         }
         Page(option)
     } else {
