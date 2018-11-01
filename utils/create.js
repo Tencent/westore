@@ -180,31 +180,36 @@ function _push(diffResult, resolve) {
 }
 
 function update(patch) {
-    //defineFnProp(globalStore.data)
-    if (patch) {
-        for (let key in patch) {
-            updateByPath(globalStore.data, key, patch[key])
+    return new Promise(resolve => {
+        //defineFnProp(globalStore.data)
+        if (patch) {
+            for (let key in patch) {
+                updateByPath(globalStore.data, key, patch[key])
+            }
         }
-    }
-    let diffResult = diff(globalStore.data, originData)
-    if (Object.keys(diffResult)[0] == '') {
-        diffResult = diffResult['']
-    }
-    const updateAll = matchGlobalData(diffResult)
-    if (Object.keys(diffResult).length > 0) {
-        for (let key in globalStore.instances) {
-            globalStore.instances[key].forEach(ins => {
-                if(updateAll || globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
-                    ins.setData.call(ins, diffResult)
-                }
-            })
+        let diffResult = diff(globalStore.data, originData)
+        if (Object.keys(diffResult)[0] == '') {
+            diffResult = diffResult['']
         }
-        globalStore.onChange && globalStore.onChange(diffResult)
-        for (let key in diffResult) {
-            updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+        const updateAll = matchGlobalData(diffResult)
+        let array = []
+        if (Object.keys(diffResult).length > 0) {
+            for (let key in globalStore.instances) {
+                globalStore.instances[key].forEach(ins => {
+                    if(updateAll || globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
+                        array.push( new Promise(cb => ins.setData.call(ins, diffResult, cb) ) )
+                    }
+                })
+            }
+            globalStore.onChange && globalStore.onChange(diffResult)
+            for (let key in diffResult) {
+                updateByPath(originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+            }
         }
-    }
-    return diffResult
+        Promise.all(array).then(e=>{
+            resolve(diffResult)
+        })
+    })
 }
 
 function matchGlobalData(diffResult) {
