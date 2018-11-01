@@ -138,8 +138,8 @@ export default {
       return this.firstName + this.lastName
     },
     pureProp: 'pureProp',
-    globalPropTest: 'abc', //更改我会刷新所有页面,不需要再组件和页面声明data依赖
-    ccc: { ddd: 1 } //更改我会刷新所有页面,不需要再组件和页面声明data依赖
+    globalPropTest: 'abc', //更改我会刷新所有页面,不需要在组件和页面声明data依赖
+    ccc: { ddd: 1 } //更改我会刷新所有页面,不需要在组件和页面声明data依赖
   },
   globalData: ['globalPropTest', 'ccc.ddd'],
   logMotto: function () {
