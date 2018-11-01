@@ -7,8 +7,8 @@
 - [Omi 4.0![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi) - 同样是 Web Components，同样是 Path Updating
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
-- [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md) 
-- [插件开发](./westore-plugin.md) 
+- [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md)
+- [插件开发](./westore-plugin.md)
 - [普通开发](#普通开发)
 	- [定义全局 store](#定义全局-store)
   - [创建页面](#创建页面)
@@ -22,7 +22,7 @@
   - [调试](#调试)
   - [超大型小程序最佳实践](#超大型小程序最佳实践两种方案)
 - [API](#api)
-- [注意事项](#注意事项)  
+- [注意事项](#注意事项)
 - [原理](#原理)
   - [JSON Diff](#json-diff)
   - [Update](#update)
@@ -67,7 +67,7 @@
 * 使用 this.data 可以获取内部数据和属性值，但不要直接修改它们，应使用 setData 修改
 * setData 编程体验不好，很多场景直接赋值更加直观方便
 * setData 卡卡卡慢慢慢，JsCore 和 Webview 数据对象来回传浪费计算资源和内存资源
-* 组件间通讯或跨页通讯会把程序搞得乱七八糟，变得极难维护和扩展 
+* 组件间通讯或跨页通讯会把程序搞得乱七八糟，变得极难维护和扩展
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
@@ -102,7 +102,7 @@ this.update({
 
 ## API
 
-Westore API 只有四个, 大道至简:
+Westore API 只有六个, 大道至简:
 
 * create(store, option) 创建页面
 * create(option)        创建组件
@@ -125,7 +125,7 @@ export default {
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     logs: [],
-    b: { 
+    b: {
       arr: [{ name: '数值项目1' }] ,
       //深层节点也支持函数属性
       fnTest:function(){
@@ -164,7 +164,7 @@ data: {
   pureProp: null,
   //privateProp 你也可以定义 store.data 没有的属性，该属性的变更只能通过 this.setData 进行更新视图
   privateProp: '私有数据',
-  xxxx: '私有数据2' 
+  xxxx: '私有数据2'
 }
 ```
 
@@ -235,7 +235,7 @@ create(store, {
 
 ```jsx
 <view class="container">
-   
+
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
@@ -382,7 +382,7 @@ import create from '../../utils/create'
 
 create({
   pure : true,
-  
+
   properties: {
     text: {
       type: String,
@@ -409,7 +409,7 @@ create({
 })
 ```
 
-需要注意的是，加上 `pure : true` 之后就是纯组件，组件的 data 不会被合并到全局的 store.data 上。 
+需要注意的是，加上 `pure : true` 之后就是纯组件，组件的 data 不会被合并到全局的 store.data 上。
 
 组件区分业务组件和纯组件，他们的区别如下：
 
@@ -481,7 +481,7 @@ export default {
     c: 3
   },
   bMethod: function () {
-    
+
   }
 }
 ```
@@ -618,7 +618,7 @@ this.setData({
 
 上面是官方截取的内容。使用 webstore 的 this.update 本质是先 diff，再执行一连串的 setData，所以可以保证传递的数据每次维持在最小。既然可以使得传递数据最小，所以第一点和第三点虽有违反但可以商榷。
 
-### Update 
+### Update
 
 #### 页面生命周期函数
 
