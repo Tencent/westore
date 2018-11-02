@@ -124,24 +124,28 @@ function _arrayToPath(data, path, result) {
 function rewritePureUpdate(ctx) {
     ctx.update = function (patch) {
         const store = this.store
-        //defineFnProp(store.data)
-        if (patch) {
-            for (let key in patch) {
-                updateByPath(store.data, key, patch[key])
+        const that = this
+        return new Promise(resolve => {
+            //defineFnProp(store.data)
+            if (patch) {
+                for (let key in patch) {
+                    updateByPath(store.data, key, patch[key])
+                }
             }
-        }
-        let diffResult = diff(store.data, store.originData)
-        if (Object.keys(diffResult)[0] == '') {
-            diffResult = diffResult['']
-        }
-        if (Object.keys(diffResult).length > 0) {
-            this.setData(diffResult)
-            store.onChange && store.onChange(diffResult)
-            for (let key in diffResult) {
-                updateByPath(store.originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+            let diffResult = diff(store.data, store.originData)
+            let array = []
+            if (Object.keys(diffResult)[0] == '') {
+                diffResult = diffResult['']
             }
-        }
-        return diffResult
+            if (Object.keys(diffResult).length > 0) {
+                array.push( new Promise( cb => that.setData(diffResult, cb) ) )
+                store.onChange && store.onChange(diffResult)
+                for (let key in diffResult) {
+                    updateByPath(store.originData, key, typeof diffResult[key] === 'object' ? JSON.parse(JSON.stringify(diffResult[key])) : diffResult[key])
+                }
+            }
+            Promise.all(array).then( e => resolve(diffResult) )
+        })
     }
 }
 
