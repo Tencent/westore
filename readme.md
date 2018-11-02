@@ -57,7 +57,7 @@
 * 超小的代码尺寸(包括 json diff 共100多行)
 * 尊重且顺从小程序的设计(其他转译库相当于反其道行)
 * 增强 data 数据绑定，函数属性可直接绑定到 WXML
-* this.update 兼容 setData 同样的语法
+* this.update 和 setData 语法类似，但返回一个Promise
 * this.update 比原生 setData 的性能更优，更加智能
 * Westore 专为小程序插件开发[定制了模板](https://github.com/dntzhang/westore/tree/master/packages/westore-plugin)
 * Westore 集成了腾讯云开发
@@ -93,6 +93,25 @@ this.update()
 this.update({
   motto:'Hello Westore',
   [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
+})
+```
+
+和小程序的setData不同的是回调的方式，小程序的回调为setData的第二个入参，但是update则直接返回一个Promise，并且返回的数据内有更新的数据内容。例如：
+
+``` js
+this.setData({
+  motto: 'Hello Westore'
+}, () => {
+  console.log('the motto has been set')
+})
+```
+
+被改进为
+
+``` js
+this.store.data.mottto = 'Hello Westore'
+this.update().then(diff => {
+  console.log('the motto has been set', diff)
 })
 ```
 
@@ -295,6 +314,8 @@ this.setData({
   logs: (wx.getStorageSync('logs') || []).map(log => {
     return util.formatTime(new Date(log))
   })
+}, () => {
+  console.log('setData完成了')
 })
 ```
 
@@ -304,7 +325,10 @@ this.setData({
 this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
   return util.formatTime(new Date(log))
 })
-this.update()
+this.update().then(diff => {
+  console.log('setData完成了')
+  console.log('更新内容为', diff)
+})
 ```
 
 看似一条语句变成了两条语句，但是 this.update 调用的 setData 是 diff 后的，所以传递的数据更少。
