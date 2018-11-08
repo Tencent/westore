@@ -39,7 +39,7 @@
 | westore-plugin | 小程序插件开发演示项目  |
 | westore-proxy | 小程序底层使用 Proxy 演示项目	  |
 | westore-test  |  测试 westore API 的小程序  |
-| westore-web  |  小程序开发 Web 的项目(规划中..只提交了 WXML 编译器))  |
+| westore-web  |  小程序开发 Web 的项目(已转移至 [omi-mp](https://github.com/Tencent/omi/tree/master/packages/omi-mp))  |
 
 后面考虑通过 westore-web 编译直接把小程序编译成 [omi](https://github.com/Tencent/omi) 项目。
 
