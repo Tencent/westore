@@ -5,6 +5,7 @@
 ---
 
 - [Omi 4.0![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi) - 同样是 Web Components，同样是 Path Updating
+- [omi-mp![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi/tree/master/packages/omi-mp) - 小程序开发和生成 Web
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
 - [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md)
