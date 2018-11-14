@@ -46,6 +46,7 @@ export default function create(store, option) {
     } else {
         const ready = store.ready
         const pure = store.pure
+        const componentUpdatePath = getUpdatePath(store.data)
         store.ready = function () {
             if (pure) {
                 this.store = { data: store.data || {} }
@@ -55,7 +56,7 @@ export default function create(store, option) {
             } else {
                 this.page = getCurrentPages()[getCurrentPages().length - 1]
                 this.store = this.page.store
-                this._updatePath = getUpdatePath(store.data)
+                this._updatePath = componentUpdatePath
                 syncValues(this.store.data, store.data)
                 walk(store.data || {})
                 this.setData.call(this, this.store.data)
