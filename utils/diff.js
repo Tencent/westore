@@ -38,7 +38,7 @@ function _diff(current, pre, path, result) {
     const rootCurrentType = type(current)
     const rootPreType = type(pre)
     if (rootCurrentType == OBJECTTYPE) {
-        if (rootPreType != OBJECTTYPE || Object.keys(current).length < Object.keys(pre).length) {
+        if (rootPreType != OBJECTTYPE || Object.keys(current).length < Object.keys(pre).length && path !== '') {
             setResult(result, path, current)
         } else {
             for (let key in current) {
