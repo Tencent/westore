@@ -11,10 +11,6 @@ const FUNCTIONTYPE = '[object Function]'
 export default function create(store, option) {
     let updatePath = null
     if (arguments.length === 2) {   
-        if (option.data && Object.keys(option.data).length > 0) {
-            updatePath = getUpdatePath(option.data)
-            syncValues(store.data, option.data)
-        }
         if (!originData) {
             originData = JSON.parse(JSON.stringify(store.data))
             globalStore = store
@@ -32,6 +28,12 @@ export default function create(store, option) {
         //option.data = store.data
         const onLoad = option.onLoad
         walk(store.data)
+        // 解决函数属性初始化不能显示的问题，要求必须在data中声明使用
+        // 这段代码是同步store.data到option.data，只有经过walk方法后store.data中的函数才能变成属性，才能被小程序page方法渲染
+        if (option.data && Object.keys(option.data).length > 0) {
+            updatePath = getUpdatePath(option.data)
+            syncValues(store.data, option.data)
+        }
         option.onLoad = function (e) {
             this.store = store
             this._updatePath = updatePath
