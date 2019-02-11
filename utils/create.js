@@ -44,6 +44,14 @@ export default function create(store, option) {
             syncValues(store.data, this.data)
             this.setData(this.data)
         }
+	
+	// 解决执行navigateBack或reLaunch时清除store.instances对应页面的实例
+	const onUnload = option.onUnload
+        option.onUnload = function () {
+            onUnload && onUnload.call(this)
+            store.instances[this.route] = []
+        }
+
         Page(option)
     } else {
         const ready = store.ready
