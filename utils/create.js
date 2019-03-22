@@ -10,17 +10,19 @@ const FUNCTIONTYPE = '[object Function]'
 
 export default function create(store, option) {
     let updatePath = null
-    if (arguments.length === 2) {   
+    if (arguments.length === 2) {
         if (!originData) {
-            originData = JSON.parse(JSON.stringify(store.data))
             globalStore = store
             store.instances = {}
+            store.routeStack = []
             store.update = update
             store.push = push
             store.pull = pull
             store.add = add
             store.remove = remove
-            store.originData = originData
+            store.reset = reset
+            store._originData = JSON.stringify(store.data)
+            store.originData = originData = JSON.parse(store._originData)
             store.env && initCloud(store.env)
             extendStoreMethod(store)
         }
@@ -38,18 +40,32 @@ export default function create(store, option) {
             this.store = store
             this._updatePath = updatePath
             rewriteUpdate(this)
+            if (store.instances[this.route]) {
+                store.routeStack.push(store.instances[this.route])
+            }
             store.instances[this.route] = []
             store.instances[this.route].push(this)
             onLoad && onLoad.call(this, e)
             syncValues(store.data, this.data)
             this.setData(this.data)
         }
-	
-	// 解决执行navigateBack或reLaunch时清除store.instances对应页面的实例
-	const onUnload = option.onUnload
+
+        // 解决执行navigateBack或reLaunch时清除store.instances对应页面的实例
+        const onUnload = option.onUnload
         option.onUnload = function () {
             onUnload && onUnload.call(this)
-            store.instances[this.route] = []
+            const routeIntances = store.routeStack.pop()
+            store.instances[this.route] = routeIntances || []
+        }
+
+        const onShow = option.onShow
+        option.onShow = function () {
+            onShow && onShow.call(this)
+            if (!this.firstShow) {
+                this.firstShow = true;
+                return;
+            }
+            syncValues(this.data, store.data) // 恢复store数据
         }
 
         Page(option)
@@ -76,6 +92,16 @@ export default function create(store, option) {
             ready && ready.call(this)
         }
         Component(store)
+    }
+}
+
+function reset() {
+    if (globalStore) {
+        globalStore.originData = JSON.parse(globalStore._originData)
+        globalStore.data = globalStore.originData
+        Object.keys(fnMapping).forEach(key => {
+            setProp(key, fnMapping[key])
+        })
     }
 }
 
