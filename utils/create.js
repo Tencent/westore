@@ -237,8 +237,20 @@ function update(patch) {
         if (Object.keys(diffResult).length > 0) {
             for (let key in globalStore.instances) {
                 globalStore.instances[key].forEach(ins => {
-                    if(updateAll || globalStore.updateAll || ins._updatePath && needUpdate(diffResult, ins._updatePath)){
-                        array.push( new Promise(cb => ins.setData.call(ins, diffResult, cb) ) )
+                    if(updateAll || globalStore.updateAll || ins._updatePath){
+                        // 获取需要更新的字段
+                        const needUpdatePathList = getNeedUpdatePathList(diffResult, ins._updatePath)
+                        if (needUpdatePathList.length) {
+                            const _diffResult = {}
+                            for (let _path in diffResult) {
+                                if (needUpdatePathList.includes(_path)) {
+                                    _diffResult[_path] = diffResult[_path]
+                                }
+                            }
+                            array.push( new Promise(cb => {
+                                ins.setData.call(ins, _diffResult, cb)
+                            }) )
+                        }
                     }
                 })
             }
@@ -268,18 +280,19 @@ function matchGlobalData(diffResult) {
     return false
 }
 
-function needUpdate(diffResult, updatePath){
+function getNeedUpdatePathList(diffResult, updatePath){
+    const paths = []
     for(let keyA in diffResult){
         if(updatePath[keyA]){
-            return true
+            paths.push(keyA)
         }
         for(let keyB in updatePath){
             if(includePath(keyA, keyB)){
-                return true
+                paths.push(keyA)
             }
         }
     }
-    return false
+    return paths
 }
 
 function includePath(pathA, pathB){
