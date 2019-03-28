@@ -539,7 +539,7 @@ export default {
 
 ## 注意事项
 
-解决元素组件状态不同步的问题，比如 switch 需要通过绑定 bindtap 去记录状态，不然无法 diff 出更改：
+解决元素组件状态不同步的问题，比如 switch 需要通过绑定 bindtap 去记录状态，不然无法 diff 出更改：
 
 ```html
 <switch bindtap='switchTap' checked="{{value}}"></switch>
