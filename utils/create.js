@@ -218,7 +218,7 @@ function update(patch) {
                             const _diffResult = {}
                             for (let _path in diffResult) {
                                 if (needUpdatePathList.includes(_path)) {
-                                    _diffResult[_path] = diffResult[_path]
+                                    _diffResult[_path] = typeof diffResult[_path] === 'object' ? JSON.parse(JSON.stringify(diffResult[_path])) : diffResult[_path]
                                 }
                             }
                             array.push( new Promise(cb => {
