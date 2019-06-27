@@ -96,11 +96,19 @@ create(store, {
     }, 12000)
   },
 
-  getUserInfo: function (e) {
-    app.globalData.userInfo = e.detail.userInfo
-    this.store.data.userInfo = e.detail.userInfo
-    this.store.data.hasUserInfo = true
-    this.update()
+  getUserInfo: function(e) {
+    wx.getSetting({
+      success(auth_res) {
+        if (auth_res.authSetting["scope.userInfo"]) {
+          app.globalData.userInfo = e.detail.userInfo
+          store.update({
+            userInfo: e.detail.userInfo,
+            hasUserInfo: true
+          })
+        }
+      }
+    })
+
   },
   onRandom:function(evt){
     this.store.data.pureProp = evt.detail.rd
