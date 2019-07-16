@@ -91,8 +91,13 @@ function _diff(current, pre, path, result) {
 }
 
 function setResult(result, k, v) {
-    if (type(v) != FUNCTIONTYPE) {
-        result[k] = v
+    let vtype = type(v)
+    if (vtype === OBJECTTYPE) {
+    result[k] = {...v}
+    } else if (vtype === ARRAYTYPE) {
+    result[k] = [...v]
+    } else if (vtype != FUNCTIONTYPE){
+    result[k] = v
     }
 }
 
