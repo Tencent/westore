@@ -145,9 +145,6 @@ function rewritePureUpdate(ctx) {
             }
             let diffResult = diff(store.data, store.originData)
             let array = []
-            if (Object.keys(diffResult)[0] == '') {
-                diffResult = diffResult['']
-            }
             if (Object.keys(diffResult).length > 0) {
                 array.push( new Promise( cb => that.setData(diffResult, cb) ) )
                 store.onChange && store.onChange(diffResult)
