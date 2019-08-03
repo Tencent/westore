@@ -14,7 +14,7 @@ function syncKeys(current, pre) {
     const rootCurrentType = type(current)
     const rootPreType = type(pre)
     if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
-        if(Object.keys(current).length >= Object.keys(pre).length){
+        //if(Object.keys(current).length >= Object.keys(pre).length){
             for (let key in pre) {
                 const currentValue = current[key]
                 if (currentValue === undefined) {
@@ -23,7 +23,7 @@ function syncKeys(current, pre) {
                     syncKeys(currentValue, pre[key])
                 }
             }
-        }
+        //}
     } else if (rootCurrentType == ARRAYTYPE && rootPreType == ARRAYTYPE) {
         if (current.length >= pre.length) {
             pre.forEach((item, index) => {
