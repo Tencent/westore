@@ -7,6 +7,8 @@ let fnMapping = {}
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
+const { SDKVersion } = wx.getSystemInfoSync()
+const isSupportLifetimes = SDKVersion >= '2.2.3'
 
 export default function create(store, option) {
     let updatePath = null
@@ -57,31 +59,39 @@ export default function create(store, option) {
         const pure = store.pure
         const componentUpdatePath = getUpdatePath(store.data)
         let ready = null
-    	if (store.lifetimes === undefined) {
-      	    store.lifetimes = {}
-    	} else if (store.lifetimes) {
-      	    ready = store.lifetimes.ready
-    	} else {
-      	    ready = store.ready
-    	}
-    	store.lifetimes.ready = function () {
-            if (pure) {
-                this.store = { data: store.data || {} }
-                this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
-                walk(store.data || {})
-                rewritePureUpdate(this)
-            } else {
-                this.page = getCurrentPages()[getCurrentPages().length - 1]
-                this.store = this.page.store
-                this._updatePath = componentUpdatePath
-                syncValues(this.store.data, store.data)
-                walk(store.data || {})
-                this.setData.call(this, this.store.data)
-                rewriteUpdate(this)
-                this.store.instances[this.page.route].push(this)
-            }
-            ready && ready.call(this)
-        }
+		let newReady = function () {
+		  if (pure) {
+			this.store = {
+			  data: store.data || {},
+			}
+			this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
+			walk(store.data || {})
+			rewritePureUpdate(this)
+		  } else {
+			this.page = getCurrentPages()[getCurrentPages().length - 1]
+			this.store = this.page.store
+			this._updatePath = componentUpdatePath
+			syncValues(this.store.data, store.data)
+			walk(store.data || {})
+			this.setData.call(this, this.store.data)
+			rewriteUpdate(this)
+			this.store.instances[this.page.route].push(this)
+		  }
+		  ready && ready.call(this)
+		}
+		if (isSupportLifetimes) {
+		  if (store.lifetimes === undefined) {
+			store.lifetimes = {}
+		  } else if (store.lifetimes) {
+			ready = store.lifetimes.ready
+		  } else {
+			ready = store.ready
+		  }
+		  store.lifetimes.ready = newReady
+		} else {
+		  ready = store.ready
+		  store.ready = newReady
+		}
         Component(store)
     }
 }
