@@ -54,10 +54,17 @@ export default function create(store, option) {
 
         Page(option)
     } else {
-        const ready = store.ready
         const pure = store.pure
         const componentUpdatePath = getUpdatePath(store.data)
-        store.ready = function () {
+        let ready = null
+    	if (store.lifetimes === undefined) {
+      	    store.lifetimes = {}
+    	} else if (store.lifetimes) {
+      	    ready = store.lifetimes.ready
+    	} else {
+      	    ready = store.ready
+    	}
+    	store.lifetimes.ready = function () {
             if (pure) {
                 this.store = { data: store.data || {} }
                 this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
