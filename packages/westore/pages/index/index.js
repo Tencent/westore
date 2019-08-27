@@ -17,8 +17,7 @@ create(store, {
     hasUserInfo: null,
     canIUse: null,
     b: { arr: [ ] },
-    firstName: null,
-    lastName: null,
+    fullName: null,
     pureProp: null,
     aaa: '私有数据，不放在store'
   },
