@@ -7,6 +7,8 @@ let fnMapping = {}
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
+const { SDKVersion } = wx.getSystemInfoSync()
+const isSupportLifetimes = SDKVersion >= '2.2.3'
 
 export default function create(store, option) {
     let updatePath = null
@@ -54,10 +56,10 @@ export default function create(store, option) {
 
         Page(option)
     } else {
-        const ready = store.ready
         const pure = store.pure
         const componentUpdatePath = getUpdatePath(store.data)
-        store.ready = function () {
+        let ready = null
+        let newReady = function () {
             if (pure) {
                 this.store = { data: store.data || {} }
                 this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
@@ -75,6 +77,19 @@ export default function create(store, option) {
             }
             ready && ready.call(this)
         }
+	if (isSupportLifetimes) {
+	    if (store.lifetimes === undefined) {
+		store.lifetimes = {}
+	    } else if (store.lifetimes) {
+		ready = store.lifetimes.ready
+	    } else {
+		ready = store.ready
+	    }
+	    store.lifetimes.ready = newReady
+	} else {
+	    ready = store.ready
+	    store.ready = newReady
+	}
         Component(store)
     }
 }
