@@ -7,12 +7,14 @@ let fnMapping = {}
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
-const { SDKVersion } = wx.getSystemInfoSync()
-const isSupportLifetimes = SDKVersion >= '2.2.3'
 
 export default function create(store, option) {
     let updatePath = null
     if (arguments.length === 2) {   
+        if (option.data && Object.keys(option.data).length > 0) {
+            updatePath = getUpdatePath(option.data)
+            syncValues(store.data, option.data)
+        }
         if (!originData) {
             originData = JSON.parse(JSON.stringify(store.data))
             globalStore = store
@@ -46,20 +48,22 @@ export default function create(store, option) {
             syncValues(store.data, this.data)
             this.setData(this.data)
         }
-	
+
 	// 解决执行navigateBack或reLaunch时清除store.instances对应页面的实例
 	const onUnload = option.onUnload
-        option.onUnload = function () {
-            onUnload && onUnload.call(this)
-            store.instances[this.route] = []
-        }
+    option.onUnload = function () {
+        onUnload && onUnload.call(this)
+        store.instances[this.route] = []
+    }
 
         Page(option)
     } else {
+        store.lifetimes = store.lifetimes || {}
+        const ready = store.ready || store.lifetimes.ready
         const pure = store.pure
         const componentUpdatePath = getUpdatePath(store.data)
-        let ready = null
-        let newReady = function () {
+        
+        store.ready = store.lifetimes.ready = function () {
             if (pure) {
                 this.store = { data: store.data || {} }
                 this.store.originData = store.data ? JSON.parse(JSON.stringify(store.data)) : {}
@@ -77,19 +81,6 @@ export default function create(store, option) {
             }
             ready && ready.call(this)
         }
-	if (isSupportLifetimes) {
-	    if (store.lifetimes === undefined) {
-		store.lifetimes = {}
-	    } else if (store.lifetimes) {
-		ready = store.lifetimes.ready
-	    } else {
-		ready = store.ready
-	    }
-	    store.lifetimes.ready = newReady
-	} else {
-	    ready = store.ready
-	    store.ready = newReady
-	}
         Component(store)
     }
 }
