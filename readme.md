@@ -180,6 +180,7 @@ data: {
   b: { arr: [ ] },
   firstName: null,
   lastName: null,
+  fullName: null,
   pureProp: null,
   //privateProp 你也可以定义 store.data 没有的属性，该属性的变更只能通过 this.setData 进行更新视图
   privateProp: '私有数据',
@@ -220,6 +221,7 @@ create(store, {
     b: { arr: [ ] },
     firstName: null,
     lastName: null,
+    fullName: null,
     pureProp: null
   },
   onLoad: function () {
@@ -270,7 +272,8 @@ create(store, {
 </view>
 ```
 
-和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。 data 的函数属性也可以直接绑定。
+和以前的写法没有差别，直接把 `store.data` 作为绑定数据源。  
+data 的函数属性也可以直接绑定，但别忘了要在页面上声明相应的函数属性依赖。
 
 ### 更新页面
 
