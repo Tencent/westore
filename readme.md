@@ -6,7 +6,7 @@
 
 - [omip![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi/tree/master/packages/omip) - 直接使用 Omi 开发小程序！！！
 - [omix![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi/tree/master/packages/omix) - westore 进化版
-- [omi-mp![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](https://github.com/Tencent/omi/tree/master/packages/omi-mp) - 小程序开发和生成 Web
+- [dd-store](https://github.com/linjc/dd-store) - 钉钉E应用状态管理, westore 灵感衍生而来
 - [Packages 简介](#packages-简介)
 - [前言](#前言)
 - [云开发![](https://raw.githubusercontent.com/dntzhang/cax/master/asset/hot.png)](./westore-cloud.md)
