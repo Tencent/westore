@@ -47,7 +47,7 @@ function _diff(current, pre, path, result) {
                 const currentType = type(currentValue)
                 const preType = type(preValue)
                 if (currentType != ARRAYTYPE && currentType != OBJECTTYPE) {
-                    if (currentValue != pre[key]) {
+                    if (currentValue !== pre[key]) {
                         setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
                     }
                 } else if (currentType == ARRAYTYPE) {
