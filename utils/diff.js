@@ -48,26 +48,27 @@ function _diff(current, pre, path, result) {
                 const preType = type(preValue)
                 if (currentType != ARRAYTYPE && currentType != OBJECTTYPE) {
                     if (currentValue !== pre[key]) {
-                        setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
+                        setResult(result, concatPathAndKey(path, key), currentValue)
                     }
                 } else if (currentType == ARRAYTYPE) {
                     if (preType != ARRAYTYPE) {
-                        setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
+                        setResult(result, concatPathAndKey(path, key), currentValue)
                     } else {
                         if (currentValue.length < preValue.length) {
-                            setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
+                            setResult(result, concatPathAndKey(path, key), currentValue)
                         } else {
                             currentValue.forEach((item, index) => {
-                                _diff(item, preValue[index], (path == '' ? '' : path + ".") + key + '[' + index + ']', result)
+                                _diff(item, preValue[index], concatPathAndKey(path, key) + '[' + index + ']', result)
                             })
                         }
                     }
                 } else if (currentType == OBJECTTYPE) {
                     if (preType != OBJECTTYPE || Object.keys(currentValue).length < Object.keys(preValue).length) {
-                        setResult(result, (path == '' ? '' : path + ".") + key, currentValue)
+                        setResult(result, concatPathAndKey(path, key), currentValue)
                     } else {
                         for (let subKey in currentValue) {
-                            _diff(currentValue[subKey], preValue[subKey], (path == '' ? '' : path + ".") + key + '.' + subKey, result)
+                            const realPath = concatPathAndKey(path, key) + subKey.includes('.') ? `["${subKey}"]` : `.${subKey}`
+                            _diff(currentValue[subKey], preValue[subKey], realPath, result)
                         }
                     }
                 }
@@ -88,6 +89,12 @@ function _diff(current, pre, path, result) {
     } else {
         setResult(result, path, current)
     }
+}
+
+function concatPathAndKey(path, key) {
+    return key.includes('.')
+        ? path + `["${key}"]`
+        : (path == '' ? '' : path + ".") + key
 }
 
 function setResult(result, k, v) {
