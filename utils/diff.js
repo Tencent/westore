@@ -67,7 +67,7 @@ function _diff(current, pre, path, result) {
                         setResult(result, concatPathAndKey(path, key), currentValue)
                     } else {
                         for (let subKey in currentValue) {
-                            const realPath = concatPathAndKey(path, key) + subKey.includes('.') ? `["${subKey}"]` : `.${subKey}`
+                            const realPath = concatPathAndKey(path, key) + (subKey.includes('.') ? `["${subKey}"]` : `.${subKey}`)
                             _diff(currentValue[subKey], preValue[subKey], realPath, result)
                         }
                     }
