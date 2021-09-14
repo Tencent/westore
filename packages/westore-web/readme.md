@@ -1,1 +1,0 @@
-[→ 新地址](https://github.com/Tencent/omi/tree/master/packages/omi-mp)

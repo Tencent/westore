@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "查看启动日志",
-  "usingComponents": {
-    "user-list": "/components/user-list/user-list"
-  }
-}
