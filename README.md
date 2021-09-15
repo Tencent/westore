@@ -84,41 +84,86 @@ this.data.a.b[1].c = 'f'
 update(this)
 ```
 
+## 实战
 
+拿官方模板示例的页面作为例子:
 
-
-
-
-
-
-
-
-### setData 和 update 对比
-
-拿官方模板示例的 log 页面作为例子:
+欢迎页：
 
 ```js
-this.setData({
-  logs: (wx.getStorageSync('logs') || []).map(log => {
-    return util.formatTime(new Date(log))
-  })
-}, () => {
-  console.log('setData完成了')
+// index.js
+// 获取应用实例
+const app = getApp()
+const { update } = require('westore')
+
+Page({
+  data: {
+    motto: 'Hello World',
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    canIUseGetUserProfile: false,
+    canIUseOpenData: false // 如需尝试获取用户信息可改为false
+  },
+  // 事件处理函数
+  bindViewTap() {
+    wx.navigateTo({
+      url: '../logs/logs'
+    })
+  },
+  onLoad() {
+    if (wx.getUserProfile) {
+      this.data.canIUseGetUserProfile = true
+      update(this)
+    }
+  },
+  getUserProfile(e) {
+    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+    wx.getUserProfile({
+      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: (res) => {
+        console.log(res)
+        this.data.userInfo = res.userInfo
+        this.data.hasUserInfo = true
+        update(this)
+      }
+    })
+  },
+  getUserInfo(e) {
+    // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
+    console.log(e)
+    this.data.userInfo = res.userInfo
+    this.data.hasUserInfo = true
+    update(this)
+  }
 })
+
 ```
 
-使用 westore 后:
+日志页：
 
-``` js
-this.data.logs = (wx.getStorageSync('logs') || []).map(log => {
-  return util.formatTime(new Date(log))
+```js
+// logs.js
+const util = require('../../utils/util.js')
+const { update } = require('westore')
+
+Page({
+  data: {
+    logs: []
+  },
+  onLoad() {
+    this.data.logs = (wx.getStorageSync('logs') || []).map(log => {
+      return {
+        date: util.formatTime(new Date(log)),
+        timeStamp: log
+      }
+    })
+    update(this)
+  }
 })
-update(this, () => {
-  console.log('update完成了')
-})
+
+
 ```
-
-看似一条语句变成了两条语句，但是 this.update 调用的 setData 是 diff 后的，所以传递的数据更少。
 <!-- 
 ### JSON Diff
 
