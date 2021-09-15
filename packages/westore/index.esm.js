@@ -1,7 +1,7 @@
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
-const clone = require('rfdc')({ circles: true })
+const clone = require('rfdc')()
 
 export function diffData(current, previous) {
   const result = {}
