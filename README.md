@@ -164,6 +164,30 @@ Page({
 })
 ```
 
+## 组件 setData
+
+组件内的 setData 也可以使用 update 代替:
+
+```js
+const { update } = require('westore')
+
+Component({
+  data: {
+    count: 1
+  },
+  methods: {
+    plus() {
+      this.data.count++
+      update(this)
+    },
+    minus(){
+      this.data.count--
+      update(this)
+    }
+  }
+})
+```
+
 ## ts 模板构建 npm 报错
 
 报错信息:
