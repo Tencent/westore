@@ -1,6 +1,7 @@
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
+const clone = require('rfdc')({ circles: true })
 
 function diffData(current, previous) {
   const result = {}
@@ -109,7 +110,7 @@ function type(obj) {
 function update(view, callback) {
   const patch = diffData(view.data, view._westorePrevData)
   view.setData(patch, callback)
-  view._westorePrevData = JSON.parse(JSON.stringify(view.data))
+  view._westorePrevData = clone(view.data)
 }
 
 module.exports = {
