@@ -1,11 +1,14 @@
 {
   "name": "diff-data",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Diff algorithm designed for setData of mini program.",
+  "main": "index.esm.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "dntzhang",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.2.0"
+  }
 }
