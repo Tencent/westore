@@ -27,16 +27,16 @@ this.setData({
 * 后台态页面进行 setData
 
 
-### 总结下小程序的痛点
+### setData 痛点
 
 * 反直觉:使用 this.data 可以获取内部数据和属性值，但不要直接修改它们，应使用 setData 修改
 * 编程体验不好: 很多场景直接赋值更加直观方便，setData 经常要在脑海里构造 path
-* setData 卡卡卡慢慢慢，JsCore 和 Webview 数据对象来回传浪费计算资源和内存资源
+* JsCore 和 Webview 数据对象来回传浪费计算资源和内存资源
 
 
 ## 解决方案
 
-> 使用 westore 代理 setData 
+> 使用 westore 代替 setData 
 
 1. 安装
 
@@ -70,8 +70,9 @@ const { update } = require('westore')
 ## 特性
 
 * 对小程序 0 入侵
-* 超小的代码尺寸(包括 json diff 共100多行)
-* 消除 setData， 提升编程体验，赋值 > update 的编程体验更直观和符合直觉
+* 仅一个 api，即 `update` 方法
+* 未压缩仅 100 多行代码，超小的代码尺寸
+* 消除 setData， 提升编程体验，直接赋值 + update 的编程体验更直观和符合直觉
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
@@ -164,44 +165,6 @@ Page({
 
 
 ```
-<!-- 
-### JSON Diff
-
-先看一下我为 westore 专门定制开发的 [JSON Diff 库](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/diff.js) 的能力:
-
-``` js
-diff({
-    a: 1, b: 2, c: "str", d: { e: [2, { a: 4 }, 5] }, f: true, h: [1], g: { a: [1, 2], j: 111 }
-}, {
-    a: [], b: "aa", c: 3, d: { e: [3, { a: 3 }] }, f: false, h: [1, 2], g: { a: [1, 1, 1], i: "delete" }, k: 'del'
-})
-```
-
-Diff 的结果是:
-
-``` js
-{ "a": 1, "b": 2, "c": "str", "d.e[0]": 2, "d.e[1].a": 4, "d.e[2]": 5, "f": true, "h": [1], "g.a": [1, 2], "g.j": 111, "g.i": null, "k": null }
-```
-
-![diff](./asset/diff.jpg)
-
-Diff 原理:
-
-* 同步所有 key 到当前 store.data
-* 携带 path 和 result 递归遍历对比所有 key value
-
-``` js
-export default function diff(current, pre) {
-    const result = {}
-    syncKeys(current, pre)
-    _diff(current, pre, '', result)
-    return result
-}
-```
-
-同步上一轮 state.data 的 key 主要是为了检测 array 中删除的元素或者 obj 中删除的 key。
- -->
-
 ## 其他
 
 1. setData调用频率
