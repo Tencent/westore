@@ -1,8 +1,10 @@
 {
   "name": "diff-data",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Diff algorithm designed for setData of mini program.",
   "main": "index.esm.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest"
   },

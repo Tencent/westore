@@ -1,5 +1,15 @@
 const { diffData } = require('../index.common');
 
+
+test('same props', () => {
+  expect(diffData(
+    { a: 1 },
+    { a: 1 }
+  )).toStrictEqual({
+
+  })
+})
+
 test('update props', () => {
   expect(diffData(
     { a: 1 },
