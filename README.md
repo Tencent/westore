@@ -175,7 +175,7 @@ Page({
 
 修改 project.config.json，使开发者工具可以正确索引到 npm 依赖的位置：
 
-```
+```json
    "packNpmManually": true,
     "packNpmRelationList": [
       {
