@@ -1,6 +1,6 @@
 # westore - 小程序 setData 解决方案
 
-> 为简化和提速 setData 而设计
+> 为简化、提速和消灭 setData 而设计
 
 ##  背景
 
@@ -34,15 +34,42 @@ this.setData({
 * setData 卡卡卡慢慢慢，JsCore 和 Webview 数据对象来回传浪费计算资源和内存资源
 * 组件间通讯或跨页通讯会把程序搞得乱七八糟，变得极难维护和扩展
 
+## 解决方案
 
+1. 安装
+
+```
+npm i westore --save
+```
+
+2. 在小程序里构建 npm
+
+
+3. 使用
+
+```js
+const { update } = require('westore')
+
+...
+...
+  getUserInfo(e) {
+    this.data.userInfo = e.detail.userInfo
+    this.data.hasUserInfo = true
+    update(this)
+    // 等同于下面代码:
+    // this.setData({
+    //   userInfo: e.detail.userInfo,
+    //   hasUserInfo: true
+    // })
+  }
+
+```
 
 ## 特性
 
+* 对小程序 0 入侵
 * 超小的代码尺寸(包括 json diff 共100多行)
-* 提升 setData 编程体验，赋值 > diff > setData 的编程体验更好
-
-
-
+* 消除 setData， 提升编程体验，赋值 > update 的编程体验更直观和符合直觉
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
@@ -50,49 +77,19 @@ this.setData({
 
 使用完 westore 之后:
 
-![westore](./asset/westore2.png)
-
-上面两种方式也可以混合使用。
-
-可以看到，westore 不仅支持直接赋值，而且 this.update 兼容了 this.setData 的语法，但性能大大优于 this.setData，再举个例子：
-
-``` js
-this.store.data.motto = 'Hello Westore'
-this.store.data.b.arr.push({ name: 'ccc' })
-this.update()
+```js
+this.data.a.b[1].c = 'f'
+update(this)
 ```
 
-等同于
 
-``` js
-this.update({
-  motto:'Hello Westore',
-  [`b.arr[${this.store.data.b.arr.length}]`]:{name:'ccc'}
-})
-```
 
-和小程序的setData不同的是回调的方式，小程序的回调为setData的第二个入参，但是update则直接返回一个Promise，并且返回的数据内有更新的数据内容。例如：
 
-``` js
-this.setData({
-  motto: 'Hello Westore'
-}, () => {
-  console.log('the motto has been set')
-})
-```
 
-被改进为
 
-``` js
-this.store.data.mottto = 'Hello Westore'
-this.update().then(diff => {
-  console.log('the motto has been set', diff)
-})
-```
 
-这里需要特别强调，虽然 this.update 可以兼容小程序的 this.setData 的方式传参，但是更加智能，this.update 会先 Diff 然后 setData。原理:
 
-![](./asset/update2.jpg)
+
 
 ### setData 和 update 对比
 
@@ -111,17 +108,16 @@ this.setData({
 使用 westore 后:
 
 ``` js
-this.store.data.logs = (wx.getStorageSync('logs') || []).map(log => {
+this.data.logs = (wx.getStorageSync('logs') || []).map(log => {
   return util.formatTime(new Date(log))
 })
-this.update().then(diff => {
+update(this).then(diff => {
   console.log('setData完成了')
   console.log('更新内容为', diff)
 })
 ```
 
 看似一条语句变成了两条语句，但是 this.update 调用的 setData 是 diff 后的，所以传递的数据更少。
-
 
 ### JSON Diff
 
@@ -159,6 +155,27 @@ export default function diff(current, pre) {
 
 同步上一轮 state.data 的 key 主要是为了检测 array 中删除的元素或者 obj 中删除的 key。
 
+
+## 其他
+
+1. setData调用频率
+setData接口的调用涉及逻辑层与渲染层间的线程通信，通信过于频繁可能导致处理队列阻塞，界面渲染不及时而导致卡顿，应避免无用的频繁调用。
+
+得分条件：每秒调用setData的次数不超过 20 次
+
+2. setData数据大小
+由于小程序运行逻辑线程与渲染线程之上，setData的调用会把数据从逻辑层传到渲染层，数据太大会增加通信时间。
+
+得分条件：setData的数据在JSON.stringify后不超过 256KB
+
+3. 避免setData数据冗余
+setData操作会引起框架处理一些渲染界面相关的工作，一个未绑定的变量意味着与界面渲染无关，传入setData会造成不必要的性能消耗。
+
+得分条件：setData传入的所有数据都在模板渲染中有相关依赖
+
+4. Page 的 setData 函数用于将数据从逻辑层发送到视图层（异步），同时改变对应的 this.data 的值（同步）。
+
+5. Component 的 setData 是同步的操作
 
 
 ## License
