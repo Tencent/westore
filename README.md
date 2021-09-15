@@ -162,17 +162,17 @@ export default function diff(current, pre) {
 1. setData调用频率
 setData接口的调用涉及逻辑层与渲染层间的线程通信，通信过于频繁可能导致处理队列阻塞，界面渲染不及时而导致卡顿，应避免无用的频繁调用。
 
-得分条件：每秒调用setData的次数不超过 20 次
+> 每秒调用setData的次数不超过 20 次
 
 2. setData数据大小
 由于小程序运行逻辑线程与渲染线程之上，setData的调用会把数据从逻辑层传到渲染层，数据太大会增加通信时间。
 
-得分条件：setData的数据在JSON.stringify后不超过 256KB
+> setData的数据在JSON.stringify后不超过 256KB
 
 3. 避免setData数据冗余
 setData操作会引起框架处理一些渲染界面相关的工作，一个未绑定的变量意味着与界面渲染无关，传入setData会造成不必要的性能消耗。
 
-得分条件：setData传入的所有数据都在模板渲染中有相关依赖
+> setData传入的所有数据都在模板渲染中有相关依赖
 
 4. Page 的 setData 函数用于将数据从逻辑层发送到视图层（异步），同时改变对应的 this.data 的值（同步）。
 
