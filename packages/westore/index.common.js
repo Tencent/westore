@@ -2,7 +2,7 @@ const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
 
-export function diffData(current, previous) {
+function diffData(current, previous) {
   const result = {}
   if (!previous) return JSON.parse(JSON.stringify(current))
   syncKeys(current, previous)
@@ -97,4 +97,16 @@ function setResult(result, k, v) {
 
 function type(obj) {
   return Object.prototype.toString.call(obj)
+}
+
+
+function update(view, callback) {
+  const patch = diffData(view.data, view._westorePrevData)
+  view.setData(patch, callback)
+  view._westorePrevData = JSON.parse(JSON.stringify(view.data))
+}
+
+module.exports = {
+  update,
+  diffData
 }

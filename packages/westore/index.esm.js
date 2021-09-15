@@ -100,8 +100,8 @@ function type(obj) {
 }
 
 
-export function update(view) {
+export function update(view, callback) {
   const patch = diffData(view.data, view._westorePrevData)
-  view.setData(patch)
+  view.setData(patch, callback)
   view._westorePrevData = JSON.parse(JSON.stringify(view.data))
 }
