@@ -113,14 +113,13 @@ this.setData({
 this.data.logs = (wx.getStorageSync('logs') || []).map(log => {
   return util.formatTime(new Date(log))
 })
-update(this).then(diff => {
-  console.log('setData完成了')
-  console.log('更新内容为', diff)
+update(this, () => {
+  console.log('update完成了')
 })
 ```
 
 看似一条语句变成了两条语句，但是 this.update 调用的 setData 是 diff 后的，所以传递的数据更少。
-
+<!-- 
 ### JSON Diff
 
 先看一下我为 westore 专门定制开发的 [JSON Diff 库](https://github.com/dntzhang/westore/blob/master/packages/westore/utils/diff.js) 的能力:
@@ -156,7 +155,7 @@ export default function diff(current, pre) {
 ```
 
 同步上一轮 state.data 的 key 主要是为了检测 array 中删除的元素或者 obj 中删除的 key。
-
+ -->
 
 ## 其他
 
