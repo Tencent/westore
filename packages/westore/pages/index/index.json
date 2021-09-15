@@ -1,7 +1,0 @@
-{
-
-  "usingComponents": {
-    "hello": "/components/hello/hello",
-    "test-pure-component": "/components/test-pure-component/test-pure-component"
-  }
-}

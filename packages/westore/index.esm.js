@@ -98,3 +98,10 @@ function setResult(result, k, v) {
 function type(obj) {
   return Object.prototype.toString.call(obj)
 }
+
+
+export function update(view) {
+  const patch = diffData(view.data, view._westorePrevData)
+  view.setData(patch)
+  view._westorePrevData = JSON.parse(JSON.stringify(view.data))
+}

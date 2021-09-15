@@ -9,6 +9,16 @@ test('add item to array', () => {
   })
 })
 
+test('diff with null/undefined', () => {
+  expect(diffData(
+    { list: [{ a: 1 }, { a: 2 }] },
+    null
+  )).toStrictEqual({
+    list: [{ a: 1 }, { a: 2 }]
+  })
+})
+
+
 test('delete item from array', () => {
   expect(diffData(
     { list: [{ a: 1 }] },
