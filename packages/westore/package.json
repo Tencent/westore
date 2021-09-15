@@ -1,6 +1,6 @@
 {
   "name": "westore",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Better choice than setData of mini program.",
   "main": "index.esm.js",
   "module": "index.esm.js",
