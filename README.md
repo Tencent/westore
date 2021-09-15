@@ -162,9 +162,29 @@ Page({
     update(this)
   }
 })
+```
 
+## ts 模板构建 npm 报错
+
+报错信息:
+
+> 没有找到可以构建的 NPM 包，请确认需要参与构建的 npm 都在 `miniprogramRoot` 目录内，或配置 project.config.json 的 packNpmManually 和 packNpmRelationList 进行构建
+
+
+解决方案:
+
+修改 project.config.json，使开发者工具可以正确索引到 npm 依赖的位置：
 
 ```
+   "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ],
+```
+
 ## 其他
 
 1. setData调用频率
