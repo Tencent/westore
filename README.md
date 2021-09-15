@@ -1,6 +1,6 @@
 # westore - 小程序 setData 解决方案
 
-> 为高性能 setData 而设计
+> 为简化和提速 setData 而设计
 
 ##  背景
 
