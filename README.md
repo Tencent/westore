@@ -72,7 +72,7 @@ module.exports = User
 定义 user store:
 
 ```js
-const { Store, update } = require('westore')
+const { Store } = require('westore')
 const User = require('../models/user')
 
 class UserStore extends Store {
@@ -88,7 +88,7 @@ class UserStore extends Store {
       onUserInfoLoaded: () => {
         this.data.motto = this.user.motto
         this.data.userInfo = this.user.userInfo
-        update(this.views.userPage)
+        this.update('userPage')
       }
     })
   }
