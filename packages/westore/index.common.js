@@ -127,9 +127,13 @@ class Store {
 
   }
 
-  update() {
-    for (const key in this.views) {
-      update(this.views[key])
+  update(viewKey) {
+    if (viewKey) {
+      update(this.views[viewKey])
+    } else {
+      for (const key in this.views) {
+        update(this.views[key])
+      }
     }
   }
 }

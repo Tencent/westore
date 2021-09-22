@@ -1,5 +1,5 @@
 
-const { Store, update } = require('westore')
+const { Store } = require('westore')
 const Log = require('../models/log')
 
 class LogStore extends Store {
@@ -15,7 +15,7 @@ class LogStore extends Store {
   loadLogs() {
     this.log.loadLogs()
     this.data.logs = this.log.logs
-    update(this.views.logPage)
+    this.update('logPage')
   }
 }
 
