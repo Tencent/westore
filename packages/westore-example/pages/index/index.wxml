@@ -1,0 +1,18 @@
+<!-- index.wxml -->
+<view class="container">
+  <view class="userinfo">
+    <block wx:if="{{!userInfo.nickName}}">
+      <button bindtap="getUserProfile">获取头像昵称</button>
+    </block>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view>
+  <view class="usermotto">
+    <button bindtap="gotoOtherPage">去其他页面</button>
+  </view>
+</view>

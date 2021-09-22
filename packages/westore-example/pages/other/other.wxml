@@ -1,0 +1,13 @@
+<!-- logs.wxml -->
+<view class="container log-list">
+  <my-cop count="{{count}}" bind:countchanged="onCountChanged"></my-cop>
+  <view>日志数量{{logsSize}}</view>
+  <view>Todo:</view>
+  <view style="dispay: flex;">
+    <input style="background: #eee;" model:value="{{todoTitle}}" placeholder="输入todo内容" />
+    <button bindtap="addTodo">创建</button>
+  </view>
+  <block wx:for="{{todos}}" wx:key="id" wx:for-item="todo">
+    <text class="log-item">{{todo.id}}. {{todo.title}}</text>
+  </block>
+</view>

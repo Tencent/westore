@@ -1,0 +1,1 @@
+<view bind:tap="add">点击计数器：{{count}}</view>
