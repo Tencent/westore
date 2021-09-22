@@ -1,6 +1,0 @@
-<!--index.wxml-->
-<view class="ctn">
-   <block wx:for="{{testList}}" wx:for-item="item">
-    <view class="{{item.r?'pass':'error'}}">{{item.d}}-{{item.r?'通过':'不通过'}}</view>
-  </block>
-</view>
