@@ -113,7 +113,29 @@ function update(view, callback) {
   view._westorePrevData = clone(view.data)
 }
 
+
+class Store {
+  constructor() {
+    this.views = {}
+  }
+
+  bind(key, view) {
+    //设置回view的data，会有其他store的属性污染data
+    this.data = view.data
+    this.views[key] = view
+
+
+  }
+
+  update() {
+    for (const key in this.views) {
+      update(this.views[key])
+    }
+  }
+}
+
 module.exports = {
   update,
-  diffData
+  diffData,
+  Store
 }

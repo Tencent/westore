@@ -112,3 +112,22 @@ export function update(view, callback) {
   view.setData(patch, callback)
   view._westorePrevData = clone(view.data)
 }
+
+
+export class Store {
+  constructor() {
+    this.views = {}
+  }
+
+  bind(key, view) {
+    //设置回 view 的 data，不然引用地址 错误
+    this.data = view.data
+    this.views[key] = view
+  }
+
+  update() {
+    for (const key in this.views) {
+      update(this.views[key])
+    }
+  }
+}
