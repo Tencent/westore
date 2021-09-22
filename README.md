@@ -45,6 +45,8 @@ npm i westore --save
 
 3. 使用
 
+定义 user store:
+
 ```js
 const { Store, update } = require('westore')
 const User = require('../models/user')
@@ -74,6 +76,8 @@ class UserStore extends Store {
 
 module.exports = new UserStore
 ```
+
+页面使用 user store:
 
 ```js
 // index.js
