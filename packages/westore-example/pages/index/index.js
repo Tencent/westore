@@ -13,7 +13,6 @@ Page({
 
   onLoad() {
     userStore.bind('userPage', this)
-    userStore.getUserProfile()
   },
 
   getUserProfile() {
