@@ -24,4 +24,10 @@ Page({
       url: '../other/other'
     })
   },
+
+  gotoGamePage() {
+    wx.navigateTo({
+      url: '../game/game'
+    })
+  },
 })
