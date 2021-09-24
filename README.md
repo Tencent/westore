@@ -36,7 +36,7 @@ Westore 架构和 MVP 架构很相似，但是有许多不同。
 │  ├─ logs   
 │  └─ other.js  
 │
-├─ store    // 页面的数据逻辑以及 page 和 models 的桥接器
+├─ stores    // 页面的数据逻辑以及 page 和 models 的桥接器
 │  ├─ game-store.js   
 │  ├─ log-store.js      
 │  ├─ other-store.js    
@@ -121,7 +121,7 @@ module.exports = new UserStore
 ```js
 // index.js
 // 获取应用实例
-const userStore = require('../../store/user-store')
+const userStore = require('../../stores/user-store')
 
 Page({
   data: userStore.data,

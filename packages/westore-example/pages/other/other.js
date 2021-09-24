@@ -1,5 +1,5 @@
 
-const otherStore = require('../../store/other-store')
+const otherStore = require('../../stores/other-store')
 
 Page({
   data: otherStore.data,

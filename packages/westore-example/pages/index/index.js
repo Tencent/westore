@@ -1,6 +1,6 @@
 // index.js
 // 获取应用实例
-const userStore = require('../../store/user-store')
+const userStore = require('../../stores/user-store')
 
 Page({
   data: userStore.data,

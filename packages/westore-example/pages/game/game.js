@@ -1,5 +1,5 @@
 
-const gameStore = require('../../store/game-store')
+const gameStore = require('../../stores/game-store')
 
 Page({
   data: gameStore.data,

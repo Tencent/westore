@@ -1,6 +1,6 @@
 // logs.js
 
-const logStore = require('../../store/log-store')
+const logStore = require('../../stores/log-store')
 
 Page({
   data: logStore.data,
