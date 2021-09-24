@@ -26,7 +26,7 @@ export class Game {
     this.options = options || {};
 
     this.snake = new Snake();
-    this.food = [];
+    this.food = null;
     this.init();
   }
 

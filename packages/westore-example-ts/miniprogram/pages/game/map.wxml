@@ -1,6 +1,6 @@
 <view class="map">
-  <view class="p" wx:for="{{map}}" wx:for-item="row" wx:for-index="index">
-    <block wx:for="{{row}}" wx:for-item="col">
+  <view class="p" wx:for="{{map}}" wx:for-item="row" wx:for-index="index" wx:key="key">
+    <block wx:for="{{row}}" wx:for-item="col" wx:key="*this">
       <block wx:if="{{col}}">
         <view class="b s"></view>
       </block>

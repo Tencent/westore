@@ -5,7 +5,7 @@
   },
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
-  "libVersion": "2.19.2",
+  "libVersion": "2.19.5",
   "projectname": "westore-example-ts",
   "setting": {
     "urlCheck": true,
@@ -24,7 +24,7 @@
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
+    "compileHotReLoad": true,
     "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
@@ -50,6 +50,6 @@
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "appid": "wx05dd5e3c3eed8227",
+  "appid": "wxfaf6dad43f57c6bd",
   "condition": {}
 }
