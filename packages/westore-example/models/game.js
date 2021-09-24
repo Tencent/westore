@@ -1,13 +1,14 @@
 import Snake from './snake'
 
 class Game {
-  constructor() {
+  constructor(options) {
     this.map = []
     this.size = 16
     this.loop = null
     this.interval = 500
     this.paused = false
     this._preDate = Date.now()
+    this.options = options || {}
     this.init()
   }
 
@@ -30,7 +31,7 @@ class Game {
     const eating = this.eat()
     this.snake.move(eating)
     this.mark()
-
+    this.options.onTick && this.options.onTick()
   }
 
   mark() {

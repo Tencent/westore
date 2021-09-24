@@ -5,6 +5,13 @@ Page({
   data: gameStore.data,
   onLoad() {
     gameStore.bind('gamePage', this)
+    gameStore.start()
+  },
+  onHide() {
+    gameStore.stop()
+  },
+  onUnload() {
+    gameStore.stop()
   },
   turnUp() {
     gameStore.turnUp()

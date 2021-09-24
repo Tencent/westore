@@ -1,53 +1,72 @@
 import Game from '../models/game'
 const { Store } = require('westore')
 
-const game = new Game
-const { snake, map } = game
 
-game.start()
 
 class GameStore extends Store {
   constructor() {
     super()
+    this.game = new Game({
+      onTick: () => {
+        // 同步【模型数据】到【view data】
+        for (let i = 0; i < this.game.size; i++) {
+          for (let j = 0; j < this.game.size; j++) {
+            this.data.map[i][j] = this.game.map[i][j]
+          }
+        }
+        this.update('gamePage')
+      }
+    })
+    this.snake = this.game.snake
+
     this.data = {
-      map,
+      map: this.game.map,
       paused: false,
       highSpeed: false
     }
   }
 
+  start() {
+    this.game.start()
+  }
+
+  stop() {
+    this.game.stop()
+  }
+
+
   turnUp() {
-    snake.turnUp()
+    this.snake.turnUp()
   }
 
   turnRight() {
-    snake.turnRight()
+    this.snake.turnRight()
   }
 
   turnDown() {
-    snake.turnDown()
+    this.snake.turnDown()
   }
 
   turnLeft() {
-    snake.turnLeft()
+    this.snake.turnLeft()
   }
 
   pauseOrPlay = () => {
-    if (game.paused) {
-      game.play()
+    if (this.game.paused) {
+      this.game.play()
       this.data.paused = false
     } else {
-      game.pause()
+      this.game.pause()
       this.data.paused = true
     }
   }
 
   reset() {
-    game.reset()
+    this.game.reset()
   }
 
   toggleSpeed() {
-    game.toggleSpeed()
+    this.game.toggleSpeed()
     this.data.highSpeed = !this.data.highSpeed
   }
 }
