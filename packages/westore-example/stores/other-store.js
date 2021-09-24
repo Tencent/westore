@@ -13,7 +13,7 @@ class OtherStore extends Store {
       count: 18,
 
       left: 1,
-      done: 0,
+      done: 1,
       type: 'all'
     }
 
@@ -24,7 +24,6 @@ class OtherStore extends Store {
       this.data.todos = this.todo.todos
       this.update()
     })
-
 
   }
 
@@ -69,6 +68,16 @@ class OtherStore extends Store {
     for (let i = 0, len = this.data.todos.length; i < len; i++) {
       this.data.todos[i].done ? this.data.done++ : this.data.left++
     }
+  }
+
+  clearDone() {
+    this.todo.clearDone()
+    this.update()
+  }
+
+  filter(type) {
+    this.data.type = type
+    this.update()
   }
 }
 

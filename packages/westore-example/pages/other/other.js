@@ -23,5 +23,24 @@ Page({
 
   toggle(evt) {
     otherStore.toggle(evt.currentTarget.dataset.id)
+  },
+
+  filter(evt) {
+    otherStore.filter(evt.detail)
+  },
+
+  clear() {
+    wx.showModal({
+      title: '提示',
+      content: '确定清空已完成任务？',
+      success: (res) => {
+        if (res.confirm) {
+          otherStore.clearDone()
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   }
+
 })

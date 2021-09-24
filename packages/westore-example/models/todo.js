@@ -5,6 +5,10 @@ class Todo {
       id: 0,
       title: '测试',
       done: false,
+    }, {
+      id: 1,
+      title: '学习 Westore',
+      done: true,
     }]
     this.onChanges = []
   }
