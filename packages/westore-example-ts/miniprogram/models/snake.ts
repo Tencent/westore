@@ -1,10 +1,14 @@
+export type DirType = "up" | "right" | "down" | "left";
+
 export class Snake {
+  body: number[];
+  dir: DirType;
   constructor() {
     this.body = [3, 1, 2, 1, 1, 1];
     this.dir = "right";
   }
 
-  move(eating) {
+  move(eating: boolean) {
     const b = this.body;
     if (!eating) {
       b.pop();

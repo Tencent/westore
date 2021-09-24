@@ -4,4 +4,6 @@ declare module "westore" {
     bind: (key: string, view: any) => void;
     update: (viewKey?: string) => void;
   }
+
+  export function update(view: any, callback?: () => void): void;
 }

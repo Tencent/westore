@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "game-map": "/pages/game/map"
+  },
+  "navigationBarTitleText": "Westore 贪吃蛇",
+  "navigationBarBackgroundColor": "#efcc19",
+  "navigationBarTextStyle": "white"
+}

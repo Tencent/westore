@@ -1,20 +1,36 @@
-import Snake from "./snake";
+import { Snake } from "./snake";
 
-class Game {
-  constructor(options) {
+export interface GameOptions {
+  onTick: () => void;
+}
+
+export class Game {
+  map: any[];
+  size: number;
+  loopId: null | number;
+  interval: number;
+  paused: boolean;
+  _preDate: number;
+  options: GameOptions;
+
+  food: number[] | null;
+
+  snake: Snake;
+  constructor(options: GameOptions) {
     this.map = [];
     this.size = 16;
-    this.loop = null;
+    this.loopId = null;
     this.interval = 500;
     this.paused = false;
     this._preDate = Date.now();
     this.options = options || {};
+
+    this.snake = new Snake();
+    this.food = [];
     this.init();
   }
 
   init() {
-    this.snake = new Snake();
-
     for (let i = 0; i < this.size; i++) {
       const row = [];
       for (let j = 0; j < this.size; j++) {
@@ -54,7 +70,7 @@ class Game {
   }
 
   start() {
-    this.loop = setInterval(() => {
+    this.loopId = setInterval(() => {
       if (Date.now() - this._preDate > this.interval) {
         this._preDate = Date.now();
         if (!this.paused) {
@@ -65,7 +81,7 @@ class Game {
   }
 
   stop() {
-    clearInterval(this.loop);
+    this.loopId && clearInterval(this.loopId);
   }
 
   pause() {
@@ -105,6 +121,7 @@ class Game {
   }
 
   eat() {
+    if (!this.food) return false;
     for (let k = 0, len = this.snake.body.length; k < len; k += 2) {
       if (
         this.snake.body[k + 1] === this.food[1] &&
@@ -114,9 +131,10 @@ class Game {
         return true;
       }
     }
+    return false;
   }
 
-  _rd(from, to) {
+  _rd(from: number, to: number) {
     return from + Math.floor(Math.random() * (to + 1));
   }
 }
