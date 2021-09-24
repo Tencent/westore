@@ -8,7 +8,7 @@ export function diffData(current, previous) {
   if (!previous) return JSON.parse(JSON.stringify(current))
   syncKeys(current, previous)
   _diff(current, previous, '', result)
-  return result
+  return current
 }
 
 function syncKeys(current, previous) {
