@@ -22,6 +22,7 @@ class OtherStore extends Store {
 
     this.todo.subscribe(() => {
       this.data.todos = this.todo.todos
+      this.computeCount()
       this.update()
     })
 
@@ -46,20 +47,15 @@ class OtherStore extends Store {
     }
     this.todo.addTodo(this.data.todoTitle)
     this.data.todoTitle = ''
-    this.computeCount()
     this.update()
   }
 
   toggle(id) {
     this.todo.toggle(id)
-    this.computeCount()
-    this.update()
   }
 
   destroy(id) {
     this.todo.destroy(id)
-    this.computeCount()
-    this.update()
   }
 
   computeCount() {
@@ -72,7 +68,6 @@ class OtherStore extends Store {
 
   clearDone() {
     this.todo.clearDone()
-    this.update()
   }
 
   filter(type) {
