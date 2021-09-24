@@ -12,7 +12,7 @@ class OtherStore extends Store {
       todos: [],
       count: 18,
 
-      left: 0,
+      left: 1,
       done: 0,
       type: 'all'
     }
@@ -36,13 +36,29 @@ class OtherStore extends Store {
   }
 
   addTodo() {
+    if (this.data.todoTitle.trim() === '') {
+      wx.showToast({
+        title: '内容不能为空',
+        icon: 'none',
+        duration: 2000
+      })
+
+      return
+    }
     this.todo.addTodo(this.data.todoTitle)
     this.data.todoTitle = ''
+    this.computeCount()
     this.update()
   }
 
   toggle(id) {
     this.todo.toggle(id)
+    this.computeCount()
+    this.update()
+  }
+
+  destroy(id) {
+    this.todo.destroy(id)
     this.computeCount()
     this.update()
   }

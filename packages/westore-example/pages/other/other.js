@@ -17,6 +17,10 @@ Page({
     otherStore.addTodo()
   },
 
+  destroy(evt) {
+    otherStore.destroy(evt.currentTarget.dataset.id)
+  },
+
   toggle(evt) {
     otherStore.toggle(evt.currentTarget.dataset.id)
   }

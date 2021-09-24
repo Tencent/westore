@@ -11,7 +11,7 @@
         <view class="{{'todo-item' + (item.done ? ' done' : '')}}">
           <view class="toggle" data-id="{{item.id}}" bindtap="toggle"></view>
           <text>{{item.title}}</text>
-          <view class="delete" data-id="{{item.id}}" bindtap="delete"></view>
+          <view class="delete" data-id="{{item.id}}" bindtap="destroy"></view>
         </view>
       </block>
     </view>
