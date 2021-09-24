@@ -1,4 +1,4 @@
-# westore - 更好的小程序项目架构
+# Westore - 更好的小程序项目架构
 
 > 更好的小程序项目架构、分层和模块划分
 
@@ -76,7 +76,7 @@ const { update } = require('westore')
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
-![not-westore](./asset/not-westore.png)
+![not-westore](./not-westore.png)
 
 使用完 westore 之后:
 
