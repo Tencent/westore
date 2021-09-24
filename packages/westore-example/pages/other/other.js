@@ -15,5 +15,9 @@ Page({
 
   addTodo() {
     otherStore.addTodo()
+  },
+
+  toggle(evt) {
+    otherStore.toggle(evt.currentTarget.dataset.id)
   }
 })

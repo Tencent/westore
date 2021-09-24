@@ -4,7 +4,7 @@ class Todo {
     this.todos = [{
       id: 0,
       title: '测试',
-      completed: false
+      done: false,
     }]
     this.onChanges = []
   }
@@ -21,34 +21,35 @@ class Todo {
     this.todos.unshift({
       id: ++this.id,
       title: title,
-      completed: false
+      done: false
     })
     this.inform()
   }
 
-  clearCompleted() {
+  clearDone() {
     this.todos = this.todos.filter(function (todo) {
-      return !todo.completed
+      return !todo.done
     })
     this.inform()
   }
 
-  destroy(todo) {
+  destroy(id) {
     this.todos = this.todos.filter(function (candidate) {
-      return candidate !== todo
+      return candidate.id !== id
     })
     this.inform()
   }
 
   toggleAll(checked) {
     this.todos.map(function (todo) {
-      todo.completed = checked
+      todo.done = checked
     })
     this.inform()
   }
 
-  toggle(todoToToggle) {
-    todoToToggle.completed = !todoToToggle.completed
+  toggle(id) {
+    const todoToToggle = this.todos.find(todo => todo.id === id)
+    todoToToggle.done = !todoToToggle.done
     this.inform()
   }
 }

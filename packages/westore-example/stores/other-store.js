@@ -10,7 +10,11 @@ class OtherStore extends Store {
       logsSize: [],
       todoTitle: '',
       todos: [],
-      count: 18
+      count: 18,
+
+      left: 0,
+      done: 0,
+      type: 'all'
     }
 
     this.log = new Log()
@@ -32,13 +36,24 @@ class OtherStore extends Store {
   }
 
   addTodo() {
-
     this.todo.addTodo(this.data.todoTitle)
-
     this.data.todoTitle = ''
     this.update()
   }
 
+  toggle(id) {
+    this.todo.toggle(id)
+    this.computeCount()
+    this.update()
+  }
+
+  computeCount() {
+    this.data.left = 0
+    this.data.done = 0
+    for (let i = 0, len = this.data.todos.length; i < len; i++) {
+      this.data.todos[i].done ? this.data.done++ : this.data.left++
+    }
+  }
 }
 
 
