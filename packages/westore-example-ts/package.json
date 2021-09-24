@@ -1,0 +1,14 @@
+{
+  "name": "westore-example-ts",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "dependencies": {},
+  "devDependencies": {
+    "miniprogram-api-typings": "^2.8.3-1",
+    "westore": "^0.1.5"
+  }
+}

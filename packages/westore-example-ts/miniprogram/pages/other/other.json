@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "其他测试页面",
+  "usingComponents": {
+    "my-cop": "/pages/my-cop/my-cop"
+  }
+}

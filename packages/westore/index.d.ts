@@ -1,16 +1,23 @@
 interface Current {
-	key?: any;
+  key?: any;
 }
 
 interface Previous {
-	key?: any;
+  key?: any;
 }
 
 interface diffResult {
-	key?: any;
+  key?: any;
 }
 
-type WechatMiniprogramPageOrComponent = any
+type WechatMiniprogramPageOrComponent = any;
 
-export declare function diffData(current: Current, previous: Previous): diffResult;
-export declare function update(view: WechatMiniprogramPageOrComponent, callback?: () => void): void;
+export declare function diffData(
+  current: Current,
+  previous: Previous
+): diffResult;
+
+export declare function update(
+  view: WechatMiniprogramPageOrComponent,
+  callback?: () => void
+): void;
