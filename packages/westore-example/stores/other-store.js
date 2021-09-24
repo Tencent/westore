@@ -32,6 +32,9 @@ class OtherStore extends Store {
     this.data.todos = this.todo.todos
     this.log.loadLogs()
     this.data.logsSize = this.log.logs.length
+
+    this.data.type = 'all'
+    this.computeCount()
     this.update()
   }
 
