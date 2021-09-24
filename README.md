@@ -13,16 +13,22 @@
 
 ```
 ├─ models    // 业务模型实体
+│   └─ snake-game
+│       ├─ game.js
+│       └─ snake.js   
+│  
 │  ├─ log.js
 │  ├─ todo.js   
 │  └─ user.js   
 │
 ├─ pages     // 页面
+│  ├─ game
 │  ├─ index
 │  ├─ logs   
 │  └─ other.js  
 │
 ├─ store    // 页面的数据逻辑以及 page 和 models 的桥接器
+│  ├─ game-store.js   
 │  ├─ log-store.js      
 │  ├─ other-store.js    
 │  └─ user-store.js   

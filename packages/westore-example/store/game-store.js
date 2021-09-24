@@ -1,4 +1,4 @@
-import Game from '../models/game'
+import Game from '../models/snake-game/game'
 const { Store } = require('westore')
 
 
