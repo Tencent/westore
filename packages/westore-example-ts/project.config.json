@@ -5,7 +5,7 @@
   },
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
-  "libVersion": "2.15.0",
+  "libVersion": "2.19.2",
   "projectname": "westore-example-ts",
   "setting": {
     "urlCheck": true,
@@ -16,7 +16,7 @@
     "minified": true,
     "newFeature": false,
     "coverView": true,
-    "nodeModules": false,
+    "nodeModules": true,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
@@ -41,9 +41,12 @@
     "packNpmRelationList": [],
     "minifyWXSS": true,
     "disableUseStrict": false,
+    "minifyWXML": true,
     "showES6CompileOption": false,
-    "useCompilerPlugins": ["typescript", "sass"],
-    "minifyWXML": true
+    "useCompilerPlugins": [
+      "typescript",
+      "sass"
+    ]
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

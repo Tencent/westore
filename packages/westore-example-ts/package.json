@@ -1,15 +1,14 @@
 {
-  "name": "miniprogram-ts-less-quickstart",
+  "name": "westore-example-ts",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "miniprogram-api-typings": "^2.8.3-1"
+    "miniprogram-api-typings": "^2.8.3-1",
+    "westore": "^0.1.5"
   }
 }
