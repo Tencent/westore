@@ -1,10 +1,9 @@
 import { Store } from "westore";
 import { User, UserOptions } from "../models/user";
 
-class UserStore extends Store {
-  options: UserOptions | undefined
-  user: User
-  data: Pick<User, 'motto' | 'userInfo'>
+class UserStore extends Store<Pick<User, "motto" | "userInfo">> {
+  options: UserOptions | undefined;
+  user: User;
   constructor(options?: UserOptions) {
     super();
     this.options = options;
@@ -27,5 +26,5 @@ class UserStore extends Store {
   }
 }
 
-const userStore = new UserStore()
-export default userStore
+const userStore = new UserStore();
+export default userStore;

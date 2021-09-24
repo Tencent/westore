@@ -13,9 +13,9 @@
     <text class="user-motto">{{motto}}</text>
   </view>
   <view style="margin-top:10px">
-    <button bindtap="gotoPage('game')">去游戏页面</button>
+    <button bindtap="gotoGamePage">去游戏页面</button>
   </view>
   <view style="margin-top:10px">
-    <button bindtap="gotoPage('other')">去其他页面</button>
+    <button bindtap="gotoOtherPage">去其他页面</button>
   </view>
 </view>
