@@ -9,6 +9,6 @@
   "dependencies": {},
   "devDependencies": {
     "miniprogram-api-typings": "^2.8.3-1",
-    "westore": "^0.1.5"
+    "westore": "^0.1.6"
   }
 }
