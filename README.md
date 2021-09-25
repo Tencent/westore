@@ -200,7 +200,7 @@ Page({
 
 ## 贡献者
 
-<a href="https://github.com/Tencent/omi/graphs/contributors">
+<a href="https://github.com/Tencent/westore/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Tencent/westore" />
 </a>
 
