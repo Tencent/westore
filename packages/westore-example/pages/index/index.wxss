@@ -15,11 +15,11 @@
 }
 
 .usermotto {
-  margin-top: 40prx;
+  margin-top: 80rpx;
 }
 
 .btns {
-  margin-top: 100rpx;
+  margin-top: 80rpx;
 }
 
 .btns button {
