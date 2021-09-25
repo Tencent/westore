@@ -17,6 +17,7 @@
     <button bindtap="gotoOtherPage">去其他页面</button>
   </view>
   <view class="footer">
+    <image src="./github-logo.png" />
     <text user-select="true">https://github.com/Tencent/westore</text>
   </view>
 </view>
