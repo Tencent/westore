@@ -77,8 +77,12 @@ class User {
     this.onNickNameChange = onNickNameChange || function() { }
   }
 
+  checkNickName() {
+    // 省略 nickName 规则校验
+  }
+
   modifyNickName(nickName) {
-    if(nickName !== this.nickName) {
+    if(this.checkNickName(nickName) && nickName !== this.nickName) {
       this.nickName = nickName
       this.onNickNameChange(nickName)
     }
