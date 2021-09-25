@@ -131,7 +131,12 @@ Page({
   data: userStore.data,
 
   onLoad() {
-    userStore.bind('userPage', this)
+    /* 
+      也可以给 view 取名 userStore.bind('userPage', this)
+      取名之后可通过 this.update('userPage') 更新 view
+      不取名可通过 this.update() 更新 view
+    */
+    userStore.bind(this)
   },
 
   async modifyNickName(newNickName) {
