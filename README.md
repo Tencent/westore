@@ -1,10 +1,10 @@
 # Westore - 更好的小程序项目架构
 
-> 更好的小程序项目架构、分层和模块划分
+> 更好的小程序项目架构
 
-## 背景
-
-随着小程序承载的项目越来越复杂，合理的架构可以提升小程序的扩展性和维护性。把逻辑写到 Page/Component 是一种罪恶，当业务逻辑变得复杂的时候 Page/Component 会变得越来越臃肿难以维护， westore 定义了一套合理的小程序架构适用于任何复杂度的小程序，让项目底座更健壮，易维护可扩展。
+* **Object-Oriented Programming:** Westore 强制使用面向对象程序设计，起手不是直接写页面，而是职责驱动设计 (responsibility-driven design)，抽象出类和类之间的关系。
+* **Write Once, Use Anywhere(Models):** 通过面向对象分析设计出的 Models 可以表达整个业务模型，开发者移植 100% 的 Models 代码不带任何改动到其他环境，并使用其他渲染技术承载项目的 View，比如小程序WebView、Web浏览器、Canvas、WebGL
+* **Passive View:** Westore 架构下的 View 非常薄，没有参杂任何业务逻辑，只做被动改变。
 
 ![](./assets/westore-class-diagram.png)
 
@@ -16,7 +16,10 @@ Westore 架构和 MVP 架构很相似，但是有许多不同。
 * Store 非常薄，只复杂维护 View 需要的数据和桥接 View 和 Model
 * Model 非常厚，所有逻辑都部署在那里，Model 可以脱离 Store 和 View 完整表达所有业务/游戏逻辑
 
-## 解决方案
+随着小程序承载的项目越来越复杂，合理的架构可以提升小程序的扩展性和维护性。把逻辑写到 Page/Component 是一种罪恶，当业务逻辑变得复杂的时候 Page/Component 会变得越来越臃肿难以维护，每次需求变更如履薄冰， westore 定义了一套合理的小程序架构适用于任何复杂度的小程序，让项目底座更健壮，易维护可扩展。
+
+
+## 官方案例目录
 
 目录如下:
 
@@ -54,6 +57,7 @@ Westore 架构和 MVP 架构很相似，但是有许多不同。
 ```bash
 npm i westore --save
 ```
+
 安装完记得在小程序里构建 npm
 
 ### 使用
@@ -155,4 +159,4 @@ Page({
 
 ## License
 
-MIT [@dntzhang](https://github.com/dntzhang)
+MIT 
