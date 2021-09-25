@@ -1,6 +1,6 @@
 {
   "name": "westore",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Better mini program architecture.",
   "main": "index.esm.js",
   "module": "index.esm.js",

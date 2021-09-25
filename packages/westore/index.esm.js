@@ -117,16 +117,21 @@ export function update(view, callback) {
 export class Store {
   constructor() {
     this.views = {}
+    this._westoreViewId = 0
   }
 
-  bind(key, view) {
-    //设置回 view 的 data，不然引用地址 错误
-    this.data = view.data
-    this.views[key] = view
+  bind(keyOrView, view) {
+    if (arguments.length === 1) {
+      this.views[this._westoreViewId++] = keyOrView
+    } else {
+      //设置回 view 的 data，不然引用地址 错误
+      this.data = view.data
+      this.views[keyOrView] = view
+    }
   }
 
   update(viewKey) {
-    if (viewKey) {
+    if (arguments.length === 1) {
       update(this.views[viewKey])
     } else {
       for (const key in this.views) {

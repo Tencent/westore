@@ -115,6 +115,7 @@ class UserStore extends Store {
 
   modifyInputNickName(input) {
     this.data.nickName = input
+    this.update()
   }
 }
 
