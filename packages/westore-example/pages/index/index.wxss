@@ -15,5 +15,28 @@
 }
 
 .usermotto {
-  margin-top: 180px;
+  margin-top: 80rpx;
+}
+
+.btns {
+  margin-top: 80rpx;
+}
+
+.btns button {
+  margin: 15rpx;
+}
+
+.footer {
+  position: fixed;
+  bottom: 40rpx;
+  color: #888;
+  font-size: 14px;
+}
+
+.footer image {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 5px;
+  left: -5px;
 }

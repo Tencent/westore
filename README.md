@@ -148,6 +148,9 @@ Page({
 })
 ```
 
+## 官方例子
+
+<img src="./assets/mp.jpg" width="200px">
 
 
 ## License
