@@ -4,6 +4,8 @@
   "description": "Better mini program architecture.",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
+  "commonjs":"dist/index.cmd.js",
+  "minified":"dist/index.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "rollup -c",
