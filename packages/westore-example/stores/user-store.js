@@ -14,7 +14,7 @@ class UserStore extends Store {
       onUserInfoLoaded: () => {
         this.data.motto = this.user.motto
         this.data.userInfo = this.user.userInfo
-        this.update('userPage')
+        this.update()
       }
     })
   }
