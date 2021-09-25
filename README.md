@@ -198,6 +198,13 @@ Page({
 <img src="./assets/mp.jpg" width="200px">
 
 
+## 贡献者
+
+<a href="https://github.com/Tencent/omi/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Tencent/westore" />
+</a>
+
+
 ## License
 
 MIT 
