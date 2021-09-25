@@ -13,8 +13,8 @@ function diffData(current, previous) {
 
 function syncKeys(current, previous) {
   if (current === previous) return
-  const rootCurrentType = type(current)
-  const rootPreType = type(previous)
+  const rootCurrentType = getType(current)
+  const rootPreType = getType(previous)
   if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
     for (let key in previous) {
       const currentValue = current[key]
@@ -35,8 +35,8 @@ function syncKeys(current, previous) {
 
 function _diff(current, previous, path, result) {
   if (current === previous) return
-  const rootCurrentType = type(current)
-  const rootPreType = type(previous)
+  const rootCurrentType = getType(current)
+  const rootPreType = getType(previous)
   if (rootCurrentType == OBJECTTYPE) {
     if (rootPreType != OBJECTTYPE || Object.keys(current).length < Object.keys(previous).length && path !== '') {
       setResult(result, path, current)
@@ -44,8 +44,8 @@ function _diff(current, previous, path, result) {
       for (let key in current) {
         const currentValue = current[key]
         const preValue = previous[key]
-        const currentType = type(currentValue)
-        const preType = type(preValue)
+        const currentType = getType(currentValue)
+        const preType = getType(preValue)
         if (currentType != ARRAYTYPE && currentType != OBJECTTYPE) {
           if (currentValue !== previous[key]) {
             setResult(result, concatPathAndKey(path, key), currentValue)
@@ -98,12 +98,12 @@ function concatPathAndKey(path, key) {
 }
 
 function setResult(result, k, v) {
-  if (type(v) != FUNCTIONTYPE) {
+  if (getType(v) != FUNCTIONTYPE) {
     result[k] = v
   }
 }
 
-function type(obj) {
+function getType(obj) {
   return Object.prototype.toString.call(obj)
 }
 
