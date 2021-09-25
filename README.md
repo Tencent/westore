@@ -28,7 +28,7 @@ npm 相关问题参考：[小程序官方文档: npm 支持](https://developers.
 
 ## 举个例子
 
-需求是开发如下图所示的重命名 app。
+> 开发如下图所示的重命名 app
 
 <img src="./assets/rename-app.png" width="300px">
 
