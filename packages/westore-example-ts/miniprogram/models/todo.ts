@@ -9,7 +9,7 @@ export class Todo {
   todos: TodoType[];
   onChanges: any[];
   constructor() {
-    this.id = 0;
+    this.id = 1;
     this.todos = [
       {
         id: 0,
