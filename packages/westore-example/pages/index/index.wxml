@@ -12,10 +12,11 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-  <view>
+  <view class="btns">
     <button bindtap="gotoGamePage">去游戏页面</button>
-  </view>
-  <view style="margin-top:10px">
     <button bindtap="gotoOtherPage">去其他页面</button>
+  </view>
+  <view class="footer">
+    <text user-select="true">https://github.com/Tencent/westore</text>
   </view>
 </view>
