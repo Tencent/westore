@@ -5,7 +5,7 @@ const clone = require('rfdc')()
 
 export function diffData(current, previous) {
   const result = {}
-  if (!previous) return JSON.parse(JSON.stringify(current))
+  if (!previous) return current
   syncKeys(current, previous)
   _diff(current, previous, '', result)
   return result
