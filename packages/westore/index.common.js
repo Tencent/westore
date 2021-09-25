@@ -107,7 +107,7 @@ function type(obj) {
   return Object.prototype.toString.call(obj)
 }
 
-function update(view, callback) {
+function _update(view, callback) {
   const patch = diffData(view.data, view._westorePrevData)
   view.setData(patch, callback)
   view._westorePrevData = clone(view.data)
@@ -129,10 +129,10 @@ class Store {
 
   update(viewKey) {
     if (viewKey) {
-      update(this.views[viewKey])
+      _update(this.views[viewKey])
     } else {
       for (const key in this.views) {
-        update(this.views[key])
+        _update(this.views[key])
       }
     }
   }
