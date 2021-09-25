@@ -173,7 +173,7 @@ Page({
 │  ├─ logs   
 │  └─ other.js  
 │
-├─ stores    // 页面的数据逻辑以及 page 和 models 的桥接器
+├─ stores    // 页面的数据逻辑，page 和 models 的桥接器
 │  ├─ game-store.js   
 │  ├─ log-store.js      
 │  ├─ other-store.js    
