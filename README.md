@@ -18,6 +18,140 @@ Westore 架构和 MVP 架构很相似，但是有许多不同。
 
 随着小程序承载的项目越来越复杂，合理的架构可以提升小程序的扩展性和维护性。把逻辑写到 Page/Component 是一种罪恶，当业务逻辑变得复杂的时候 Page/Component 会变得越来越臃肿难以维护，每次需求变更如履薄冰， westore 定义了一套合理的小程序架构适用于任何复杂度的小程序，让项目底座更健壮，易维护可扩展。
 
+## 安装
+
+```bash
+npm i westore --save
+```
+
+npm 相关问题参考：[小程序官方文档: npm 支持](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)
+
+## 举个例子
+
+需求是开发如下图所示的重命名 app。
+
+<img src="./assets/rename-app.png" width="240px">
+
+按照传统的小程序开发三部曲：
+
+* 写页面结构 wxml 
+* 写页面样式 wxss
+* 写页面逻辑 js/ts
+
+省略 wxml、wxss，js 如下:
+
+```js
+Page({
+  data: {
+    nickName: ''
+  },
+
+  async onLoad() {
+    const nickName = await remoteService.getNickName()
+    this.setData({
+      nickName: nickName
+    })
+  },
+
+  async modifyNickName(newNickName) {
+    await remoteService.modifyNickName(newNickName)
+  },
+
+  clearInput() {
+    this.setData({
+      nickName: ''
+    })
+  }
+})
+```
+
+需求开发全部结束。
+
+### 使用 Westore 架构开发重命名 app
+
+
+### 使用
+
+定义 User 实体:
+
+```js
+class User {
+  constructor({ nickName }) {
+    this.nickName = nickName || ''
+  }
+}
+
+module.exports = User
+```
+
+定义 UserStore:
+
+```js
+const { Store } = require('westore')
+const User = require('../models/user')
+
+class UserStore extends Store {
+  constructor(options) {
+    super()
+    this.options = options
+    this.data = {
+      nickName: ''
+    }
+
+    
+  }
+
+  init() {
+    const nickName = await remoteService.getNickName()
+    this.user = new User({ 
+      nickName,
+      onNickNameChange: (newNickName)=>{
+        this.data.nickName = newNickName
+        this.update()
+      } 
+    })
+  }
+
+  async modifyNickName(newNickName) {
+    this.user.modifyNickName(newNickName)
+    await remoteService.modifyNickName(newNickName)
+  },
+
+  modifyInputNickName(input) {
+    this.data.nickName = input
+  }
+}
+
+module.exports = new UserStore
+```
+
+页面使用 UserStore:
+
+```js
+// index.js
+// 获取应用实例
+const userStore = require('../../stores/user-store')
+
+Page({
+  data: userStore.data,
+
+  onLoad() {
+    userStore.bind('userPage', this)
+  },
+
+  async modifyNickName(newNickName) {
+    await userStore.modifyNickName(newNickName)
+  },
+
+  onInputChange(evt) {
+    userStore.modifyInputNickName(evt.currentTarget.value)
+  },
+
+  clearInput() {
+    userStore.modifyInputNickName('')
+  }
+})
+```
 
 ## 官方案例目录
 
@@ -49,108 +183,7 @@ Westore 架构和 MVP 架构很相似，但是有许多不同。
 
 ```
 
-## 快速上手
-
-
-### 安装
-
-```bash
-npm i westore --save
-```
-
-安装完记得在小程序里构建 npm
-
-### 使用
-
-定义 user 实体:
-
-```js
-class User {
-
-  constructor(options) {
-    this.motto = 'Hello World'
-    this.userInfo = {}
-    this.options = options
-  }
-
-  getUserProfile() {
-    wx.getUserProfile({
-      desc: '展示用户信息',
-      success: (res) => {
-        this.userInfo = res.userInfo
-        this.options.onUserInfoLoaded && this.options.onUserInfoLoaded()
-      }
-    })
-  }
-
-}
-
-module.exports = User
-```
-
-定义 user store:
-
-```js
-const { Store } = require('westore')
-const User = require('../models/user')
-
-class UserStore extends Store {
-  constructor(options) {
-    super()
-    this.options = options
-    this.data = {
-      motto: '',
-      userInfo: {}
-    }
-
-    this.user = new User({
-      onUserInfoLoaded: () => {
-        this.data.motto = this.user.motto
-        this.data.userInfo = this.user.userInfo
-        this.update('userPage')
-      }
-    })
-  }
-
-  getUserProfile() {
-    this.user.getUserProfile()
-  }
-}
-
-module.exports = new UserStore
-```
-
-页面使用 user store:
-
-```js
-// index.js
-// 获取应用实例
-const userStore = require('../../stores/user-store')
-
-Page({
-  data: userStore.data,
-
-  bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-
-  onLoad() {
-    userStore.bind('userPage', this)
-  },
-
-  getUserProfile() {
-    userStore.getUserProfile()
-  },
-
-  gotoOtherPage() {
-    wx.navigateTo({
-      url: '../other/other'
-    })
-  },
-})
-```
+详细代码[点击这里](https://github.com/Tencent/westore/tree/master/packages/westore-example)
 
 ## 官方例子
 
