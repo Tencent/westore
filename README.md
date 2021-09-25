@@ -150,7 +150,8 @@ Page({
 
 ## 官方例子
 
-![](./assets/mp.jpg)
+<img src="./assets/mp.jpg" width="200px">
+
 
 ## License
 
