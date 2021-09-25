@@ -95,8 +95,6 @@ class UserStore extends Store {
     this.data = {
       nickName: ''
     }
-
-    
   }
 
   init() {
@@ -126,8 +124,6 @@ module.exports = new UserStore
 页面使用 UserStore:
 
 ```js
-// index.js
-// 获取应用实例
 const userStore = require('../../stores/user-store')
 
 Page({
