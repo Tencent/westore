@@ -67,6 +67,7 @@ Page({
 
 ### 使用 Westore 重构
 
+<img src="./assets/demo-a.png" width="600px">
 
 定义 User 实体:
 
