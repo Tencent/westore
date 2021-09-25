@@ -8,7 +8,7 @@ export function diffData(current, previous) {
   if (!previous) return current
   syncKeys(current, previous)
   _diff(current, previous, '', result)
-  return current
+  return result
 }
 
 function syncKeys(current, previous) {
