@@ -107,7 +107,7 @@ function getType(obj) {
   return Object.prototype.toString.call(obj)
 }
 
-export function _update(view, callback) {
+export function update(view, callback) {
   const patch = diffData(view.data, view._westorePrevData)
   view.setData(patch, callback)
   view._westorePrevData = clone(view.data)
@@ -127,10 +127,10 @@ export class Store {
 
   update(viewKey) {
     if (viewKey) {
-      _update(this.views[viewKey])
+      update(this.views[viewKey])
     } else {
       for (const key in this.views) {
-        _update(this.views[key])
+        update(this.views[key])
       }
     }
   }
