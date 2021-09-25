@@ -98,12 +98,12 @@ function concatPathAndKey(path, key) {
 }
 
 function setResult(result, k, v) {
-  if (getgetType(v) != FUNCTIONTYPE) {
+  if (getType(v) != FUNCTIONTYPE) {
     result[k] = v
   }
 }
 
-function getgetType(obj) {
+function getType(obj) {
   return Object.prototype.toString.call(obj)
 }
 
