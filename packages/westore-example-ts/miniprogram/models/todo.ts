@@ -1,7 +1,7 @@
 export interface TodoType {
   id: number;
   title: string;
-  completed: boolean;
+  done: boolean;
 }
 
 export class Todo {
@@ -14,7 +14,12 @@ export class Todo {
       {
         id: 0,
         title: "测试",
-        completed: false,
+        done: false,
+      },
+      {
+        id: 1,
+        title: "学习 Westore",
+        done: true,
       },
     ];
     this.onChanges = [];
@@ -34,34 +39,37 @@ export class Todo {
     this.todos.unshift({
       id: ++this.id,
       title: title,
-      completed: false,
+      done: false,
     });
     this.inform();
   }
 
-  clearCompleted() {
+  clearDone() {
     this.todos = this.todos.filter(function (todo) {
-      return !todo.completed;
+      return !todo.done;
     });
     this.inform();
   }
 
-  destroy(todo: TodoType) {
+  destroy(id) {
     this.todos = this.todos.filter(function (candidate) {
-      return candidate !== todo;
+      return candidate.id !== id;
     });
     this.inform();
   }
 
   toggleAll(checked: boolean) {
     this.todos.map(function (todo) {
-      todo.completed = checked;
+      todo.done = checked;
     });
     this.inform();
   }
 
-  toggle(todoToToggle: TodoType) {
-    todoToToggle.completed = !todoToToggle.completed;
-    this.inform();
+  toggle(id: number) {
+    const todoToToggle = this.todos.find((todo) => todo.id === id);
+    if (todoToToggle) {
+      todoToToggle.done = !todoToToggle.done;
+      this.inform();
+    }
   }
 }
