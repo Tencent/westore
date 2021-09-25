@@ -74,8 +74,16 @@ Page({
 
 ```js
 class User {
-  constructor({ nickName }) {
+  constructor({ nickName, onNickNameChange }) {
     this.nickName = nickName || ''
+    this.onNickNameChange = onNickNameChange || function() { }
+  }
+
+  modifyNickName(nickName) {
+    if(nickName !== this.nickName) {
+      this.nickName = nickName
+      this.onNickNameChange(nickName)
+    }
   }
 }
 
@@ -104,13 +112,13 @@ class UserStore extends Store {
       onNickNameChange: (newNickName)=>{
         this.data.nickName = newNickName
         this.update()
+        await remoteService.modifyNickName(newNickName)
       } 
     })
   }
 
-  async modifyNickName(newNickName) {
+  async saveNickName(newNickName) {
     this.user.modifyNickName(newNickName)
-    await remoteService.modifyNickName(newNickName)
   },
 
   modifyInputNickName(input) {
@@ -131,16 +139,16 @@ Page({
   data: userStore.data,
 
   onLoad() {
-    /* 
+    /* 绑定 view 到 store 
       也可以给 view 取名 userStore.bind('userPage', this)
-      取名之后可通过 this.update('userPage') 更新 view
+      取名之后在 store 里可通过 this.update('userPage') 更新 view
       不取名可通过 this.update() 更新 view
     */
     userStore.bind(this)
   },
 
-  async modifyNickName(newNickName) {
-    await userStore.modifyNickName(newNickName)
+  saveNickName(newNickName) {
+    userStore.saveNickName(newNickName)
   },
 
   onInputChange(evt) {
