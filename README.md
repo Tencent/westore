@@ -30,7 +30,7 @@ npm 相关问题参考：[小程序官方文档: npm 支持](https://developers.
 
 需求是开发如下图所示的重命名 app。
 
-<img src="./assets/rename-app.png" width="240px">
+<img src="./assets/rename-app.png" width="300px">
 
 按照传统的小程序开发三部曲：
 
