@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1632529464831, function(require, module, exports) {
+__DEFINE__(1632568133633, function(require, module, exports) {
 const ARRAYTYPE = '[object Array]'
 const OBJECTTYPE = '[object Object]'
 const FUNCTIONTYPE = '[object Function]'
@@ -20,8 +20,8 @@ if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: t
 
 function syncKeys(current, previous) {
   if (current === previous) return
-  const rootCurrentType = type(current)
-  const rootPreType = type(previous)
+  const rootCurrentType = getType(current)
+  const rootPreType = getType(previous)
   if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
     for (let key in previous) {
       const currentValue = current[key]
@@ -42,8 +42,8 @@ function syncKeys(current, previous) {
 
 function _diff(current, previous, path, result) {
   if (current === previous) return
-  const rootCurrentType = type(current)
-  const rootPreType = type(previous)
+  const rootCurrentType = getType(current)
+  const rootPreType = getType(previous)
   if (rootCurrentType == OBJECTTYPE) {
     if (rootPreType != OBJECTTYPE || Object.keys(current).length < Object.keys(previous).length && path !== '') {
       setResult(result, path, current)
@@ -51,8 +51,8 @@ function _diff(current, previous, path, result) {
       for (let key in current) {
         const currentValue = current[key]
         const preValue = previous[key]
-        const currentType = type(currentValue)
-        const preType = type(preValue)
+        const currentType = getType(currentValue)
+        const preType = getType(preValue)
         if (currentType != ARRAYTYPE && currentType != OBJECTTYPE) {
           if (currentValue !== previous[key]) {
             setResult(result, concatPathAndKey(path, key), currentValue)
@@ -105,12 +105,12 @@ function concatPathAndKey(path, key) {
 }
 
 function setResult(result, k, v) {
-  if (type(v) != FUNCTIONTYPE) {
+  if (getType(v) != FUNCTIONTYPE) {
     result[k] = v
   }
 }
 
-function type(obj) {
+function getType(obj) {
   return Object.prototype.toString.call(obj)
 }
 
@@ -124,16 +124,21 @@ if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: t
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });class Store {
   constructor() {
     this.views = {}
+    this._westoreViewId = 0
   }
 
-  bind(key, view) {
-    //设置回 view 的 data，不然引用地址 错误
-    this.data = view.data
-    this.views[key] = view
+  bind(keyOrView, view) {
+    if (arguments.length === 1) {
+      this.views[this._westoreViewId++] = keyOrView
+    } else {
+      //设置回 view 的 data，不然引用地址 错误
+      this.data = view.data
+      this.views[keyOrView] = view
+    }
   }
 
   update(viewKey) {
-    if (viewKey) {
+    if (arguments.length === 1) {
       update(this.views[viewKey])
     } else {
       for (const key in this.views) {
@@ -143,7 +148,7 @@ if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: t
   }
 };exports.Store = Store
 }, function(modId) {var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1632529464831);
+return __REQUIRE__(1632568133633);
 })()
 //miniprogram-npm-outsideDeps=["rfdc"]
 //# sourceMappingURL=index.js.map
