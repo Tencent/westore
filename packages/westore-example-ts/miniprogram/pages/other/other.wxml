@@ -1,13 +1,22 @@
-<!-- logs.wxml -->
-<view class="container log-list">
-  <my-cop count="{{count}}" bind:countchanged="onCountChanged"></my-cop>
-  <view>日志数量{{logsSize}}</view>
-  <view>Todo:</view>
-  <view style="dispay: flex;">
-    <input style="background: #eee;" model:value="{{todoTitle}}" placeholder="输入todo内容" />
-    <button bindtap="addTodo">创建</button>
+<view>
+  <view>
+    <view class="title">todos</view>
+    <!-- <image class="github" bindtap="gotoAbout" src="{{anonymousState__temp}}"></image> -->
+    <view class="form">
+      <input class="new-todo" model:value="{{todoTitle}}" placeholder="What needs to be done?" autofocus="" />
+      <button class="add-btn" bindtap="addTodo">确定</button>
+    </view>
+    <view class="todo-list">
+      <block wx:if="{{type === 'all' || type === 'active' && !item.done || type === 'done' && item.done}}" wx:key="id" wx:for="{{todos}}" wx:for-item="item">
+        <view class="{{'todo-item' + (item.done ? ' done' : '')}}">
+          <view class="toggle" data-id="{{item.id}}" bindtap="toggle"></view>
+          <text>{{item.title}}</text>
+          <view class="delete" data-id="{{item.id}}" bindtap="destroy"></view>
+        </view>
+      </block>
+    </view>
+    <todo-footer bindfilter="filter" bindclear="clear" left="{{left}}" done="{{done}}" type="{{type}}"></todo-footer>
   </view>
-  <block wx:for="{{todos}}" wx:key="id" wx:for-item="todo">
-    <text class="log-item">{{todo.id}}. {{todo.title}}</text>
-  </block>
+  <!-- <my-cop count="{{count}}" bind:countchanged="onCountChanged"></my-cop>
+  <view>日志数量{{logsSize}}</view> -->
 </view>

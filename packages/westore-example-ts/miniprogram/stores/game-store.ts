@@ -1,6 +1,6 @@
 import { Store } from "westore";
-import { Game } from "../models/game";
-import { Snake } from "../models/snake";
+import { Game } from "../models/snake-game/game";
+import { Snake } from "../models/snake-game/snake";
 
 class GameStore extends Store<{
   map: any[];

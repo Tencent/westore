@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "其他测试页面",
   "usingComponents": {
-    "my-cop": "/pages/my-cop/my-cop"
+    "my-cop": "/pages/my-cop/my-cop",
+    "todo-footer": "/pages/other/todo-footer/index"
   }
 }
