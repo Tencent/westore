@@ -4,14 +4,15 @@
   "description": "Better mini program architecture.",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
-  "commonjs":"dist/index.cmd.js",
-  "minified":"dist/index.min.js",
+  "commonjs": "dist/index.cmd.js",
+  "module:minified": "dist/index.min.min.js",
+  "commonjs:minified": "dist/index.cmd.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "rollup -c",
     "clean": "rimraf dist",
-    "build": "rollup -c",
-    "build:dev": "npm-run-all clean build",
+    "build": "npm-run-all clean build:dev build:prod",
+    "build:dev": "rollup -c ./rollup.config.dev.js",
+    "build:prod": "rollup -c ./rollup.config.prod.js",
     "test": "jest"
   },
   "author": "dntzhang",
@@ -26,6 +27,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.57.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3"
   },
