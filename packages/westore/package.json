@@ -5,7 +5,7 @@
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
   "commonjs": "dist/index.cmd.js",
-  "module:minified": "dist/index.min.min.js",
+  "module:minified": "dist/index.esm.min.js",
   "commonjs:minified": "dist/index.cmd.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
