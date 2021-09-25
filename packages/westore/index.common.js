@@ -122,6 +122,7 @@ class Store {
 
   bind(keyOrView, view) {
     if (arguments.length === 1) {
+      this.data = keyOrView.data
       this.views[this._westoreViewId++] = keyOrView
     } else {
       //设置回 view 的 data，不然引用地址 错误
