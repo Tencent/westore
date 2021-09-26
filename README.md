@@ -6,8 +6,6 @@
 * **Simple and Intuitive:** Westore 内部使用 deepClone + dataDiff 换取最短路径 `setData` 和更符合直觉的变成体验，只需 `update`，不需要再使用 `setData`
 * **Testability:** View 和 Model之间没有直接依赖，开发者能够借助模拟对象注入测试两者中的任一方
 
-Store 层可以理解成 **中介者模式** 中的中介者，使 View 和 Model 之间的多对多关系数量减少为 0，负责中转控制视图对象 View 和模型对象 Model 之间的交互。
-
 ![](./assets/ws.png)
 
 Westore 架构和 MVP(Model-View-Presenter) 架构很相似:
@@ -18,6 +16,8 @@ Westore 架构和 MVP(Model-View-Presenter) 架构很相似:
 * View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性
 * Store 非常薄，只复杂维护 View 需要的数据和桥接 View 和 Model
 * Model 非常厚，所有逻辑都部署在那里，Model 可以脱离 Store 和 View 完整表达所有业务/游戏逻辑
+
+Store 层可以理解成 **中介者模式** 中的中介者，使 View 和 Model 之间的多对多关系数量减少为 0，负责中转控制视图对象 View 和模型对象 Model 之间的交互。
 
 随着小程序承载的项目越来越复杂，合理的架构可以提升小程序的扩展性和维护性。把逻辑写到 Page/Component 是一种罪恶，当业务逻辑变得复杂的时候 Page/Component 会变得越来越臃肿难以维护，每次需求变更如履薄冰， westore 定义了一套合理的小程序架构适用于任何复杂度的小程序，让项目底座更健壮，易维护可扩展。
 
