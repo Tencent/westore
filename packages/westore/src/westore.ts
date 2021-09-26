@@ -1,4 +1,5 @@
-import clone from 'rfdc'
+import rfdc from 'rfdc'
+const clone = rfdc()
 
 enum DataTypes {
     ARRAYTYPE = '[object Array]',
@@ -55,7 +56,7 @@ function _diff(
     current: any[],
     previous: string | any[],
     path: string,
-    result: {}
+    result: any
 ) {
     if (current === previous) return
 
@@ -148,7 +149,7 @@ function _diff(
             if (current.length < previous.length) {
                 setResult(result, path, current)
             } else {
-                current.forEach((item: any, index: string) => {
+                current.forEach((item: any, index: any) => {
                     _diff(
                         item,
                         previous[index],
@@ -187,7 +188,7 @@ export function update(
 }
 
 export class Store {
-    views: {}
+    views: any
     data: any
 
     constructor() {
