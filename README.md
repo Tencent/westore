@@ -6,6 +6,8 @@
 * **Simple and Intuitive:** Westore 内部使用 deepClone + dataDiff 换取最短路径 `setData` 和更符合直觉的变成体验，只需 `update`，不需要再使用 `setData`
 * **Testability:** View 和 Model之间没有直接依赖，开发者能够借助模拟对象注入测试两者中的任一方
 
+Store 层可以理解成 **中介者模式** 中的中介者，使 View 和 Model 之间的多对多关系数量减少为 0，负责中转控制视图对象 View 和模型对象 Model 之间的交互。
+
 ![](./assets/westore-class-diagram.png)
 
 Westore 架构和 MVP 架构很相似:
