@@ -9,8 +9,9 @@
 
 Westore 架构和 MVP 架构很相似，但是有许多不同。
 
-* View 和 Store 是双向通讯
+* View 和 Store 是双向通讯，View 和 Store 互相引用
 * View 与 Model 不发生联系，都通过 Store 传递
+* Store 引用 Model 里对象的实例，Model 不依赖 Store
 * View 非常薄，不部署任何业务逻辑，称为"被动视图"（Passive View），即没有任何主动性
 * Store 非常薄，只复杂维护 View 需要的数据和桥接 View 和 Model
 * Model 非常厚，所有逻辑都部署在那里，Model 可以脱离 Store 和 View 完整表达所有业务/游戏逻辑
