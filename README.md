@@ -8,7 +8,7 @@
 
 Store 层可以理解成 **中介者模式** 中的中介者，使 View 和 Model 之间的多对多关系数量减少为 0，负责中转控制视图对象 View 和模型对象 Model 之间的交互。
 
-![](./assets/westore.png)
+![](./assets/ws.png)
 
 Westore 架构和 MVP(Model-View-Presenter) 架构很相似:
 
