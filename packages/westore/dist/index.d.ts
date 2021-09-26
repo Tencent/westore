@@ -1,11 +1,17 @@
 declare function diffData(current: any, previous: any): any;
-declare function update(view: any, callback?: any): void;
+declare function update(view: {
+    data: any;
+    _westorePrevData: any;
+    setData: (arg0: any, arg1: any) => void;
+}, callback?: any): void;
 declare class Store {
-    views: {};
+    views: any;
     data: any;
     constructor();
-    bind(key: any, view: any): void;
-    update(viewKey: any): void;
+    bind(key: string | number, view: {
+        data: any;
+    }): void;
+    update(viewKey: string | number): void;
 }
 
 declare const _default: {
