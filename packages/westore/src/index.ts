@@ -1,3 +1,3 @@
-import { diffData, update, Store } from "./westore";
+import { diffData, update, Store } from './westore'
 
-export default { diffData, update, Store };
+export default { diffData, update, Store }
