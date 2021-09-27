@@ -3,12 +3,13 @@ declare function update(view: {
     data: any;
     _westorePrevData: any;
     setData: (arg0: any, arg1: any) => void;
-}, callback?: any): void;
+}, callback?: any): any;
 declare class Store {
     views: any;
     data: any;
+    private _westoreViewId;
     constructor();
-    bind(key: string | number, view: {
+    bind(keyOrView: any, view: {
         data: any;
     }): void;
     update(viewKey: string | number): void;

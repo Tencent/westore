@@ -215,7 +215,7 @@ function syncKeys(current, previous) {
     const rootCurrentType = getType(current);
     const rootPreType = getType(previous);
     if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
-        for (const key in previous) {
+        for (let key in previous) {
             const currentValue = current[key];
             if (currentValue === undefined) {
                 current[key] = null;
@@ -250,7 +250,7 @@ function _diff(current, previous, path, result) {
             setResult(result, path, current);
         }
         else {
-            for (const key in current) {
+            for (let key in current) {
                 const currentValue = current[key];
                 const preValue = previous[key];
                 const currentType = getType(currentValue);
@@ -270,27 +270,20 @@ function _diff(current, previous, path, result) {
                         }
                         else {
                             currentValue.forEach((item, index) => {
-                                _diff(item, preValue[index], concatPathAndKey(path, key) +
-                                    '[' +
-                                    index +
-                                    ']', result);
+                                _diff(item, preValue[index], concatPathAndKey(path, key) + '[' + index + ']', result);
                             });
                         }
                     }
                 }
                 else if (currentType == OBJECTTYPE) {
                     if (preType != OBJECTTYPE ||
-                        Object.keys(currentValue).length <
-                            Object.keys(preValue).length) {
+                        Object.keys(currentValue).length < Object.keys(preValue).length) {
                         setResult(result, concatPathAndKey(path, key), currentValue);
                     }
                     else {
-                        // eslint-disable-next-line guard-for-in
-                        for (const subKey in currentValue) {
+                        for (let subKey in currentValue) {
                             const realPath = concatPathAndKey(path, key) +
-                                (subKey.includes('.')
-                                    ? `["${subKey}"]`
-                                    : `.${subKey}`);
+                                (subKey.includes('.') ? `["${subKey}"]` : `.${subKey}`);
                             _diff(currentValue[subKey], preValue[subKey], realPath, result);
                         }
                     }
@@ -333,14 +326,21 @@ function update(view, callback) {
 class Store {
     constructor() {
         this.views = {};
+        this._westoreViewId = 0;
     }
-    bind(key, view) {
-        // 设置回 view 的 data，不然引用地址 错误
-        this.data = view.data;
-        this.views[key] = view;
+    bind(keyOrView, view) {
+        if (arguments.length === 1) {
+            this.data = keyOrView.data;
+            this.views[this._westoreViewId++] = keyOrView;
+        }
+        else {
+            //设置回 view 的 data，不然引用地址 错误
+            this.data = view.data;
+            this.views[keyOrView] = view;
+        }
     }
     update(viewKey) {
-        if (viewKey) {
+        if (arguments.length === 1) {
             update(this.views[viewKey]);
         }
         else {
