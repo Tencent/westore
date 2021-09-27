@@ -149,19 +149,25 @@ export function update(
 export class Store {
   views: any
   data: any
+  private _westoreViewId: number
 
   constructor() {
     this.views = {}
+    this._westoreViewId = 0
   }
 
-  bind(key: string | number, view: { data: any }) {
-    // 设置回 view 的 data，不然引用地址 错误
-    this.data = view.data
-    this.views[key] = view
+  bind(keyOrView, view: { data: any }) {
+    if (arguments.length === 1) {
+      this.data = keyOrView.data
+      this.views[this._westoreViewId++] = keyOrView
+    } else {
+      //设置回 view 的 data，不然引用地址 错误
+      this.data = view.data
+      this.views[keyOrView] = view
+    }
   }
-
   update(viewKey: string | number) {
-    if (viewKey) {
+    if (arguments.length === 1) {
       update(this.views[viewKey])
     } else {
       for (const key in this.views) {
