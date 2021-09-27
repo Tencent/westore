@@ -11,7 +11,7 @@ const ARRAYTYPE = DataTypes.ARRAYTYPE
 const OBJECTTYPE = DataTypes.OBJECTTYPE
 const FUNCTIONTYPE = DataTypes.FUNCTIONTYPE
 
-export function diffData(current: any, previous: any) {
+export function diffData(current: any, previous: any): any {
   const result = {}
   if (!previous) return current
   syncKeys(current, previous)
@@ -19,17 +19,14 @@ export function diffData(current: any, previous: any) {
   return result
 }
 
-function syncKeys(
-  current: { [x: string]: any },
-  previous: { [x: string]: any }
-) {
+function syncKeys(current: any, previous: any) {
   if (current === previous) return
 
   const rootCurrentType: DataTypes = getType(current)
   const rootPreType: DataTypes = getType(previous)
 
   if (rootCurrentType == OBJECTTYPE && rootPreType == OBJECTTYPE) {
-    for (const key in previous) {
+    for (let key in previous) {
       const currentValue = current[key]
       if (currentValue === undefined) {
         current[key] = null
@@ -52,12 +49,7 @@ function setResult(result: { [x: string]: any }, k: string, v: any) {
   }
 }
 
-function _diff(
-  current: any[],
-  previous: string | any[],
-  path: string,
-  result: any
-) {
+function _diff(current: any, previous: any, path: string, result: any) {
   if (current === previous) return
 
   const rootCurrentType = getType(current)
@@ -71,7 +63,7 @@ function _diff(
     ) {
       setResult(result, path, current)
     } else {
-      for (const key in current) {
+      for (let key in current) {
         const currentValue = current[key]
         const preValue = previous[key]
         const currentType = getType(currentValue)
@@ -104,8 +96,7 @@ function _diff(
           ) {
             setResult(result, concatPathAndKey(path, key), currentValue)
           } else {
-            // eslint-disable-next-line guard-for-in
-            for (const subKey in currentValue) {
+            for (let subKey in currentValue) {
               const realPath =
                 concatPathAndKey(path, key) +
                 (subKey.includes('.') ? `["${subKey}"]` : `.${subKey}`)
@@ -149,7 +140,7 @@ export function update(
     setData: (arg0: any, arg1: any) => void
   },
   callback?: any
-) {
+): any {
   const patch = diffData(view.data, view._westorePrevData)
   view.setData(patch, callback)
   view._westorePrevData = clone(view.data)
