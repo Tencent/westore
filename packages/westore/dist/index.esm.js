@@ -224,7 +224,11 @@ function syncKeys(current, previous) {
         }
     }
     else if (rootCurrentType == ARRAYTYPE && rootPreType == ARRAYTYPE) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (current.length >= previous.length) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             previous.forEach((item, index) => {
                 syncKeys(current[index], item);
             });
@@ -248,7 +252,7 @@ function _diff(current, previous, path, result) {
             setResult(result, path, current);
         }
         else {
-            for (let key in current) {
+            for (const key in current) {
                 const currentValue = current[key];
                 const preValue = previous[key];
                 const currentType = getType(currentValue);
@@ -294,10 +298,14 @@ function _diff(current, previous, path, result) {
             setResult(result, path, current);
         }
         else {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             if (current.length < previous.length) {
                 setResult(result, path, current);
             }
             else {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 current.forEach((item, index) => {
                     _diff(item, previous[index], path + '[' + index + ']', result);
                 });

@@ -1,17 +1,24 @@
-declare function diffData(current: any, previous: any): any;
-declare function update(view: {
-    data: any;
-    _westorePrevData: any;
-    setData: (arg0: any, arg1: any) => void;
-}, callback?: any): any;
+declare type WechatMiniprogramPageOrComponent = any;
+interface Views {
+    key?: WechatMiniprogramPageOrComponent;
+}
+interface Current {
+    key?: any;
+}
+interface Previous {
+    key?: any;
+}
+interface diffResult {
+    key?: any;
+}
+declare function diffData(current: Current, previous: Previous): diffResult;
+declare function update(view: WechatMiniprogramPageOrComponent, callback?: () => void): void;
 declare class Store {
-    views: any;
+    views: Views;
     data: any;
     private _westoreViewId;
     constructor();
-    bind(keyOrView: any, view: {
-        data: any;
-    }): void;
+    bind(keyOrView: string | number | WechatMiniprogramPageOrComponent, view?: WechatMiniprogramPageOrComponent): void;
     update(viewKey: string | number): void;
 }
 
