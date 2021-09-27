@@ -1,23 +1,23 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-        "target": "ES2018",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "allowSyntheticDefaultImports": true,
-        "inlineSourceMap": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "stripInternal": true,
-        "pretty": true,
-        "declaration": true,
-        "outDir": "dist",
-        "baseUrl": "./",
-        "paths": {
-            "*": ["src/*"]
-        }
-    },
-    "exclude": ["lib", "node_modules"]
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "inlineSourceMap": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "stripInternal": true,
+    "pretty": true,
+    "declaration": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*"]
+    }
+  },
+  "exclude": ["lib", "node_modules"]
 }
