@@ -12,6 +12,10 @@ interface diffResult {
 
 type WechatMiniprogramPageOrComponent = any;
 
+interface Views {
+  key?: WechatMiniprogramPageOrComponent;
+}
+
 export declare function diffData(
   current: Current,
   previous: Previous
@@ -21,3 +25,12 @@ export declare function update(
   view: WechatMiniprogramPageOrComponent,
   callback?: () => void
 ): void;
+
+export declare class Store {
+  views: Views;
+  data: any;
+  constructor();
+  bind(keyOrView: string | number | WechatMiniprogramPageOrComponent, view?: WechatMiniprogramPageOrComponent): void;
+  update(viewKey?: string | number): void;
+}
+
