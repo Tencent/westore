@@ -14,7 +14,8 @@
     "build:dev": "rollup -c ./rollup.config.dev.js",
     "build:prod": "rollup -c ./rollup.config.prod.js",
     "test": "jest",
-    "lint:fix": "eslint --fix src --ext .ts --max-warnings=0"
+    "lint:fix": "eslint --fix src --ext .ts --max-warnings=0",
+    "format": "npx prettier --write ."
   },
   "author": "dntzhang",
   "license": "MIT",
