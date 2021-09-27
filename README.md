@@ -173,6 +173,12 @@ Page({
 
 ## 贪吃蛇
 
+游戏截图：
+
+<img src="./assets/snake-game.jpg" width="300px">
+
+设计类图：
+
 ![](./assets/snake.png)
 
 图中浅蓝色的部分可以在小程序贪吃蛇、小游戏贪吃蛇和 web贪吃蛇项目复用，不需要更改一行代码。
