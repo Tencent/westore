@@ -7,11 +7,29 @@ enum DataTypes {
   FUNCTIONTYPE = '[object Function]'
 }
 
+type WechatMiniprogramPageOrComponent = any
+
+interface Views {
+  key?: WechatMiniprogramPageOrComponent
+}
+
+interface Current {
+  key?: any
+}
+
+interface Previous {
+  key?: any
+}
+
+interface diffResult {
+  key?: any
+}
+
 const ARRAYTYPE = DataTypes.ARRAYTYPE
 const OBJECTTYPE = DataTypes.OBJECTTYPE
 const FUNCTIONTYPE = DataTypes.FUNCTIONTYPE
 
-export function diffData(current: any, previous: any): any {
+export function diffData(current: Current, previous: Previous): diffResult {
   const result = {}
   if (!previous) return current
   syncKeys(current, previous)
@@ -19,7 +37,7 @@ export function diffData(current: any, previous: any): any {
   return result
 }
 
-function syncKeys(current: any, previous: any) {
+function syncKeys(current: Current, previous: Previous) {
   if (current === previous) return
 
   const rootCurrentType: DataTypes = getType(current)
@@ -35,7 +53,11 @@ function syncKeys(current: any, previous: any) {
       }
     }
   } else if (rootCurrentType == ARRAYTYPE && rootPreType == ARRAYTYPE) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (current.length >= previous.length) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       previous.forEach((item: any, index: string | number) => {
         syncKeys(current[index], item)
       })
@@ -49,7 +71,12 @@ function setResult(result: { [x: string]: any }, k: string, v: any) {
   }
 }
 
-function _diff(current: any, previous: any, path: string, result: any) {
+function _diff(
+  current: Current,
+  previous: Previous,
+  path: string,
+  result: diffResult
+) {
   if (current === previous) return
 
   const rootCurrentType = getType(current)
@@ -63,7 +90,7 @@ function _diff(current: any, previous: any, path: string, result: any) {
     ) {
       setResult(result, path, current)
     } else {
-      for (let key in current) {
+      for (const key in current) {
         const currentValue = current[key]
         const preValue = previous[key]
         const currentType = getType(currentValue)
@@ -110,9 +137,13 @@ function _diff(current: any, previous: any, path: string, result: any) {
     if (rootPreType != ARRAYTYPE) {
       setResult(result, path, current)
     } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (current.length < previous.length) {
         setResult(result, path, current)
       } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         current.forEach((item: any, index: any) => {
           _diff(item, previous[index], path + '[' + index + ']', result)
         })
@@ -134,29 +165,28 @@ function getType(obj: any) {
 }
 
 export function update(
-  view: {
-    data: any
-    _westorePrevData: any
-    setData: (arg0: any, arg1: any) => void
-  },
-  callback?: any
-): any {
+  view: WechatMiniprogramPageOrComponent,
+  callback?: () => void
+): void {
   const patch = diffData(view.data, view._westorePrevData)
   view.setData(patch, callback)
   view._westorePrevData = clone(view.data)
 }
 
 export class Store {
-  views: any
+  views: Views
   data: any
-  private _westoreViewId: number
+  private _westoreViewId: any
 
   constructor() {
     this.views = {}
     this._westoreViewId = 0
   }
 
-  bind(keyOrView, view: { data: any }) {
+  bind(
+    keyOrView: string | number | WechatMiniprogramPageOrComponent,
+    view?: WechatMiniprogramPageOrComponent
+  ): void {
     if (arguments.length === 1) {
       this.data = keyOrView.data
       this.views[this._westoreViewId++] = keyOrView
@@ -166,7 +196,7 @@ export class Store {
       this.views[keyOrView] = view
     }
   }
-  update(viewKey: string | number) {
+  update(viewKey: string | number): void {
     if (arguments.length === 1) {
       update(this.views[viewKey])
     } else {
