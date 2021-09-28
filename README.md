@@ -256,7 +256,44 @@ this.data.array[0].text = 'changed text'
 this.update()
 ```
 
-上面的编程体验是符合直觉且对开发者更友好的。所以 westore 隐藏了 setData 不直接暴露给开发者。
+上面的编程体验是符合直觉且对开发者更友好的。所以 westore 隐藏了 setData 不直接暴露给开发者，而是内部使用 diffData 出最短更新路径，暴露给开发者的只有 update 方法。
+
+### Diff Data
+
+先看一下 westore [diffData](https://github.com/Tencent/westore/blob/master/packages/westore/index.esm.js#L6-L12) 的能力:
+
+``` js
+diff({
+    a: 1, b: 2, c: "str", d: { e: [2, { a: 4 }, 5] }, f: true, h: [1], g: { a: [1, 2], j: 111 }
+}, {
+    a: [], b: "aa", c: 3, d: { e: [3, { a: 3 }] }, f: false, h: [1, 2], g: { a: [1, 1, 1], i: "delete" }, k: 'del'
+})
+```
+
+Diff 的结果是:
+
+``` js
+{ "a": 1, "b": 2, "c": "str", "d.e[0]": 2, "d.e[1].a": 4, "d.e[2]": 5, "f": true, "h": [1], "g.a": [1, 2], "g.j": 111, "g.i": null, "k": null }
+```
+
+![diff](./asset/diff.jpg)
+
+Diff 原理:
+
+* 同步所有 key 到当前 store.data
+* 携带 path 和 result 递归遍历对比所有 key value
+
+``` js
+export function diffData(current, previous) {
+  const result = {}
+  if (!previous) return current
+  syncKeys(current, previous)
+  _diff(current, previous, '', result)
+  return result
+}
+```
+
+同步上一轮 state.data 的 key 主要是为了检测 array 中删除的元素或者 obj 中删除的 key。
 
 ### Westore 实现细节
 
