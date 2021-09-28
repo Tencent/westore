@@ -312,6 +312,10 @@ this.data.a.b[1].c = 'f'
 this.update()
 ```
 
+## 小结
+
+从目前来看，绝大部分的小程序项目都把业务逻辑堆积在小程序的 Page 构造函数里，可读性基本没有，给后期的维护带来了巨大的成本，westore 架构的目标把业务/游戏逻辑解耦出去，Page 就是纯粹的 Page，它只负责展示和接收用户的输入、点击、滑动、长按或者其他手势指令，把指令中转给 store，store 再去调用真正的程序逻辑 model，这种分层边界清晰，维护性、扩展性和可测试性极强，单个文件模块大小也能控制得非常合适。
+
 ## 贡献者
 
 <a href="https://github.com/Tencent/westore/graphs/contributors">
