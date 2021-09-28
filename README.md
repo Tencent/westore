@@ -230,6 +230,36 @@ Page({
 扫码体验:
 <img src="./assets/mp.jpg" width="200px">
 
+## 原理
+
+### setData 去哪了？
+
+回答 **setData 去哪了？** 之前先要思考为什么 westore 封装了这个 api，让用户不直接使用。在小程序中，通过 `setData` 改变视图。
+
+```js
+this.setData({
+  'array[0].text':'changed text'
+})
+```
+
+但是符合直觉的编程体验是:
+
+```js
+this.data.array[0].text = 'changed text'
+```
+
+如果 data 不是响应式的，需要手动 update:
+
+```js
+this.data.array[0].text = 'changed text'
+this.update()
+```
+
+上面的编程体验是符合直觉且对开发者更友好的。所以 westore 隐藏了 setData 不直接暴露给开发者。
+
+### Westore 类图
+
+
 
 ## 贡献者
 
