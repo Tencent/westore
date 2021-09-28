@@ -228,6 +228,7 @@ Page({
 详细代码[点击这里](https://github.com/Tencent/westore/tree/master/packages/westore-example)
 
 扫码体验:
+
 <img src="./assets/mp.jpg" width="200px">
 
 ## 原理
@@ -257,9 +258,9 @@ this.update()
 
 上面的编程体验是符合直觉且对开发者更友好的。所以 westore 隐藏了 setData 不直接暴露给开发者。
 
-### Westore 类图
+### Westore 实现细节
 
-
+![](./assets/westore-detail.png)
 
 ## 贡献者
 
