@@ -195,9 +195,9 @@ Page({
 
 图中浅蓝色的部分可以在小程序 TodoApp 和 Web TodoApp项目复用，不需要更改一行代码。
 
-## 官方案例目录
+## 官方案例
 
-目录如下:
+官方例子把**贪吃蛇**和**TodoApp**做进了一个小程序目录如下:
 
 ```
 ├─ models    // 业务模型实体
@@ -227,8 +227,7 @@ Page({
 
 详细代码[点击这里](https://github.com/Tencent/westore/tree/master/packages/westore-example)
 
-## 官方例子
-
+扫码体验:
 <img src="./assets/mp.jpg" width="200px">
 
 
