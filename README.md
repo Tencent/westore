@@ -29,6 +29,14 @@ npm i westore --save
 
 npm 相关问题参考：[小程序官方文档: npm 支持](https://developers.weixin.qq.com/miniprogram/dev/devtools/npm.html)
 
+## Packages
+
+| **项目**                         | **描述**                           |
+| ------------------------------- | ----------------------------------- |
+| [westore](https://github.com/Tencent/westore/tree/master/packages/westore)  | westore 的核心代码 |
+| [westore-example](https://github.com/Tencent/westore/tree/master/packages/westore-example) | westore 官方例子|
+| [westore-example-ts](https://github.com/Tencent/westore/tree/master/packages/westore-example-ts)|  westore 官方例子(ts+scss) |
+
 ## 举个例子
 
 > 开发如下图所示的重命名 app
