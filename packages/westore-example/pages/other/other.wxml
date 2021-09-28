@@ -15,7 +15,7 @@
         </view>
       </block>
     </view>
-    <todo-footer bindfilter="filter" bindclear="clear" left="{{left}}" done="{{done}}" type="{{type}}"></todo-footer>
+    <todo-footer bindfilter="filter" bindclear="clearDone" left="{{left}}" done="{{done}}" type="{{type}}"></todo-footer>
   </view>
   <!-- <my-cop count="{{count}}" bind:countchanged="onCountChanged"></my-cop>
   <view>日志数量{{logsSize}}</view> -->

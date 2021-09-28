@@ -29,7 +29,7 @@ Page({
     otherStore.filter(evt.detail)
   },
 
-  clear() {
+  clearDone() {
     wx.showModal({
       title: '提示',
       content: '确定清空已完成任务？',
