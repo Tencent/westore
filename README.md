@@ -266,7 +266,7 @@ this.update()
 
 所以没使用 westore 的时候经常可以看到这样的代码:
 
-![not-westore](./not-westore.png)
+![not-westore](./assets/not-westore.png)
 
 使用完 westore 之后:
 
