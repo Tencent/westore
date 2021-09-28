@@ -262,6 +262,19 @@ this.update()
 
 ![](./assets/westore-detail.png)
 
+提升编程体验的同时，也规避了每次 setData 都传递大量新数据的问题，因为每次 diff 之后的 patch 都是 setData 的最短路径更新。
+
+所以没使用 westore 的时候经常可以看到这样的代码:
+
+![not-westore](./not-westore.png)
+
+使用完 westore 之后:
+
+```js
+this.data.a.b[1].c = 'f'
+this.update()
+```
+
 ## 贡献者
 
 <a href="https://github.com/Tencent/westore/graphs/contributors">
