@@ -187,7 +187,7 @@ Page({
 
 应用截图:
 
-![](./assets/todo-app.jpg)
+<img src="./assets/todo-app.jpg" width="250px">
 
 设计类图：
 
