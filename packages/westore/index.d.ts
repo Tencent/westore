@@ -26,9 +26,9 @@ export declare function update(
   callback?: () => void
 ): void;
 
-export declare class Store {
+export declare class Store<T> {
   views: Views;
-  data: any;
+  data: T;
   constructor();
   bind(keyOrView: string | number | WechatMiniprogramPageOrComponent, view?: WechatMiniprogramPageOrComponent): void;
   update(viewKey?: string | number): void;
