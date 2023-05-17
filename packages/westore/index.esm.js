@@ -131,12 +131,12 @@ export class Store {
     }
   }
 
-  update(viewKey) {
+  update(viewKey, callback) {
     if (arguments.length === 1) {
-      update(this.views[viewKey])
+      update(this.views[viewKey], callback)
     } else {
       for (const key in this.views) {
-        update(this.views[key])
+        update(this.views[key], callback)
       }
     }
   }
