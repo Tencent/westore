@@ -31,6 +31,6 @@ export declare class Store<T> {
   data: T;
   constructor();
   bind(keyOrView: string | number | WechatMiniprogramPageOrComponent, view?: WechatMiniprogramPageOrComponent): void;
-  update(viewKey?: string | number): void;
+  update(viewKey?: string | number,callback?: () => void): void;
 }
 
