@@ -130,6 +130,20 @@ export class Store {
       this.views[keyOrView] = view
     }
   }
+  
+  /**
+   * 解绑页面、组件实例，防止内存泄露
+   * @param {object} view 需要解绑的页面实例或组件实例
+   */
+  unbind(view = {}) {
+    this.data = null
+    for(let key in this.views) {
+      if(this.views[key] === view) {
+        delete this.views[key]
+      }
+    }
+  }
+
 
   update(viewKey, callback) {
     if (arguments.length === 1) {
