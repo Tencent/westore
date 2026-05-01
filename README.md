@@ -161,10 +161,6 @@ module.exports = new HomeStore
 
 详细代码[点击这里](https://github.com/Tencent/westore/tree/master/packages/westore-example)
 
-扫码体验:
-
-<img src="./assets/mp.jpg" width="200px">
-
 ## 原理
 
 ### setData 去哪了？
