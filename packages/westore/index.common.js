@@ -5,7 +5,10 @@ const clone = require('rfdc')()
 
 function diffData(current, previous) {
   const result = {}
-  if (!previous) return current
+  // null / undefined 表示「没有旧值」，首次赋值时返回整个 current。
+  // 但不能用 !previous：0 / false / '' 都是合法旧值，会被误判成缺失，
+  // 导致返回整个 current 而不是空 patch（issue #120）。
+  if (previous === null || previous === undefined) return current
   syncKeys(current, previous)
   _diff(current, previous, '', result)
   return result
